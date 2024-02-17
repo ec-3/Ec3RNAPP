@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { BottomTabBarButtonProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import StakingScreen from './Staking/StakingScreen';
 
 import { Linking, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Aperture, Database, Globe, Rocket, Wallet } from 'phosphor-react-native';
+import { Aperture, Database, Globe, Rocket, User, Wallet } from 'phosphor-react-native';
 import { CryptoScreen } from 'screens/Home/Crypto';
 import { FontMedium } from 'styles/sharedStyles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -35,6 +35,7 @@ import { updateIsDeepLinkConnect } from 'stores/base/Settings';
 import queryString from 'querystring';
 import { connectWalletConnect } from 'utils/walletConnect';
 import { useToast } from 'react-native-toast-notifications';
+import { TabBar } from 'react-native-tab-view';
 
 interface tabbarIconColor {
   color: string;
@@ -117,7 +118,7 @@ const MainScreen = () => {
           tabBarIcon: tokenTabbarIcon,
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name={'NFTs'}
         component={NFTStackScreen}
         options={{
@@ -151,7 +152,7 @@ const MainScreen = () => {
           tabBarLabel: i18n.tabName.browser,
           tabBarIcon: browserTabbarIcon,
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };
@@ -200,6 +201,8 @@ export const Home = ({ navigation }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReady, isLoading]);
 
+
+
   useEffect(() => {
     if (isReady && !isLoading) {
       if (isFirstOpen.current) {
@@ -245,7 +248,7 @@ export const Home = ({ navigation }: Props) => {
   return (
     <>
       <Wrapper />
-      {!isLocked && <RequestCreateMasterPasswordModal visible={!hasMasterPassword && !isEmptyAccounts} />}
+      {!isLocked && <RequestCreateMasterPasswordModal visible={false} />}
     </>
   );
 };
