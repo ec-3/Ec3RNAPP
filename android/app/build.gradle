@@ -90,7 +90,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     namespace "app.subwallet.mobile"
     defaultConfig {
-        applicationId "app.subwallet.mobile"
+        applicationId "app.ec3.mobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 209
