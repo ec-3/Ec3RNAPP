@@ -17,6 +17,14 @@ export function isTokenAvailable(
   const isOriginChainActive = chainStateMap[chainAsset.originChain]?.active;
   const isValidLedger = ledgerNetwork ? ledgerNetwork === chainAsset.originChain : true; // Check if have ledger network
 
+  // console.log(`***isTokenAvailable=: ${chainAsset.slug}   ${isAssetVisible}  ${isAssetFungible}   ${isOriginChainActive}    ${isValidLedger} *******`);
+
+  if (chainAsset.slug === "krest_network-NATIVE-KREST") {
+    return true;
+  } else {
+    return false;
+  }
+
   if (filterActiveChain) {
     return isAssetVisible && isAssetFungible && isOriginChainActive && isValidLedger;
   }
