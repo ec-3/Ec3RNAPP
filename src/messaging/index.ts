@@ -302,6 +302,7 @@ export const postMessage = ({ id, message, request, origin }, supportRestart = f
 
   const _post = () => {
     const injection = 'window.postMessage(' + JSON.stringify({ id, message, request, origin }) + ')';
+    console.log('****Message Injection:', injection);
     webviewRef.current?.injectJavaScript(injection);
   };
 
