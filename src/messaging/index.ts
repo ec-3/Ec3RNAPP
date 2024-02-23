@@ -301,6 +301,12 @@ export const postMessage = ({ id, message, request, origin }, supportRestart = f
   }
 
   const _post = () => {
+    // 假设你要替换 address 为新的地址 newAddress
+    const newAddress = "0x88a191d824f9cd686012053436a51453924d7eeb";
+    // 构建新的 request 对象，替换其中的 address
+    // console.log('****Message Injection old request==:', request);
+    // request = { ...request, address: newAddress };
+    // request = { ...request, enableTokens: true };
     const injection = 'window.postMessage(' + JSON.stringify({ id, message, request, origin }) + ')';
     console.log('****Message Injection:', injection);
     webviewRef.current?.injectJavaScript(injection);

@@ -167,7 +167,7 @@ export const RestoreJson = () => {
       onUpdateErrors('password')([]);
       setIsShowPasswordField(true);
     } catch (e) {
-      console.error(e);
+      console.error(`*****555 ${e}`);
       setFileError(true);
     }
   };

@@ -124,7 +124,7 @@ const usePayloadScanner = (showAlertMessage: (message: string) => void): Process
 
         return showAlertMessage('');
       } catch (e) {
-        console.error(e);
+        console.error(`*****444 ${e}`);
         const message = e instanceof Error ? e.message : i18n.errorMessage.unknownError;
 
         return showAlertMessage(message);

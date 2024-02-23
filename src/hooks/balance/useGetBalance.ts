@@ -68,11 +68,12 @@ const useGetBalance = (chain = '', address = '', tokenSlug = '') => {
         promiseList.push(
           getFreeBalance({ address, networkKey: chain })
             .then(balance => {
+              console.info(`*****222  balance = ${balance.value}   ${balance.symbol}   ${balance.decimals}`);
               !cancel && setNativeTokenBalance(balance);
             })
             .catch((e: Error) => {
               !cancel && setError(i18n.message.cannotGetBalance);
-              console.error(e);
+              console.error(`*****222 ${e}`);
             }),
         );
 
@@ -80,11 +81,12 @@ const useGetBalance = (chain = '', address = '', tokenSlug = '') => {
           promiseList.push(
             getFreeBalance({ address, networkKey: chain, token: tokenSlug })
               .then(balance => {
+                console.info(`*****333  balance = ${balance.value}   ${balance.symbol}   ${balance.decimals}`);
                 !cancel && setTokenBalance(balance);
               })
               .catch((e: Error) => {
                 !cancel && setError(i18n.message.cannotGetBalance);
-                console.error(e);
+                console.error(`*****333 ${e}`);
               }),
           );
         }
