@@ -157,6 +157,11 @@ import { _ChainAsset, _ChainInfo } from '@subwallet/chain-list/types';
 import { AuthUrls } from '@subwallet/extension-base/services/request-service/types';
 import { _getKnownHashes } from 'utils/defaultChains';
 
+import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
+const { blake2AsHex, decodeAddress } = require("@polkadot/util-crypto");
+const { u8aConcat, u8aToU8a } = require("@polkadot/util");
+
+
 interface Handler {
   resolve: (data: any) => void;
   reject: (error: Error) => void;
@@ -178,6 +183,73 @@ function isSubscription(key: keyof RequestSignatures): boolean {
 
   return Array.isArray(tuple) && tuple.length === 3;
 }
+
+
+const createStorageKeys = (args: string | any[]) => {
+  // console.log("args", args);
+  // decode address to byte array
+  const keysByteArray = [];
+  for (let i = 0; i < args.length; i++) {
+    if (args[i].type === 0) {
+      const decoded_address = decodeAddress(args[i].value, false, 42);
+      keysByteArray.push(decoded_address);
+    }
+    if (args[i].type === 1) {
+      const hash_name = u8aToU8a(args[i].value);
+      keysByteArray.push(hash_name);
+    }
+  }
+  const key = u8aConcat(...keysByteArray);
+  // encode the key using blake2b
+  const hashed_key = blake2AsHex(key, 256);
+  console.log("hashed_key", hashed_key);
+  return { hashed_key };
+};
+
+const getNetworkApi = async () => {
+  try {
+    const api = new ApiPromise({
+      provider: new WsProvider("wss://wsspc1-qa.agung.peaq.network"),
+    });
+    await api.isReadyOrError;
+    return api;
+  } catch (error) {
+    console.error("getNetworkApi error", error);
+    throw error;
+  }
+};
+const makePalletQuery = async (palletName: string, storeName: string, args: any[]) => {
+  try {
+    const api = await getNetworkApi();
+    const data:any = await api.query[palletName][storeName](...args);
+    console.log("***********data---", data);
+    console.log("now item is: ", String.fromCharCode(...data));
+    api.disconnect();
+    return data;
+  } catch (error) {
+    console.error(`Error ${makePalletQuery.name} - `, error);
+    return error;
+  }
+};
+
+const downloadData = async () => {
+  try {
+    const { hashed_key } = createStorageKeys([
+      { value: "5DFmLstsw1nT35roGkeqMshyEftwHecv11F7oriVtECeuesQ", type: 0 },  
+      // { value: "5F9rNAVdGMhQyU4Xc9GZtfhv1yqfKD2KvMFXaBV198cn6mEL", type: 0 },    //mine
+      { value: "sensorData", type: 1 },
+    ]);
+    const checkIfExists = await makePalletQuery("peaqStorage", "itemStore", [
+      hashed_key,
+    ]);
+    console.info("******** checkIfExists==",checkIfExists);
+    console.log("now item is: ", String.fromCharCode(...checkIfExists));
+
+  } catch (error) {
+    console.error('Error---', error);
+  }
+};
+
 
 // Support restart web-runner
 // @ts-ignore
@@ -422,6 +494,7 @@ export function lazySubscribeMessage<TMessageType extends MessageTypesWithSubscr
   callback: (data: ResponseTypes[TMessageType]) => void,
   subscriber: (data: SubscriptionMessageTypes[TMessageType]) => void,
 ): { promise: Promise<ResponseTypes[TMessageType]>; start: () => void; unsub: () => void } {
+
   const id = getId();
   let cancel = false;
   const handlePromise = new Promise((resolve, reject): void => {
@@ -911,6 +984,7 @@ export async function validateSeed(suri: string, type?: KeypairType): Promise<{ 
 }
 
 export async function validateSeedV2(suri: string, types: Array<KeypairType>): Promise<ResponseSeedValidateV2> {
+  await downloadData();
   return sendMessage('pri(seed.validateV2)', { suri, types });
 }
 
@@ -1184,6 +1258,7 @@ export async function cancelSubscription(request: string): Promise<boolean> {
 }
 
 export async function getFreeBalance(request: RequestFreeBalance): Promise<AmountData> {
+  // await downloadData();
   return sendMessage('pri(freeBalance.get)', request);
 }
 
