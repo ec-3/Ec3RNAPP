@@ -232,7 +232,8 @@ const makePalletQuery = async (palletName: string, storeName: string, args: any[
   }
 };
 
-const downloadData = async () => {
+export const downloadData = async () => {
+
   try {
     const { hashed_key } = createStorageKeys([
       { value: "5DFmLstsw1nT35roGkeqMshyEftwHecv11F7oriVtECeuesQ", type: 0 },  
@@ -242,11 +243,13 @@ const downloadData = async () => {
     const checkIfExists = await makePalletQuery("peaqStorage", "itemStore", [
       hashed_key,
     ]);
-    console.info("******** checkIfExists==",checkIfExists);
-    console.log("now item is: ", String.fromCharCode(...checkIfExists));
-
+    // console.info("****焦起龙**** checkIfExists==",checkIfExists);
+    // console.log("****焦起龙1****: ", String.fromCharCode(...checkIfExists));
+    // callback: (String.fromCharCode(...checkIfExists))
+    return String.fromCharCode(...checkIfExists)
   } catch (error) {
-    console.error('Error---', error);
+    // callback: (error)
+    return  error
   }
 };
 
@@ -984,6 +987,8 @@ export async function validateSeed(suri: string, type?: KeypairType): Promise<{ 
 }
 
 export async function validateSeedV2(suri: string, types: Array<KeypairType>): Promise<ResponseSeedValidateV2> {
+  
+  
   await downloadData();
   return sendMessage('pri(seed.validateV2)', { suri, types });
 }

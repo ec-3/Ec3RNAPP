@@ -118,16 +118,17 @@ const MainScreen = () => {
           tabBarIcon: tokenTabbarIcon,
         }}
       />
-      {/* <Tab.Screen
+       <Tab.Screen
         name={'NFTs'}
         component={NFTStackScreen}
         options={{
-          tabBarLabel: i18n.tabName.nfts,
+          // tabBarLabel: i18n.tabName.nfts,
+          tabBarLabel: "设备信息",
           tabBarHideOnKeyboard: Platform.OS === 'android',
           tabBarIcon: nftTabbarIcon,
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name={'Crowdloans'}
         component={withPageWrapper(CrowdloansScreen, ['crowdloan', 'price', 'chainStore', 'logoMaps'])}
         options={{
@@ -135,8 +136,8 @@ const MainScreen = () => {
           tabBarHideOnKeyboard: Platform.OS === 'android',
           tabBarIcon: crowdloanTabbarIcon,
         }}
-      />
-      <Tab.Screen
+      /> */}
+      {/* <Tab.Screen
         name={'Staking'}
         component={StakingScreen}
         options={{
@@ -144,8 +145,8 @@ const MainScreen = () => {
           tabBarHideOnKeyboard: Platform.OS === 'android',
           tabBarIcon: stakingTabbarIcon,
         }}
-      />
-      <Tab.Screen
+      /> */}
+      {/* <Tab.Screen
         name={'Browser'}
         component={BrowserScreen}
         options={{
