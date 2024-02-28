@@ -8,8 +8,9 @@ import { EmptyList } from 'components/EmptyList';
 import { Image } from 'phosphor-react-native';
 import withPageWrapper from 'components/pageWrapper';
 import i18n from 'utils/i18n/i18n';
-import { downloadData } from 'messaging/index';
+import { downloadData, showReward } from 'messaging/index';
 import { Text, View } from 'react-native-animatable';
+import { Button, TouchableOpacity } from 'react-native';
 
 export type NFTStackParamList = {
   CollectionList: undefined;
@@ -33,28 +34,31 @@ const NFTStackScreen = () => {
   // const [myData,setMyData] = useState();
 
   var myString;
+  const [name, setName] = useState(String());
 
-
-  console.log("****焦焦焦00****")
-  console.log("****焦焦焦00****")
+  downloadData()
+  .then(myData => {
+    myString =  myData as String;
+    console.log("****焦焦焦****")
+    console.log({myString})
+    console.log("****焦焦焦****")
+    setName((myString.substring(0,myString.length)))
+    
+  })
+  .catch(e => {
+    console.log('--- subscribeActiveCronAndSubscriptionServiceMap error:', e)
+  });
   
-  const [age, setAge] = useState(String());
+  const handleButtonClick = () => {
+    showReward();
+  };
 
-    useEffect(() => {
-      downloadData()
-    .then(myData => {
-      myString =  myData as String;
-      // console.log("****焦焦焦****")
-      console.log({myString})
-      // console.log("****焦焦焦****")
-      setAge(myString.substring(0,myString.length))
-    })
-    .catch(e => {
-      console.log('--- subscribeActiveCronAndSubscriptionServiceMap error:', e)
-    });
-    });
-  
 
+  // return (
+  //   <View style={{height: 300,backgroundColor:"white"}}>
+  //     <Text style={{textAlign:'center',fontSize:30,paddingTop:30}}>{name}</Text>
+  //   </View>
+  // );
   
 
   // return (
@@ -65,9 +69,14 @@ const NFTStackScreen = () => {
   //   </NFTStack.Navigator>
   // );
 
+
   return (
-    <View style={{height: 300,backgroundColor:"white"}}>
-      <Text style={{textAlign:'center',fontSize:30,paddingTop:30}}>{age}</Text>
+    <View style={{ height: 300, backgroundColor: "white", justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 30, color: 'red' }}>{name}</Text>
+      
+      <TouchableOpacity onPress={handleButtonClick} style={{ marginTop: 20, width: 200, height: 50, backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ color: 'white', fontSize: 20 }}>showReward</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -80,4 +89,5 @@ function createStorageKeys(arg0: { value: string; type: number; }[]): { hashed_k
 function makePalletQuery(arg0: string, arg1: string, arg2: any[]) {
   throw new Error('Function not implemented.');
 }
+
 
