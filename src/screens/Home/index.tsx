@@ -128,15 +128,15 @@ const MainScreen = () => {
           tabBarIcon: nftTabbarIcon,
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name={'Crowdloans'}
-        component={withPageWrapper(CrowdloansScreen, ['crowdloan', 'price', 'chainStore', 'logoMaps'])}
+        component={CrowdloansScreen}
         options={{
-          tabBarLabel: i18n.tabName.crowdloans,
+          tabBarLabel: "激励情况",
           tabBarHideOnKeyboard: Platform.OS === 'android',
           tabBarIcon: crowdloanTabbarIcon,
         }}
-      /> */}
+      />
       {/* <Tab.Screen
         name={'Staking'}
         component={StakingScreen}
