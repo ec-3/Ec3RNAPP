@@ -1029,56 +1029,67 @@ export const showReward = async () => {
 
   // 使用 Web3.js 的例子
   // const Web3 = require('web3');
+  const web3 = new Web3('https://rpcpc1-qa.agung.peaq.network');
   console.log("web333:::");
   // 指定一个网络
-  const provider = new ethers.JsonRpcProvider("https://rpcpc1-qa.agung.peaq.network");
+  // const provider = new ethers.JsonRpcProvider("https://rpcpc1-qa.agung.peaq.network");
+  // const provider = new ethers.WsProvider("wss://wsspc1-qa.agung.peaq.network/");
+  // const provider = new ethers.JsonRpcProvider("https://agung-testnet.webapi.subscan.io");
+  // const provider = new ethers.JsonRpcProvider("https://agung-testnet.subscan.io");
 
   // 合约地址
   const contractAddress = "0xd9e909a5e1053b85cd0298665411b9ea305d4a2b"; // 替换为实际的合约地址
+  // const contractAddress = "0x0814f962baecd118de01209889f5c2c9b4aacaaa"; // OLD 替换为实际的合约地址
 
   // 私钥
   const privateKey = "fe8cf0e0894db794ce66f40f69cfd98dfeae635f2b9cacb41db574344252a674";
   console.log("privateKey:::", privateKey);
 
   // 使用私钥创建以太坊账户
-  // const account = web3.eth.accounts.privateKeyToAccount(privateKey);
-  const account = new ethers.Wallet(privateKey, provider);
-
-  // const myContract = new web3.eth.Contract(contractAbi, contractAddress);
-  const myContract = new ethers.Contract(contractAddress, contractAbi, provider)
+  const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+  // const account = new ethers.Wallet(privateKey, provider);
   console.log("account address:::", account.address);
 
-  // 使用以太坊账户创建交易对象
-  const tx = await myContract.showReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 1);
-  console.log("tx:: ", tx);
-  // const transactionObject = {
-  //   from: account.address,
-  //   to: contractAddress,
-  //   gas: 500000, // gas 限制
-  //   gasPrice: 4100, // gas 价格
-  //   data: myContract.methods.showReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 1).encodeABI(),
-  //   // data: myContract.methods.mint(5100).encodeABI(),
-  // };
+  const myContract = new web3.eth.Contract(contractAbi, contractAddress);
+  // const myContract = new ethers.Contract(contractAddress, contractAbiOLD, provider)
+  console.log("do  start:::", myContract.state);
+  // await myContract.start();
+  // console.log("myContract state:::", myContract.state);
 
-  // // 使用以太坊账户签署交易
-  // web3.eth.accounts.signTransaction(transactionObject, account.privateKey)
-  //   .then((signedTransaction: { rawTransaction: any; }) => {
-  //     // 发送签名交易到区块链
-  //     console.log(signedTransaction)
-  //     web3.eth.sendSignedTransaction(signedTransaction.rawTransaction)
-  //       .on('transactionHash', (hash: any) => {
-  //         console.log('Transaction Hash:', hash);
-  //       })
-  //       .on('receipt', (receipt: any) => {
-  //         console.log('Transaction Receipt:', receipt);
-  //       })
-  //       .on('error', (error: any) => {
-  //         console.error('Transaction Error:', error);
-  //       });
-  //   })
-  //   .catch((error: any) => {
-  //     console.error('Signing Error:', error);
-  //   });
+  // 使用以太坊账户创建交易对象
+  // const txmint = await myContract.mint(5100);
+  // console.log("tx:mint: ", txmint);
+  // const tx = await myContract.methods.showReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 1);
+  // console.log("tx:: ", tx);
+  const transactionObject = {
+    from: account.address,
+    to: contractAddress,
+    gas: 500000, // gas 限制
+    gasPrice: 4100, // gas 价格
+    data: myContract.methods.showReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 1).encodeABI(),
+    // data: myContract.methods.mint(5100).encodeABI(),
+  };
+
+  console.log("do  signTransaction:::", web3.eth);
+  // 使用以太坊账户签署交易
+  web3.eth.accounts.signTransaction(transactionObject, account.privateKey)
+    .then((signedTransaction: { rawTransaction: any; }) => {
+      // 发送签名交易到区块链
+      console.log(signedTransaction)
+      web3.eth.sendSignedTransaction(signedTransaction.rawTransaction)
+        .on('transactionHash', (hash: any) => {
+          console.log('*********Transaction Hash:', hash);
+        })
+        .on('receipt', (receipt: any) => {
+          console.log('*********Transaction Receipt:', receipt);
+        })
+        .on('error', (error: any) => {
+          console.error('*********Transaction Error:', error);
+        });
+    })
+    .catch((error: any) => {
+      console.error('*********Signing Error:', error);
+    });
 };
 
 const getReward = async () => {
