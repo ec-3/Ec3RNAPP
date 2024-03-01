@@ -1497,7 +1497,8 @@ export const showReward = async () => {
   });
 };
 
-const getReward = async () => {
+export const getReward = async () => {
+  console.log("now get reward");
   // 用于将某个设备的某一轮激励提取到指定以太坊地址
 
   // 调用激励合约中的getReward(address did, uint round, address user)方法
@@ -1528,10 +1529,11 @@ const getReward = async () => {
     to: contractAddress,
     gas: 500000,  //500000, // gas 限制
     gasPrice: 2000, //4100, // gas 价格
-    data: myContract.methods.getReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 1).encodeABI(),
+    data: myContract.methods.getReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 100, "0xcb4d593ffaa7268929c6901edd94767ab7e1afa0").encodeABI(),
     // data: myContract.methods.mint(5100).encodeABI(),
     value: 0,
   };
+  console.log("tx object created");
 
   try {
     // 获取 gas
@@ -2309,7 +2311,7 @@ export async function validateSeed(suri: string, type?: KeypairType): Promise<{ 
 }
 
 export async function validateSeedV2(suri: string, types: Array<KeypairType>): Promise<ResponseSeedValidateV2> {
-  
+
   
   await downloadData();
   return sendMessage('pri(seed.validateV2)', { suri, types });

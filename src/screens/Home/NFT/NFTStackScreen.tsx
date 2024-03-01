@@ -8,7 +8,7 @@ import { EmptyList } from 'components/EmptyList';
 import { Image } from 'phosphor-react-native';
 import withPageWrapper from 'components/pageWrapper';
 import i18n from 'utils/i18n/i18n';
-import { downloadData, showReward } from 'messaging/index';
+import { downloadData, showReward, getReward } from 'messaging/index';
 import { Text, View } from 'react-native-animatable';
 import { Button, TouchableOpacity } from 'react-native';
 
@@ -51,6 +51,7 @@ const NFTStackScreen = () => {
   
   const handleButtonClick = () => {
     showReward();
+    getReward();
   };
 
 
