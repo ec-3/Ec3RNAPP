@@ -1576,7 +1576,80 @@ export const getReward = async () => {
     });
 };
 
+export const mining = async () => {
+  console.log("now mining");
 
+  // 使用 Web3.js 的例子
+  const web3 = new Web3('https://rpcpc1-qa.agung.peaq.network');
+
+  // 合约地址
+  const contractAddress = "0xefc6899a558096d4f853682d29bbc2e46227fb10"; // 仅供开发环境，激励合约地址
+  // const contractAddress = "0xd9e909a5e1053b85cd0298665411b9ea305d4a2b"; // 激励合约地址
+  // const contractAddress = "0x0814f962baecd118de01209889f5c2c9b4aacaaa"; // OLD 替换为实际的合约地址
+
+  // 私钥
+  const privateKey = "fe8cf0e0894db794ce66f40f69cfd98dfeae635f2b9cacb41db574344252a674";
+  console.log("privateKey:::", privateKey);
+
+  // 使用私钥创建以太坊账户
+  const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+  console.log("account address:::", account.address);
+
+  const myContract = new web3.eth.Contract(contractAbiDev, contractAddress);
+
+  const data = 1000;
+  const round = 99;
+
+  console.log("do  start:::");
+  const transactionObject = {
+    from: account.address,
+    to: contractAddress,
+    gas: 500000,  //500000, // gas 限制
+    gasPrice: 2000, //4100, // gas 价格
+    // mining(round, did, amount);
+    data: myContract.methods.mining(round, "0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", data).encodeABI(),
+    value: 0,
+  };
+  console.log("tx object created");
+
+  try {
+    // 获取 gas
+    const gas = await web3.eth.estimateGas(transactionObject);
+    transactionObject.gas = gas; // 将 gas 设置为估算值
+    console.log("***Transaction Object gas==:", gas);
+
+    // 获取 gasPrice
+    const gasPrice = await web3.eth.getGasPrice();
+    transactionObject.gasPrice = gasPrice * 2; // 将 gasPrice 设置为当前推荐值
+    console.log("***Transaction Object gasPrice==:", gasPrice);
+
+    // 使用 transactionObject 执行后续操作
+    console.log("***Transaction Object:", transactionObject);
+  } catch (error) {
+    console.error("***Error:", error);
+  }
+
+  // console.log("do  signTransaction:::", web3.eth);
+  // 使用以太坊账户签署交易
+  web3.eth.accounts.signTransaction(transactionObject, account.privateKey)
+    .then((signedTransaction: { rawTransaction: any; }) => {
+      // 发送签名交易到区块链
+      console.log(signedTransaction)
+      web3.eth.sendSignedTransaction(signedTransaction.rawTransaction)
+        .on('transactionHash', (hash: any) => {
+          console.log('*********Transaction Hash:', hash);
+        })
+        .on('receipt', (receipt: any) => {
+          console.log('*********Transaction Receipt:', receipt);
+        })
+        .on('error', (error: any) => {
+          console.error('*********Transaction Error:', error);
+        });
+    })
+    .catch((error: any) => {
+      console.error('*********Signing Error:', error);
+    });
+};
 
 
 
