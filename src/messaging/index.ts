@@ -1052,25 +1052,42 @@ export const showReward = async () => {
 
   const myContract = new web3.eth.Contract(contractAbi, contractAddress);
   // const myContract = new ethers.Contract(contractAddress, contractAbiOLD, provider)
-  console.log("do  start:::", myContract.state);
-  // await myContract.start();
-  // console.log("myContract state:::", myContract.state);
+  console.log("do  start:::");
 
   // 使用以太坊账户创建交易对象
   // const txmint = await myContract.mint(5100);
   // console.log("tx:mint: ", txmint);
-  // const tx = await myContract.methods.showReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 1);
-  // console.log("tx:: ", tx);
+  const tx = await myContract.methods.showReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 1);
+  console.log("tx:: ", tx);
+  
   const transactionObject = {
     from: account.address,
     to: contractAddress,
-    gas: 500000, // gas 限制
-    gasPrice: 4100, // gas 价格
+    gas: 500000,  //500000, // gas 限制
+    gasPrice: 2000, //4100, // gas 价格
     data: myContract.methods.showReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 1).encodeABI(),
     // data: myContract.methods.mint(5100).encodeABI(),
+    value: 0,
   };
 
-  console.log("do  signTransaction:::", web3.eth);
+  try {
+    // 获取 gas
+    const gas = await web3.eth.estimateGas(transactionObject);
+    transactionObject.gas = gas; // 将 gas 设置为估算值
+    console.log("***Transaction Object gas==:", gas);
+  
+    // 获取 gasPrice
+    const gasPrice = await web3.eth.getGasPrice();
+    transactionObject.gasPrice = gasPrice * 2; // 将 gasPrice 设置为当前推荐值
+    console.log("***Transaction Object gasPrice==:", gasPrice);
+  
+    // 使用 transactionObject 执行后续操作
+    console.log("***Transaction Object:", transactionObject);
+  } catch (error) {
+    console.error("***Error:", error);
+  }
+
+  // console.log("do  signTransaction:::", web3.eth);
   // 使用以太坊账户签署交易
   web3.eth.accounts.signTransaction(transactionObject, account.privateKey)
     .then((signedTransaction: { rawTransaction: any; }) => {
