@@ -1522,7 +1522,7 @@ export const getReward = async () => {
   const account = web3.eth.accounts.privateKeyToAccount(privateKey);
   console.log("account address:::", account.address);
 
-  const myContract = new web3.eth.Contract(contractAbi, contractAddress);
+  const myContract = new web3.eth.Contract(contractAbiDev, contractAddress);
   console.log("do  start:::");
   const transactionObject = {
     from: account.address,
