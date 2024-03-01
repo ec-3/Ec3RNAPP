@@ -8,9 +8,9 @@ import { EmptyList } from 'components/EmptyList';
 import { Image } from 'phosphor-react-native';
 import withPageWrapper from 'components/pageWrapper';
 import i18n from 'utils/i18n/i18n';
-import { downloadData, showReward } from 'messaging/index';
+import { downloadData, showReward, getReward, mining } from 'messaging/index';
 import { Text, View } from 'react-native-animatable';
-import { Button, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Button, TouchableOpacity } from 'react-native';
 
 export type NFTStackParamList = {
   CollectionList: undefined;
@@ -34,7 +34,9 @@ const NFTStackScreen = () => {
   // const [myData,setMyData] = useState();
 
   var myString;
+  const [loading, setLoading] = useState(true);
   const [name, setName] = useState(String());
+  const [reward, setReward] = useState(String());
 
   downloadData()
   .then(myData => {
@@ -43,14 +45,21 @@ const NFTStackScreen = () => {
     console.log({myString})
     console.log("****焦焦焦****")
     setName((myString.substring(0,myString.length)))
-    
+    setLoading(false); // 隐藏等待框
   })
   .catch(e => {
     console.log('--- subscribeActiveCronAndSubscriptionServiceMap error:', e)
   });
   
   const handleButtonClick = () => {
-    showReward();
+    setLoading(true); // 显示等待框
+    showReward().then(reward => {
+      setReward(reward)
+
+      setLoading(false); // 隐藏等待框
+    });
+    // getReward();
+    // mining();
   };
 
 
@@ -72,11 +81,19 @@ const NFTStackScreen = () => {
 
   return (
     <View style={{ height: 300, backgroundColor: "white", justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 30, color: 'red' }}>{name}</Text>
+      <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 30, color: 'red' }}>data:{name}</Text>
       
+      <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 30, color: 'black' }}>reward:{reward}</Text>
       <TouchableOpacity onPress={handleButtonClick} style={{ marginTop: 20, width: 200, height: 50, backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center' }}>
         <Text style={{ color: 'white', fontSize: 20 }}>showReward</Text>
       </TouchableOpacity>
+
+      {loading && (
+        <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+          <ActivityIndicator size="large" color="white" />
+        </View>
+      )}
+
     </View>
   );
 };

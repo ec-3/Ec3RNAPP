@@ -23,7 +23,7 @@ export function isTokenAvailable(
       || chainAsset.slug === "agung_network-NATIVE-AGUNG"
       || chainAsset.slug === "polygon-NATIVE-MATIC"
       || chainAsset.slug === "agung_network-NATIVE-ECT"
-      || chainAsset.slug === "ethereum-ERC20-ECT-0x0814f962baecd118de01209889f5c2c9b4aacaaa"
+      || chainAsset.slug === "ethereum-ERC20-ECT-0xefc6899a558096d4f853682d29bbc2e46227fb10"
       || chainAsset.slug === "agung-NATIVE-ECT") {
     return true;
   } else {
