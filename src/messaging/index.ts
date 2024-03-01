@@ -1057,8 +1057,15 @@ export const showReward = async () => {
   // 使用以太坊账户创建交易对象
   // const txmint = await myContract.mint(5100);
   // console.log("tx:mint: ", txmint);
-  const tx = await myContract.methods.showReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 1);
-  console.log("tx:: ", tx);
+  // const tx = await myContract.methods.showReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 1);
+  // console.log("tx:: ", tx);
+  myContract.methods.showReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 1).call((err, result) => {
+    if (!err) {
+        console.log('Function result: ', result);
+    } else {
+        console.error('Error: ', err);
+    }
+  });
   
   const transactionObject = {
     from: account.address,
