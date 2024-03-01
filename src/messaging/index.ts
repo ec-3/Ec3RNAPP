@@ -1480,7 +1480,7 @@ export const showReward = async () => {
   // const provider = new ethers.JsonRpcProvider("https://agung-testnet.subscan.io");
 
   // 合约地址
-  const contractAddress = "0xd9e909a5e1053b85cd0298665411b9ea305d4a2b"; // 仅供开发环境，替换为实际的合约地址
+  const contractAddress = "0xefc6899a558096d4f853682d29bbc2e46227fb10"; // 仅供开发环境，替换为实际的合约地址
   // const contractAddress = "0xd9e909a5e1053b85cd0298665411b9ea305d4a2b"; // 替换为实际的合约地址
   // const contractAddress = "0x0814f962baecd118de01209889f5c2c9b4aacaaa"; // OLD 替换为实际的合约地址
 
