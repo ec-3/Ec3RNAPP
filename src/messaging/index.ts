@@ -1529,6 +1529,8 @@ export const getReward = async () => {
     to: contractAddress,
     gas: 500000,  //500000, // gas 限制
     gasPrice: 2000, //4100, // gas 价格
+    // getReward(did, round, user);
+    // round可以是101，102
     data: myContract.methods.getReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 100, "0xcb4d593ffaa7268929c6901edd94767ab7e1afa0").encodeABI(),
     // data: myContract.methods.mint(5100).encodeABI(),
     value: 0,
