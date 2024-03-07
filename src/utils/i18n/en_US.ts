@@ -230,7 +230,7 @@ export const en = {
     authorizeMessage: 'Authorize message',
     serviceSelect: 'Select service',
     login: 'Login',
-    slogan: 'Polkadot, Substrate & Ethereum wallet',
+    slogan: 'Get Magic Cube earn ECT rewards',
   },
   tabName: {
     tokens: 'Tokens',

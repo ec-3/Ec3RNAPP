@@ -6,35 +6,71 @@
     android:layout_height="match_parent"
     android:background="#0C0C0C">
 
-  <LinearLayout
+  <RelativeLayout
       android:layout_width="wrap_content"
-      android:layout_height="407dp"
+      android:layout_height="wrap_content"
       android:layout_alignParentStart="true"
       android:layout_alignParentTop="true"
       android:layout_alignParentEnd="true"
-      android:layout_alignParentBottom="true"
-      android:layout_marginStart="27dp"
-      android:layout_marginTop="161dp"
-      android:layout_marginEnd="27dp"
-      android:layout_marginBottom="163dp"
+      android:layout_marginStart="0dp"
+      android:layout_marginEnd="0dp"
+      android:layout_marginTop="30dp"
       android:gravity="center"
       android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:gravity="center_horizontal"
+        android:textSize="30sp"
+        android:layout_marginTop="40dp"
+        android:text="WELCOME to Ec³"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF" />
+
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="80dp"
-        android:layout_height="120dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
         android:scaleType="fitCenter"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/logo" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="center"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/sublogo" />
-  </LinearLayout>
+        android:layout_alignTop="@id/logo"
+        android:layout_alignBottom="@id/logo"
+        android:layout_alignStart="@id/logo"
+        android:layout_alignEnd="@id/logo"
+        android:layout_marginStart="50dp"
+        android:src="@drawable/ec3" />
+
+    <TextView
+        android:id="@+id/slogan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="-20dp"
+        android:gravity="center_horizontal"
+        android:text="Get Magic Cube earn ECT rewards"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF" />
+
+  </RelativeLayout>
 
   <ImageView
       android:id="@+id/imageView"
