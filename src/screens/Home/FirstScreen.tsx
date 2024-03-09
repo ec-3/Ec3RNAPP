@@ -35,13 +35,24 @@ const logoStyle: StyleProp<any> = {
   paddingBottom: 22,
 };
 
-const logoTextStyle: StyleProp<any> = {
-  fontSize: 38,
-  lineHeight: 46,
-  ...FontSemiBold,
-  color: ColorMap.light,
-  paddingTop: 9,
-};
+// const logoTextStyle: StyleProp<any> = {
+//   fontSize: 38,
+//   lineHeight: 46,
+//   ...FontSemiBold,
+//   color: ColorMap.light,
+//   paddingTop: 9,
+// };
+
+  const logoTextStyle = {
+    fontSize: 38,
+    fontWeight: 'bold',
+    position: 'absolute',
+    top: '65%',
+    left: '55%',
+    transform: [{ translateX: -50 }, { translateY: -50 }],
+    color: 'white',
+    textAlign: 'center',
+  };
 
 const logoSubTextStyle: StyleProp<any> = {
   fontSize: 16,
@@ -115,13 +126,13 @@ export const FirstScreen = () => {
       subTitle: i18n.welcomeScreen.importAccMessage,
       onPress: onPressActionButton('importAcc'),
     },
-    {
-      key: 'attach',
-      icon: Swatches,
-      title: i18n.welcomeScreen.attachAccLabel,
-      subTitle: i18n.welcomeScreen.attachAccMessage,
-      onPress: onPressActionButton('attachAcc'),
-    },
+    // {
+    //   key: 'attach',
+    //   icon: Swatches,
+    //   title: i18n.welcomeScreen.attachAccLabel,
+    //   subTitle: i18n.welcomeScreen.attachAccMessage,
+    //   onPress: onPressActionButton('attachAcc'),
+    // },
   ];
 
   return (
@@ -139,9 +150,9 @@ export const FirstScreen = () => {
               alignItems: 'center',
             }}>
             <Suspense>
-              <SVGImages.LogoGradient width={66} height={100} />
+              <SVGImages.LogoGradient width={300} height={307} />
             </Suspense>
-            <Text style={logoTextStyle}>Ec³</Text>
+              <Text style={logoTextStyle}>Ec³</Text>
             <Text style={logoSubTextStyle}>{i18n.title.slogan}</Text>
           </View>
 

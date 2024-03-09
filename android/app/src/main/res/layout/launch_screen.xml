@@ -4,7 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0C0C0C">
+    android:background="#000000">
+
+  <ImageView
+      android:id="@+id/imageView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentEnd="true"
+      android:layout_marginStart="0dp"
+      android:layout_marginEnd="0dp"
+      android:scaleType="fitXY"
+      android:src="@android:color/background_dark" />
 
   <RelativeLayout
       android:layout_width="wrap_content"
@@ -36,8 +47,8 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
         android:layout_below="@id/title"
         android:scaleType="fitCenter"
         android:layout_centerHorizontal="true"
@@ -71,17 +82,6 @@
         android:textColor="#FFFFFF" />
 
   </RelativeLayout>
-
-  <ImageView
-      android:id="@+id/imageView"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_alignParentStart="true"
-      android:layout_alignParentEnd="true"
-      android:layout_marginStart="0dp"
-      android:layout_marginEnd="0dp"
-      android:scaleType="fitXY"
-      android:src="@drawable/splash_background" />
 
   <TextView
       android:id="@+id/second"
