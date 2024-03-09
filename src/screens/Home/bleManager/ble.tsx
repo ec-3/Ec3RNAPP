@@ -1,92 +1,45 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import i18n from 'utils/i18n/i18n';
-import { ListRenderItemInfo, View ,Dimensions,  Alert,
+// import React, { useEffect, useState } from "react";
+// import { StyleSheet, Text, TouchableOpacity, View,Dimensions } from "react-native";
+// import BleManager, {Peripheral, PeripheralInfo} from 'react-native-ble-manager';
+
+
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  Alert,
   FlatList,
+  ListRenderItemInfo,
   Platform,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
   ScrollView,
+  Dimensions,
 } from 'react-native';
-import { CrowdloanItem } from 'screens/Home/Crowdloans/CrowdloanItem';
-
-import BleModule from '../bleManager/BleModule';
-
-
-import BleProtocol from '../bleManager/BleProtocol';
-import Characteristic from '../bleManager/Characteristic';
-
-import Header from '../bleManager/Header';
-import {BleEventType, BleState} from '../bleManager/type';
 
 import {
   BleManagerDidUpdateStateEvent,
   Peripheral,
 } from 'react-native-ble-manager';
-
-import { RocketLaunch } from 'phosphor-react-native';
-import useGetCrowdloanList from 'hooks/screen/Home/Crowdloans/useGetCrowdloanList';
-import { FlatListScreen } from 'components/FlatListScreen';
-import { EmptyList } from 'components/EmptyList';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
-import { setAdjustPan } from 'rn-android-keyboard-adjust';
-import { useIsFocused } from '@react-navigation/native';
-import { CrowdloanItemType } from 'types/index';
-import { color } from 'react-native-reanimated';
+import BleModule from './BleModule';
 
 
+import BleProtocol from './BleProtocol';
+import Characteristic from './Characteristic';
 
+import Header from './Header';
+import {BleEventType, BleState} from './type';
+
+
+const {width, height, scale} = Dimensions.get('window');
+
+// 注意: 需要确保全局只有一个实例，因为BleModule类保存着蓝牙的连接信息
 const bleModule = new BleModule();
 const bleProtocol = new BleProtocol();
 
+const FlexDirectionBasics = () => {
 
-
-const renderItem = ({ item }: ListRenderItemInfo<CrowdloanItemType>) => {
-  return <CrowdloanItem item={item} />;
-};
-const {width, height, scale} = Dimensions.get('window');
-
-const renderListEmptyComponent = () => {
-  return (
-    <EmptyList
-      title={i18n.emptyScreen.crowdloanEmptyTitle}
-      icon={RocketLaunch}
-      message={i18n.emptyScreen.crowdloanEmptyMessage}
-    />
-  );
-};
-
-enum FilterValue {
-  POLKADOT_PARACHAIN = 'Polkadot parachain',
-  KUSAMA_PARACHAIN = 'Kusama parachain',
-  WINNER = 'completed',
-  FAIL = 'failed',
-}
-
-export const CrowdloansScreen = () => {
-  const theme = useSubWalletTheme().swThemes;
-
-  const items: CrowdloanItemType[] = useGetCrowdloanList();
-  // const [isRefresh, refresh] = useRefresh();
-  const isFocused = useIsFocused();
-  const defaultFilterOpts = [
-    { label: i18n.filterOptions.polkadotParachain, value: FilterValue.POLKADOT_PARACHAIN },
-    { label: i18n.filterOptions.kusamaParachain, value: FilterValue.KUSAMA_PARACHAIN },
-    { label: i18n.filterOptions.win, value: FilterValue.WINNER },
-    { label: i18n.filterOptions.fail, value: FilterValue.FAIL },
-  ];
-  const crowdloanData = useMemo(() => {
-    const result = items.sort(
-      // @ts-ignore
-      (firstItem, secondItem) => secondItem.convertedContribute - firstItem.convertedContribute,
-    );
-
-    return result;
-  }, [items]);
-
-  
-  
   // 蓝牙是否连接
   const [isConnected, setIsConnected] = useState(false);
   // 正在扫描中
@@ -347,19 +300,19 @@ export const CrowdloansScreen = () => {
     const disabled = !!connectingId && connectingId !== data.id;
     return (
       <TouchableOpacity
-        activeOpacity={1.0}
+        activeOpacity={0.7}
         disabled={disabled || isConnected}
         onPress={() => {
           connect(data);
         }}
-        style={[styles.item, {opacity: disabled ? 1 : 1}]}>
+        style={[styles.item, {opacity: disabled ? 0.5 : 1}]}>
         <View style={{flexDirection: 'row'}}>
-          <Text style={{color: 'white'}}>{data.name ? data.name : ''}</Text>
-          <Text style={{marginLeft: 50, color: 'white'}}>
+          <Text style={{color: 'black'}}>{data.name ? data.name : ''}</Text>
+          <Text style={{marginLeft: 50, color: 'red'}}>
             {connectingId === data.id ? '连接中...' : ''}
           </Text>
         </View>
-        <Text style={{color:'white'}}>{data.id}</Text>
+        <Text>{data.id}</Text>
       </TouchableOpacity>
     );
   }
@@ -372,7 +325,7 @@ export const CrowdloansScreen = () => {
       <ScrollView
         style={{
           marginTop: 10,
-          borderColor: 'leeow',
+          borderColor: '#eee',
           borderStyle: 'solid',
           borderTopWidth: StyleSheet.hairlineWidth * 2,
         }}>
@@ -416,7 +369,7 @@ export const CrowdloansScreen = () => {
   }
 
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:theme.colorBgContainer}}>
+    <SafeAreaView style={styles.container}>
       <Header
         isConnected={isConnected}
         scaning={scaning}
@@ -432,20 +385,40 @@ export const CrowdloansScreen = () => {
       {renderFooter()}
     </SafeAreaView>
   );
+
+
+  // return (
+
+  //   <View style={styles.constainer}>
+
+  //   </View>
+    
+  // );
+
+
 };
 
-const styles = StyleSheet.create({
 
-  // container: {
-  //   flex: 1,
-  //   backgroundColor: theme.colorBgSecondary,
-  // },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   item: {
     flexDirection: 'column',
-    borderColor: 'white',
+    borderColor: 'rgb(235,235,235)',
     borderStyle: 'solid',
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingLeft: 10,
     paddingVertical: 8,
   },
 });
+
+// const styles = StyleSheet.create({
+//   constainer:{
+//     height:height,
+//     width:200,
+//     backgroundColor:'gray'
+//   },
+// });
+export default FlexDirectionBasics;

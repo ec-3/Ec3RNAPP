@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { BottomTabBarButtonProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import StakingScreen from './Staking/StakingScreen';
 
-import { Linking, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, Linking, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Aperture, Database, Globe, Rocket, User, Wallet } from 'phosphor-react-native';
 import { CryptoScreen } from 'screens/Home/Crypto';
@@ -41,13 +41,25 @@ interface tabbarIconColor {
   color: string;
 }
 const tokenTabbarIcon = ({ color }: tabbarIconColor) => {
-  return <Wallet size={24} color={color} weight={'fill'} />;
+  // return <Wallet size={24} color={color} weight={'fill'} />;
+  return  <Image 
+  source={ require('./assets/CurrencyDollarSimple.png')}
+  style={{height:60,width:60,resizeMode:'center'}} >
+</Image>;
 };
 const nftTabbarIcon = ({ color }: tabbarIconColor) => {
-  return <Aperture size={24} color={color} weight={'fill'} />;
+  // return <Aperture size={24} color={color} weight={'fill'} />;
+  return  <Image 
+    source={ require('./assets/secondTabImg.png')}
+    style={{height:60,width:60,resizeMode:'center'}} >
+  </Image>;
 };
 const crowdloanTabbarIcon = ({ color }: tabbarIconColor) => {
-  return <Rocket size={24} color={color} weight={'fill'} />;
+  // return <Rocket size={24} color={color} weight={'fill'} />;
+  return  <Image 
+    source={ require('./assets/mdi_access-point-network.png')}
+    style={{height:60,width:60,resizeMode:'center'}} >
+  </Image>;
 };
 const stakingTabbarIcon = ({ color }: tabbarIconColor) => {
   return <Database size={24} color={color} weight={'fill'} />;
@@ -86,20 +98,27 @@ const MainScreen = () => {
       initialRouteName={'Tokens'}
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel:false,
         tabBarButton: tabbarButtonStyle,
         tabBarIconStyle: {
-          marginTop: 10,
+          // marginTop: 10,
+          height:80,
+          width:80,
+          // backgroundColor:'yellow',
+          // marginBottom: 10,
+
         },
-        tabBarLabelStyle: {
-          paddingTop: 2,
-          paddingBottom: insets.bottom ? insets.bottom - 12 : 8,
-          fontSize: 10,
-          lineHeight: 18,
-          ...FontMedium,
-        },
+        // tabBarLabelStyle: {
+        //   paddingTop: 2,
+        //   paddingBottom: insets.bottom ? insets.bottom - 12 : 8,
+        //   fontSize: 10,
+        //   lineHeight: 18,
+        //   ...FontMedium,
+        //   backgroundColor:'blue'
+        // },
         tabBarStyle: {
           paddingTop: 0,
-          paddingBottom: 0,
+          paddingBottom: 16,
           backgroundColor: theme.colorBgSecondary,
           borderTopWidth: 1,
           paddingLeft: 16,
@@ -123,7 +142,7 @@ const MainScreen = () => {
         component={NFTStackScreen}
         options={{
           // tabBarLabel: i18n.tabName.nfts,
-          tabBarLabel: "设备信息",
+          tabBarLabel: "Device Info",
           tabBarHideOnKeyboard: Platform.OS === 'android',
           tabBarIcon: nftTabbarIcon,
         }}
@@ -132,7 +151,7 @@ const MainScreen = () => {
         name={'Crowdloans'}
         component={withPageWrapper(CrowdloansScreen, ['crowdloan', 'price', 'chainStore', 'logoMaps'])}
         options={{
-          tabBarLabel: "蓝牙",
+          tabBarLabel: "Bluetooth",
           tabBarHideOnKeyboard: Platform.OS === 'android',
           tabBarIcon: crowdloanTabbarIcon,
         }}

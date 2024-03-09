@@ -85,25 +85,35 @@ export const  NFTStackScreen = () => {
 
   return (
 
+    <SubScreenContainer 
+      title={i18n.header.securitySettings}
+      navigation={navigation}
+      onPressLeftBtn={() => {
+        navigation.goBack();
+      } 
+    } children={
+        <View style={{ height: height, backgroundColor: "white", justifyContent: 'flex-start', alignItems: 'center' }}>
     
-    <View style={{ height: height, backgroundColor: "white", justifyContent: 'flex-start', alignItems: 'center' }}>
+          <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 100, color: 'red' }}>data:{name}</Text>
+          
+          <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 30, color: 'black' }}>reward:{reward}</Text>
     
-        <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 100, color: 'red' }}>data:{name}</Text>
-        
-        <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 30, color: 'black' }}>reward:{reward}</Text>
-  
-        <TouchableOpacity onPress={handleButtonClick} style={{ marginTop: 20, width: 200, height: 50, backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: 'white', fontSize: 20 }}>showReward</Text>
-        </TouchableOpacity>
-  
-  
-  
-        {loading && (
-          <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-            <ActivityIndicator size="large" color="white" />
-          </View>
-        )}
-    </View>
+          <TouchableOpacity onPress={handleButtonClick} style={{ marginTop: 20, width: 200, height: 50, backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: 'white', fontSize: 20 }}>showReward</Text>
+          </TouchableOpacity>
+    
+    
+    
+          {loading && (
+            <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+              <ActivityIndicator size="large" color="white" />
+            </View>
+          )}
+    
+        </View>}>
+
+    </SubScreenContainer>
+
     
     
   );

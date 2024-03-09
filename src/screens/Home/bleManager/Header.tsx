@@ -1,5 +1,9 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View,Dimensions, Image} from 'react-native';
+
+
+
+const {width, height, scale} = Dimensions.get('window');
 
 interface HeaderProps {
   isConnected: boolean;
@@ -18,16 +22,25 @@ const Header: React.FC<HeaderProps> = ({
     <View style={styles.container}>
       <TouchableOpacity
         activeOpacity={0.7}
-        style={[styles.buttonView, {opacity: disabled ? 0.7 : 1}]}
+        style={[styles.buttonView, {opacity: disabled ? 1 : 1}]}
         disabled={disabled}
         onPress={onPress}>
+
+        <Image 
+         source={ require('./assets/bluetooth.png')}
+         style={{height:40,width:40,marginHorizontal:20}} >
+
+
+        </Image>
+
         <Text style={[styles.buttonText]}>
-          {scaning ? '正在搜索中' : isConnected ? '断开蓝牙连接' : '搜索蓝牙'}
+          {scaning ? 'Searching' : isConnected ? 'Unconnect' : 'Scan'}
         </Text>
+
       </TouchableOpacity>
 
-      <Text style={{marginLeft: 10, marginTop: 10}}>
-        {isConnected ? '当前连接的设备' : '可用设备'}
+      <Text style={{marginLeft: 10, marginTop: 10,color:'white'}}>
+        {isConnected ? 'Current connect device' : 'Available devices'}
       </Text>
     </View>
   );
@@ -38,18 +51,23 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonView: {
-    backgroundColor: 'rgb(33, 150, 243)',
-    paddingHorizontal: 10,
-    marginHorizontal: 10,
+    backgroundColor: '#454545',
+    // paddingHorizontal: 10,
+    marginHorizontal:((width-220)/2) ,
     borderRadius: 5,
     marginTop: 10,
-    height: 40,
-    justifyContent: 'center',
+    height: 58,
+    width:220,
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    flexDirection:'row'
+    
+    // width:500,
   },
   buttonText: {
+    marginHorizontal:-10,
     color: 'white',
-    fontSize: 12,
+    fontSize: 30,
   },
 });
 
