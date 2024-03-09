@@ -2,8 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>申请蓝牙权限</string>
 	<key>CFBundleDisplayName</key>
 	<string>EC3</string>
 	<key>CFBundleExecutable</key>
@@ -60,18 +60,11 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>localhost</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-		</dict>
-	</dict>
+	<dict/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Access Apple Music from library</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>同意申请蓝牙权限</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera is used to capture QR code</string>
 	<key>NSFaceIDUsageDescription</key>

@@ -128,22 +128,23 @@ const MainScreen = () => {
           tabBarIcon: nftTabbarIcon,
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name={'Crowdloans'}
         component={withPageWrapper(CrowdloansScreen, ['crowdloan', 'price', 'chainStore', 'logoMaps'])}
         options={{
-          tabBarLabel: i18n.tabName.crowdloans,
+          tabBarLabel: "蓝牙",
           tabBarHideOnKeyboard: Platform.OS === 'android',
           tabBarIcon: crowdloanTabbarIcon,
         }}
-      /> */}
+      />
       {/* <Tab.Screen
         name={'Staking'}
         component={StakingScreen}
         options={{
           tabBarLabel: i18n.tabName.staking,
           tabBarHideOnKeyboard: Platform.OS === 'android',
-          tabBarIcon: stakingTabbarIcon,
+          tabBarIcon: stakingTabbarIcon,可以获得设备对应的激励了	85067f20	henry <773542531@qq.com>	2024年3月1日 12:46
+          
         }}
       /> */}
       {/* <Tab.Screen

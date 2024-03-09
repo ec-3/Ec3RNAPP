@@ -3,14 +3,17 @@ import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navig
 import NftCollectionList from 'screens/Home/NFT/Collection/NftCollectionList';
 import NftItemList from 'screens/Home/NFT/Item/NftItemList';
 import NftDetail from 'screens/Home/NFT/Detail/NftDetail';
-import { RootStackParamList } from 'routes/index';
+import { RootNavigationProps, RootStackParamList } from 'routes/index';
 import { EmptyList } from 'components/EmptyList';
 import { Image } from 'phosphor-react-native';
 import withPageWrapper from 'components/pageWrapper';
 import i18n from 'utils/i18n/i18n';
 import { downloadData, showReward, getReward, mining } from 'messaging/index';
 import { Text, View } from 'react-native-animatable';
-import { ActivityIndicator, Button, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Button, TouchableOpacity,Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { ToggleItem } from 'components/ToggleItem';
+import { SubScreenContainer } from 'components/SubScreenContainer';
 
 export type NFTStackParamList = {
   CollectionList: undefined;
@@ -21,13 +24,15 @@ export type NavigationProps = NativeStackScreenProps<NFTStackParamList & RootSta
 export type NFTNavigationProps = NavigationProps['navigation'];
 export type NFTCollectionProps = NativeStackScreenProps<NFTStackParamList, 'Collection'>;
 export type NFTDetailProps = NativeStackScreenProps<NFTStackParamList, 'NftDetail'>;
+const {width, height, scale} = Dimensions.get('window');
 
 export const renderEmptyNFT = () => {
   return <EmptyList title={i18n.emptyScreen.nftEmptyTitle} icon={Image} message={i18n.emptyScreen.nftEmptyMessage} />;
 };
 
-const NFTStackScreen = () => {
+export const  NFTStackScreen = () => {
   const NFTStack = createNativeStackNavigator<NFTStackParamList>();
+  const navigation = useNavigation<RootNavigationProps>();
 
 
   
@@ -58,17 +63,16 @@ const NFTStackScreen = () => {
 
       setLoading(false); // 隐藏等待框
     });
+
+    
     // getReward();
     // mining();
   };
 
 
-  // return (
-  //   <View style={{height: 300,backgroundColor:"white"}}>
-  //     <Text style={{textAlign:'center',fontSize:30,paddingTop:30}}>{name}</Text>
-  //   </View>
-  // );
-  
+
+
+
 
   // return (
   //   <NFTStack.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
@@ -80,21 +84,28 @@ const NFTStackScreen = () => {
 
 
   return (
-    <View style={{ height: 300, backgroundColor: "white", justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 30, color: 'red' }}>data:{name}</Text>
-      
-      <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 30, color: 'black' }}>reward:{reward}</Text>
-      <TouchableOpacity onPress={handleButtonClick} style={{ marginTop: 20, width: 200, height: 50, backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ color: 'white', fontSize: 20 }}>showReward</Text>
-      </TouchableOpacity>
 
-      {loading && (
-        <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-          <ActivityIndicator size="large" color="white" />
-        </View>
-      )}
-
+    
+    <View style={{ height: height, backgroundColor: "white", justifyContent: 'flex-start', alignItems: 'center' }}>
+    
+        <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 100, color: 'red' }}>data:{name}</Text>
+        
+        <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 30, color: 'black' }}>reward:{reward}</Text>
+  
+        <TouchableOpacity onPress={handleButtonClick} style={{ marginTop: 20, width: 200, height: 50, backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ color: 'white', fontSize: 20 }}>showReward</Text>
+        </TouchableOpacity>
+  
+  
+  
+        {loading && (
+          <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+            <ActivityIndicator size="large" color="white" />
+          </View>
+        )}
     </View>
+    
+    
   );
 };
 

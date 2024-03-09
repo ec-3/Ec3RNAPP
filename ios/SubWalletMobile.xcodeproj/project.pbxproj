@@ -534,7 +534,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SubWalletMobile/SubWalletMobile.entitlements;
 				CURRENT_PROJECT_VERSION = 209;
-				DEVELOPMENT_TEAM = ZUZ7T3GQMT;
+				DEVELOPMENT_TEAM = XY3DX473G7;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = SubWalletMobile/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = EC3;
@@ -550,7 +550,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.ec3.mobile;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiao.test;
 				PRODUCT_NAME = SubWalletMobile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -567,7 +567,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SubWalletMobile/SubWalletMobile.entitlements;
 				CURRENT_PROJECT_VERSION = 209;
-				DEVELOPMENT_TEAM = ZUZ7T3GQMT;
+				DEVELOPMENT_TEAM = XY3DX473G7;
 				INFOPLIST_FILE = SubWalletMobile/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = EC3;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
@@ -582,7 +582,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.ec3.mobile;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiao.tes;
 				PRODUCT_NAME = SubWalletMobile;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
