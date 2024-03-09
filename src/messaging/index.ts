@@ -1210,7 +1210,9 @@ export const showReward = async () => {
       reward = err;
     }
   });
-  return reward;
+
+  return web3.utils.fromWei(reward, "ether");
+  // return reward;
 };
 
 
