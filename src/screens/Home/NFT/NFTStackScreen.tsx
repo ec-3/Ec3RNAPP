@@ -59,9 +59,12 @@ export const  NFTStackScreen = () => {
     setName((myString.substring(0,myString.length)))
     setDevID("2ied383udldndabfiu")
     setInitTime("06/05/2024")
-    setTodayData((myString.substring(0,myString.length)))
-    setWeeklyData((myString.substring(0,myString.length)))
-    setCumulativeData((myString.substring(0,myString.length)))
+    // setTodayData((myString.substring(0,myString.length)))
+    // setWeeklyData((myString.substring(0,myString.length)))
+    // setCumulativeData((myString.substring(0,myString.length)))
+    setTodayData("1.03 kwh")
+    setWeeklyData("4.54 kwh")
+    setCumulativeData("24.90 kwh")
     // setLoading(false); // 隐藏等待框
     showReward().then(reward => {
       setReward(reward)
@@ -164,8 +167,8 @@ export const  NFTStackScreen = () => {
         <View style={{ marginLeft: 20, flex: 1 }}>
         </View>
         <View style={{ marginRight: 20,  justifyContent: 'center', alignItems: 'center' }}>
-          <TouchableOpacity onPress={handleButtonClick} style={{ marginTop: 20, backgroundColor: '#242424', borderRadius: 15, paddingHorizontal: 10, paddingVertical: 5, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: 'white', fontSize: 16 }}>getReward</Text>
+          <TouchableOpacity onPress={handleButtonClick} style={{ marginTop: 20, backgroundColor: '#454545', borderRadius: 5, paddingHorizontal: 10, paddingVertical: 5, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: 'white', fontSize: 20 }}>Get Rewards</Text>
           </TouchableOpacity>
 
         </View>
