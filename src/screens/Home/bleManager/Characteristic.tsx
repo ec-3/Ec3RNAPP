@@ -83,11 +83,14 @@ const styles = StyleSheet.create({
   content: {
     marginTop: 5,
     marginBottom: 15,
+    backgroundColor: 'white',
+    color: 'black',
   },
   textInput: {
     paddingLeft: 5,
     paddingRight: 5,
     backgroundColor: 'white',
+    color: 'black',
     height: 50,
     fontSize: 16,
     flex: 1,

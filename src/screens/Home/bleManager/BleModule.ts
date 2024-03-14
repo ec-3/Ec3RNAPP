@@ -1,9 +1,31 @@
-import {Platform, NativeModules, NativeEventEmitter} from 'react-native';
+import { PermissionsAndroid,Platform, NativeModules, NativeEventEmitter} from 'react-native';
 import BleManager, {Peripheral, PeripheralInfo} from 'react-native-ble-manager';
 import {BleEventType, BleState} from './type';
 import {byteToString} from './utils';
 
 const bleManagerEmitter = new NativeEventEmitter(NativeModules.BleManager);
+
+async function requestBluetoothPermission() {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: '蓝牙权限请求',
+        message: '应用需要访问您的位置信息以扫描蓝牙设备。',
+        buttonNeutral: '稍后询问',
+        buttonNegative: '取消',
+        buttonPositive: '确认',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('蓝牙权限已获得');
+    } else {
+      console.log('用户拒绝了蓝牙权限');
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+}
 
 export default class BleModule {
   /** 配对的蓝牙id */
@@ -50,6 +72,12 @@ export default class BleModule {
   start() {
     BleManager.start({showAlert: false})
       .then(() => {
+        
+        console.log('**** Platform.OS== ', Platform.OS);
+        if (Platform.OS == 'android') {
+          requestBluetoothPermission();
+        }
+    
         // 初始化成功后检查蓝牙状态
         this.checkState();
         console.log('Init the module success');

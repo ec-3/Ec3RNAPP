@@ -25,7 +25,7 @@
       android:layout_alignParentEnd="true"
       android:layout_marginStart="0dp"
       android:layout_marginEnd="0dp"
-      android:layout_marginTop="30dp"
+      android:layout_marginTop="0dp"
       android:gravity="center"
       android:orientation="vertical">
 
@@ -39,25 +39,27 @@
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:gravity="center_horizontal"
-        android:textSize="30sp"
-        android:layout_marginTop="40dp"
+        android:textSize="32sp"
+        android:layout_marginTop="60dp"
         android:text="WELCOME to Ec³"
         android:textAlignment="center"
         android:textColor="#FFFFFF" />
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="260dp"
-        android:layout_height="260dp"
+        android:layout_width="220dp"
+        android:layout_height="200dp"
         android:layout_below="@id/title"
+        android:layout_marginTop="54dp"
         android:scaleType="fitCenter"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/logo" />
+        android:src="@drawable/icon_product" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:scaleType="centerInside"
         android:padding="85dp"
         android:layout_alignTop="@id/logo"
@@ -71,6 +73,7 @@
         android:id="@+id/slogan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_below="@id/logo"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
@@ -84,10 +87,35 @@
 
   </RelativeLayout>
 
+  <ImageView
+      android:id="@+id/bottom_rect"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:scaleType="fitEnd"
+      android:layout_centerHorizontal="true"
+      android:src="@drawable/rect_bottom" />
+
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentEnd="true"
+      android:layout_marginStart="0dp"
+      android:layout_marginEnd="0dp"
+      android:layout_marginBottom="200dp"
+      android:gravity="center_horizontal"
+      android:textSize="24dp"
+      android:text="Get Started"
+      android:textAlignment="center"
+      android:textColor="#FFFFFF" />
+
   <TextView
       android:id="@+id/second"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:visibility="gone"
       android:layout_above="@+id/third"
       android:layout_alignParentStart="true"
       android:layout_alignParentEnd="true"
@@ -103,6 +131,7 @@
       android:id="@+id/third"
       android:layout_width="412dp"
       android:layout_height="wrap_content"
+      android:visibility="gone"
       android:layout_alignParentStart="true"
       android:layout_alignParentEnd="true"
       android:layout_alignParentBottom="true"

@@ -78,65 +78,23 @@ export const  NFTStackScreen = () => {
   
   const handleButtonClick = () => {
     setLoading(true); // 显示等待框
-    showReward().then(reward => {
-      setReward(reward)
+    // showReward().then(reward => {
+    //   setReward(reward)
+
+    //   setLoading(false); // 隐藏等待框
+    // });
+
+    
+    getReward().then(reward => {
+      // setReward(reward)
 
       setLoading(false); // 隐藏等待框
     });
-
-    
-    // getReward();
     // mining();
   };
 
 
   return (
-
-    
-    // <View style={{ height: height, backgroundColor: "black", justifyContent: 'flex-start', alignItems: 'center' }}>
-    
-    //   <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 60, color: 'white' }}>Action Log</Text>
-
-    //     <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 100, color: 'red' }}>data:{name}</Text>
-        
-    //     <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 30, color: 'black' }}>reward:{reward}</Text>
-  
-    //     <TouchableOpacity onPress={handleButtonClick} style={{ marginTop: 20, width: 200, height: 50, backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center' }}>
-    //       <Text style={{ color: 'white', fontSize: 20 }}>showReward</Text>
-    //     </TouchableOpacity>
-  
-  
-  
-    //     {loading && (
-    //       <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-    //         <ActivityIndicator size="large" color="white" />
-    //       </View>
-    //     )}
-    // </View>
-    
-    // <View style={{ height: height, backgroundColor: "black", justifyContent: 'flex-start', alignItems: 'center' }}>
-    // <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 60, color: 'white' }}>Action Log</Text>
-
-    // <View style={{ height: height, backgroundColor: 'black', flexDirection: 'row', justifyContent: 'flex-start' }}>
-    //   <View style={{ marginLeft: 0 }}>
-    //     <Text style={{ textAlign: 'center', fontSize: 15, paddingTop: 30, color: 'white' }}>data:{name}</Text>
-    //     <Text style={{ textAlign: 'center', fontSize: 15, paddingTop: 30, color: 'white' }}>reward:{reward}</Text>
-    //   </View>
-    //   <View style={{ marginLeft: 20 }}>
-    //     <Image source={require('assets/fail-status.png')} style={{ width: 100, height: 100 }} />
-    //     <TouchableOpacity onPress={handleButtonClick} style={{ marginTop: 20, width: 200, height: 50, backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center' }}>
-    //       <Text style={{ color: 'white', fontSize: 20 }}>showReward</Text>
-    //     </TouchableOpacity>
-    //   </View>
-
-    //   {loading && (
-    //     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-    //       <ActivityIndicator size="large" color="white" />
-    //     </View>
-    //   )}
-    // </View>
-    // </View> 
-
 
 
     <View style={{ height: height, backgroundColor: theme.colorBgSecondary, justifyContent: 'flex-start', alignItems: 'center' }}>

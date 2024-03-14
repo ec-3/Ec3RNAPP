@@ -59,7 +59,7 @@ const logoSubTextStyle: StyleProp<any> = {
   lineHeight: 24,
   ...FontMedium,
   color: 'rgba(255, 255, 255, 0.65)',
-  paddingTop: 12,
+  paddingTop: 32,
 };
 
 const firstScreenNotificationStyle: StyleProp<any> = {
@@ -146,14 +146,14 @@ export const FirstScreen = () => {
               flex: 1,
               justifyContent: 'center',
               marginBottom: 16,
-              paddingTop: 40,
+              paddingTop: 20,
               alignItems: 'center',
             }}>
             <Suspense>
-              <SVGImages.LogoGradient width={300} height={307} />
+              <SVGImages.LogoGradient width={220} height={220} />
             </Suspense>
-              <Text style={logoTextStyle}>Ec³</Text>
-            <Text style={logoSubTextStyle}>{i18n.title.slogan}</Text>
+              {/* <Text style={logoTextStyle}>Ec³</Text> */}
+              <Text style={logoSubTextStyle}>{i18n.title.slogan}</Text>
           </View>
 
           <View style={{ width: '100%' }}>
