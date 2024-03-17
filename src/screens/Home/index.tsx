@@ -41,25 +41,25 @@ interface tabbarIconColor {
   color: string;
 }
 const tokenTabbarIcon = ({ color }: tabbarIconColor) => {
-  // return <Wallet size={24} color={color} weight={'fill'} />;
-  return  <Image 
-  source={ require('./assets/CurrencyDollarSimple.png')}
-  style={{height:60,width:60,resizeMode:'center'}} >
-</Image>;
+  return <Wallet size={24} color={color} weight={'fill'} />;
+//   return  <Image 
+//   source={ require('./assets/CurrencyDollarSimple.png')}
+//   style={{height:60,width:60,resizeMode:'center'}} >
+// </Image>;
 };
 const nftTabbarIcon = ({ color }: tabbarIconColor) => {
-  // return <Aperture size={24} color={color} weight={'fill'} />;
-  return  <Image 
-    source={ require('./assets/secondTabImg.png')}
-    style={{height:60,width:60,resizeMode:'center'}} >
-  </Image>;
+  return <Aperture size={24} color={color} weight={'fill'} />;
+  // return  <Image 
+  //   source={ require('./assets/secondTabImg.png')}
+  //   style={{height:60,width:60,resizeMode:'center'}} >
+  // </Image>;
 };
 const crowdloanTabbarIcon = ({ color }: tabbarIconColor) => {
-  // return <Rocket size={24} color={color} weight={'fill'} />;
-  return  <Image 
-    source={ require('./assets/mdi_access-point-network.png')}
-    style={{height:60,width:60,resizeMode:'center'}} >
-  </Image>;
+  return <Rocket size={24} color={color} weight={'fill'} />;
+  // return  <Image 
+  //   source={ require('./assets/mdi_access-point-network.png')}
+  //   style={{height:60,width:60,resizeMode:'center'}} >
+  // </Image>;
 };
 const stakingTabbarIcon = ({ color }: tabbarIconColor) => {
   return <Database size={24} color={color} weight={'fill'} />;
@@ -102,8 +102,8 @@ const MainScreen = () => {
         tabBarButton: tabbarButtonStyle,
         tabBarIconStyle: {
           // marginTop: 10,
-          height:80,
-          width:80,
+          height:100,
+          width:100,
           // backgroundColor:'yellow',
           // marginBottom: 10,
 
@@ -137,6 +137,7 @@ const MainScreen = () => {
           tabBarIcon: tokenTabbarIcon,
         }}
       />
+      
        <Tab.Screen
         name={'NFTs'}
         component={NFTStackScreen}

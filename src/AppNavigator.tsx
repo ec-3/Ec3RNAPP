@@ -225,6 +225,8 @@ const AppNavigator = ({ isAppReady }: Props) => {
           }}
           screenListeners={{
             focus: e => {
+              console.log("ddddssdsdss")
+
               if (Platform.OS === 'android') {
                 if (e.target?.split('-')[0] === 'Home') {
                   changeNavigationBarColor(appTheme.colorBgSecondary);

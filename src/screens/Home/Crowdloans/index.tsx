@@ -25,7 +25,7 @@ import {
   Peripheral,
 } from 'react-native-ble-manager';
 
-import { RocketLaunch } from 'phosphor-react-native';
+import { RocketLaunch, TextAlignCenter } from 'phosphor-react-native';
 import useGetCrowdloanList from 'hooks/screen/Home/Crowdloans/useGetCrowdloanList';
 import { FlatListScreen } from 'components/FlatListScreen';
 import { EmptyList } from 'components/EmptyList';
@@ -34,6 +34,8 @@ import { setAdjustPan } from 'rn-android-keyboard-adjust';
 import { useIsFocused } from '@react-navigation/native';
 import { CrowdloanItemType } from 'types/index';
 import { color } from 'react-native-reanimated';
+import { TextInput } from 'react-native-gesture-handler';
+import { text } from '@fortawesome/fontawesome-svg-core';
 
 
 
@@ -103,6 +105,9 @@ export const CrowdloansScreen = () => {
   const [readData, setReadData] = useState('');
   // 输入的内容
   const [inputText, setInputText] = useState('');
+
+  const [inputTextPassWord, setInputTextPassWord] = useState('');
+
   // 扫描的蓝牙列表
   const [data, setData] = useState<Peripheral[]>([]);
 
@@ -345,6 +350,11 @@ export const CrowdloansScreen = () => {
   function renderItem(item: ListRenderItemInfo<Peripheral>) {
     const data = item.item;
     const disabled = !!connectingId && connectingId !== data.id;
+
+    console.log("----------------1---------------")
+
+    console.log(data)
+    console.log("----------------2---------------")
     return (
       <TouchableOpacity
         activeOpacity={1.0}
@@ -354,9 +364,9 @@ export const CrowdloansScreen = () => {
         }}
         style={[styles.item, {opacity: disabled ? 1 : 1}]}>
         <View style={{flexDirection: 'row'}}>
-          <Text style={{color: 'white'}}>{data.name ? data.name : ''}</Text>
+          <Text style={{color: 'white'}}>{data.name ? data.name : 'Unnamed device'}</Text>
           <Text style={{marginLeft: 50, color: 'white'}}>
-            {connectingId === data.id ? '连接中...' : ''}
+            {connectingId === data.id ? 'Connecting...' : ''}
           </Text>
         </View>
         <Text style={{color:'white'}}>{data.id}</Text>
@@ -376,7 +386,63 @@ export const CrowdloansScreen = () => {
           borderStyle: 'solid',
           borderTopWidth: StyleSheet.hairlineWidth * 2,
         }}>
-        <Characteristic
+
+        <TextInput 
+          style={{
+           paddingLeft: 10,
+           paddingRight: 10,
+           backgroundColor: theme.colorBorder,
+           height: 50,
+           width: width,
+           fontSize: 16,
+           color:'white',
+           flex: 1,}} placeholder="Enter wifi name"  placeholderTextColor = 'white'
+           onChangeText={ text => {
+             setInputText(text)
+           }}>
+        </TextInput>
+
+        <TextInput 
+          style={{
+           paddingLeft: 10,
+           paddingRight: 10,
+           backgroundColor: theme.colorBorder,
+           height: 50,
+           marginTop:20,
+           width: width,
+           fontSize: 16, 
+           color:'white',
+           flex: 1,}} placeholder="Enter wifi password" placeholderTextColor = 'white'
+           
+           onChangeText={ text => {
+             setInputTextPassWord(text)
+           }}>
+        </TextInput>
+
+      
+        <TouchableOpacity style={{
+          height:50,
+          marginTop:10,
+          // width:width,
+          backgroundColor: theme.colorBorder,
+          marginLeft:50,
+          marginRight:50,
+          // alignSelf:"center"
+        }}
+        activeOpacity={1.0}
+        onPress={() => {  //这里的格式要看下
+          {write('write')}
+        }}>
+       <Text style={{marginTop:13,fontSize:20, color: 'white',textAlign:'center'}}>
+        发送
+       </Text>
+
+      </TouchableOpacity>
+
+
+
+
+        {/* <Characteristic
           label="写数据（write）："
           action="发送"
           content={writeData}
@@ -410,7 +476,7 @@ export const CrowdloansScreen = () => {
           content={receiveData}
           characteristics={bleModule.nofityCharacteristicUUID}
           onPress={notify}
-        />
+        /> */}
       </ScrollView>
     );
   }

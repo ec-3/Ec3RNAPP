@@ -28,9 +28,7 @@ const Header: React.FC<HeaderProps> = ({
 
         <Image 
          source={ require('./assets/bluetooth.png')}
-         style={{height:40,width:40,marginHorizontal:20}} >
-
-
+         style={{height:30,width:30,marginHorizontal:20}} >
         </Image>
 
         <Text style={[styles.buttonText]}>

@@ -30,6 +30,7 @@ export const TransactionDone = ({
   }, [chain, id, navigation]);
 
   const goHome = useCallback(() => {
+    console.log("焦祁隆")
     if (path === 'Staking') {
       return navigation.reset({
         index: 0,
