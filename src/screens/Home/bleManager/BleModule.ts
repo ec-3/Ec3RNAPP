@@ -261,8 +261,31 @@ export default class BleModule {
   }
 
   /** 打开通知 */
+  startEc3Notification(serviceUUID: any, notifyCharacteristicUUID: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      console.log(' startNotification peripheralId', this.peripheralId);
+      console.log(' startNotification nofityServiceUUID', serviceUUID);
+      console.log(' startNotification nofityCharacteristicUUID', notifyCharacteristicUUID);
+      BleManager.startNotification(
+        this.peripheralId, serviceUUID, notifyCharacteristicUUID,
+      )
+        .then(() => {
+          console.log('Notification started');
+          resolve();
+        })
+        .catch(error => {
+          console.log('Start notification fail', error);
+          reject(error);
+        });
+    });
+  }
+
+  /** 打开通知 */
   startNotification(index = 0): Promise<void> {
     return new Promise((resolve, reject) => {
+      console.log(' startNotification peripheralId', this.peripheralId);
+      console.log(' startNotification nofityServiceUUID', this.nofityServiceUUID[index]);
+      console.log(' startNotification nofityCharacteristicUUID', this.nofityCharacteristicUUID[index]);
       BleManager.startNotification(
         this.peripheralId,
         this.nofityServiceUUID[index],
@@ -299,6 +322,24 @@ export default class BleModule {
   }
 
   /** 写数据到蓝牙 */
+  writeEc3Data(data: any, serviceUUID: any, writeCharacteristicUUID: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      BleManager.write(
+        this.peripheralId, serviceUUID, writeCharacteristicUUID,
+        data,
+      )
+        .then(() => {
+          console.log('Write success', data.toString());
+          resolve();
+        })
+        .catch(error => {
+          console.log('Write failed', data);
+          reject(error);
+        });
+    });
+  }
+
+  /** 写数据到蓝牙 */
   write(data: any, index = 0): Promise<void> {
     return new Promise((resolve, reject) => {
       BleManager.write(
@@ -318,14 +359,66 @@ export default class BleModule {
     });
   }
 
+  stringToByteArray(hexString: string): number[] {
+    const result = [];
+    for (let i = 0; i < hexString.length; i += 2) {
+      const byte = parseInt(hexString.substring(i, i + 2), 16);
+      result.push(byte);
+    }
+    return result;
+  }
+
+  stringToAsciiByteArray(inputString: string): number[] {
+    const result = [];
+    for (let i = 0; i < inputString.length; i++) {
+      const charCode = inputString.charCodeAt(i);
+      result.push(charCode);
+    }
+    return result;
+  }
+  // LOG  Write writeWithoutResponse peripheralId 7C:B9:4C:D6:49:E4
+  // LOG  Write writeWithoutResponse writeWithoutResponseServiceUUID 55E405D2-AF9F-A98F-E54A-7DFE43535355
+  // LOG  Write writeWithoutResponse writeWithoutResponseCharacteristicUUID 16962447-C623-61BA-D94B-4D1E43535349
+  /** 写数据到蓝牙，没有响应 */
+  writeEc3DataWithoutResponse(data: any, serviceUUID: any, writeCharacteristicUUID: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      console.log('Write writeWithoutResponse', data);
+      console.log('Write writeWithoutResponse peripheralId', this.peripheralId);
+      console.log('Write writeWithoutResponse writeWithoutResponseServiceUUID', serviceUUID);
+      console.log('Write writeWithoutResponse writeWithoutResponseCharacteristicUUID', writeCharacteristicUUID);
+
+      const data2 = [0x01, 0x02, 0x03, 0x04, 0x05];
+      BleManager.writeWithoutResponse(
+        this.peripheralId, serviceUUID, writeCharacteristicUUID,
+        // data,
+        this.stringToAsciiByteArray(data),
+      )
+        .then(() => {
+          console.log('Write success', data);
+          resolve();
+        })
+        .catch(error => {
+          console.log('Write failed', data);
+          reject(error);
+        });
+    });
+  }
+
   /** 写数据到蓝牙，没有响应 */
   writeWithoutResponse(data: any, index = 0): Promise<void> {
     return new Promise((resolve, reject) => {
+      console.log('Write writeWithoutResponse', data);
+      console.log('Write writeWithoutResponse peripheralId', this.peripheralId);
+      console.log('Write writeWithoutResponse writeWithoutResponseServiceUUID', this.writeWithoutResponseServiceUUID[index]);
+      console.log('Write writeWithoutResponse writeWithoutResponseCharacteristicUUID', this.writeWithoutResponseCharacteristicUUID[index]);
+
+      const data2 = [0x01, 0x02, 0x03, 0x04, 0x05];
       BleManager.writeWithoutResponse(
         this.peripheralId,
         this.writeWithoutResponseServiceUUID[index],
         this.writeWithoutResponseCharacteristicUUID[index],
-        data,
+        // data,
+        this.stringToAsciiByteArray(data),
       )
         .then(() => {
           console.log('Write success', data);

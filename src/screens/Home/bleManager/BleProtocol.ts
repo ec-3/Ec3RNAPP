@@ -31,10 +31,16 @@ export default class BleProtocol {
     this.receiveData = [];
   }
 
-  /** 解析蓝牙返回的数据 */
+  // LOG  BluetoothUpdateValue: [1, 1, 9, 5, 1, 2, 3, 4, 5, 225]
+
+  /** 解析蓝牙返回的数据 receive */
   parseData(data: string) {
+    console.log('BluetoothUpdateValue data:', data);
+    console.log('BluetoothUpdateValue this.receiveData:', this.receiveData);
+    console.log('Type of this.receiveData:', typeof this.receiveData);
     // 某些蓝牙设备ios接收到的是小写的16进制，android接收的是大写的16进制，这里统一转化为大写的16进制
     this.receiveData.push(data.toUpperCase());
+
 
     // 将数组转换为字符串解析
     let packet = this.receiveData.join('');

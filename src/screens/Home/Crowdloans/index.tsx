@@ -66,6 +66,10 @@ enum FilterValue {
   FAIL = 'failed',
 }
 
+const SERVICE_UUID = '55E405D2-AF9F-A98F-E54A-7DFE43535355';
+const WRITE_CHARACTERISTIC_UUID = '16962447-C623-61BA-D94B-4D1E43535349';
+const NOTIFY_CHARACTERISTIC_UUID = 'B39B7234-BEEC-D4A8-F443-418843535349';
+
 export const CrowdloansScreen = () => {
   const theme = useSubWalletTheme().swThemes;
 
@@ -87,7 +91,6 @@ export const CrowdloansScreen = () => {
     return result;
   }, [items]);
 
-  
   
   // 蓝牙是否连接
   const [isConnected, setIsConnected] = useState(false);
@@ -162,15 +165,34 @@ export const CrowdloansScreen = () => {
 
     /** 接收到新数据 */
     function handleUpdateValue(data: any) {
+      console.log('BluetoothUpdateValue data:', data);
       let value = data.value as string;
-      console.log('BluetoothUpdateValue:', value);
+      console.log('BluetoothUpdateValue value:', value);
   
       bleReceiveData.current.push(value);
-      setReceiveData(bleReceiveData.current.join(''));
+      setReceiveData(bleReceiveData.current.join(' -- '));
   
-      bleProtocol.parseData(value);
+      const result = convertDataToString(data.value);
+      bleReceiveData.current.push(result);
+      console.log('BluetoothUpdateValue *****result:', result); // 输出: 
+      setReceiveData(bleReceiveData.current.join(' -- '));
+
+      // bleProtocol.parseData(value);
     }
 
+  // LOG  BluetoothUpdateValue: [1, 1, 9, 5, 1, 2, 3, 4, 5, 225]
+    function convertDataToString(data: number[]): string {
+      console.log('convertDataToString data:', data);
+      let resultString = '';
+      for (let i = 4; i < data.length-1; i++) {
+          resultString += String.fromCharCode(data[i]);
+          console.log('convertDataToString *****data[i]:', data[i]);
+          console.log('convertDataToString *****i:', i);
+          console.log('convertDataToString *****result:', resultString);
+      }
+      return resultString;
+    }
+  
   /** 蓝牙设备已连接 */
   function handleConnectPeripheral(data: Peripheral) {
     console.log('BleManagerConnectPeripheral:', data);
@@ -300,6 +322,19 @@ export const CrowdloansScreen = () => {
   }
 
 
+  function notifyEc3() {
+    bleModule
+      .startEc3Notification(SERVICE_UUID, NOTIFY_CHARACTERISTIC_UUID)
+      .then(() => {
+        setIsMonitoring(true);
+        alert('开启成功');
+      })
+      .catch(err => {
+        setIsMonitoring(false);
+        alert('开启失败');
+      });
+  }
+
   function notify(index: number) {
     bleModule
       .startNotification(index)
@@ -325,22 +360,54 @@ export const CrowdloansScreen = () => {
   }
 
   function write(writeType: 'write' | 'writeWithoutResponse') {
+    console.log("write---------------", writeType)
+    console.log("write--------------inputText-", inputText)
     return (index: number) => {
+      console.log("write--------------inputText.length-", inputText.length)
       if (inputText.length === 0) {
         alert('请输入消息内容');
         return;
       }
 
-      bleModule[writeType](inputText, index)
+      console.log("write--------------index-", index)
+      bleModule[writeType](inputText+inputTextPassWord, index)
         .then(() => {
           bleReceiveData.current = [];
-          setWriteData(inputText);
+          console.log("write inputText==","connectwifi"+inputText+inputTextPassWord)
+          setWriteData("connectwifi"+inputText+inputTextPassWord);
           setInputText('');
+          setInputTextPassWord('');
         })
         .catch(err => {
           alert('发送失败');
         });
     };
+  }
+
+  function writeEc3Data() {
+    console.log("write--------------inputText-", inputText)
+    console.log("write--------------inputText.length-", inputText.length)
+    if (inputText.length === 0) {
+      alert('请输入WiFi名称');
+      return;
+    }
+    if (inputTextPassWord.length === 0) {
+      alert('请输入WiFi密码');
+      return;
+    }
+
+    let data = "connectwifi "+inputText+" "+inputTextPassWord;
+    bleModule['writeEc3DataWithoutResponse'](data, SERVICE_UUID, WRITE_CHARACTERISTIC_UUID)
+      .then(() => {
+        bleReceiveData.current = [];
+        console.log("write inputText==",data)
+        setWriteData(data);
+        setInputText('');
+        setInputTextPassWord('');
+      })
+      .catch(err => {
+        alert('发送失败');
+      });
   }
 
   function alert(text: string) {
@@ -430,19 +497,42 @@ export const CrowdloansScreen = () => {
           // alignSelf:"center"
         }}
         activeOpacity={1.0}
-        onPress={() => {  //这里的格式要看下
-          {write('write')}
+        onPress={() => {
+          {writeEc3Data()}
         }}>
        <Text style={{marginTop:13,fontSize:20, color: 'white',textAlign:'center'}}>
         发送
        </Text>
+       </TouchableOpacity>
 
-      </TouchableOpacity>
+       <Text style={{
+          marginTop: 5,
+          marginBottom: 15,
+          backgroundColor: 'black',
+          color: 'white',
+       }}>{receiveData}</Text>
+
+       <TouchableOpacity style={{
+          height:50,
+          marginTop:10,
+          // width:width,
+          backgroundColor: theme.colorBorder,
+          marginLeft:50,
+          marginRight:50,
+          // alignSelf:"center"
+        }}
+        activeOpacity={1.0}
+        onPress={() => {
+          {notifyEc3()}
+        }}>
+       <Text style={{marginTop:13,fontSize:20, color: 'white',textAlign:'center'}}>
+        启动接收数据
+       </Text>
+       </TouchableOpacity>
 
 
 
-
-        {/* <Characteristic
+       <Characteristic
           label="写数据（write）："
           action="发送"
           content={writeData}
@@ -476,7 +566,7 @@ export const CrowdloansScreen = () => {
           content={receiveData}
           characteristics={bleModule.nofityCharacteristicUUID}
           onPress={notify}
-        /> */}
+        /> 
       </ScrollView>
     );
   }
