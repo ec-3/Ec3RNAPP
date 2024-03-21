@@ -8,8 +8,10 @@ import { ListRenderItemInfo, View ,Dimensions,  Alert,
   Text,
   TouchableOpacity,
   ScrollView,
+  ImageBackground,
 } from 'react-native';
 import { CrowdloanItem } from 'screens/Home/Crowdloans/CrowdloanItem';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import BleModule from '../bleManager/BleModule';
 
@@ -446,128 +448,180 @@ export const CrowdloansScreen = () => {
       return;
     }
     return (
-      <ScrollView
-        style={{
-          marginTop: 10,
-          borderColor: 'leeow',
-          borderStyle: 'solid',
-          borderTopWidth: StyleSheet.hairlineWidth * 2,
-        }}>
+      <KeyboardAwareScrollView extraScrollHeight={20} enableAutomaticScroll={true} enableOnAndroid={true}>
 
-        <TextInput 
+        <ScrollView
           style={{
-           paddingLeft: 10,
-           paddingRight: 10,
-           backgroundColor: theme.colorBorder,
-           height: 50,
-           width: width,
-           fontSize: 16,
-           color:'white',
-           flex: 1,}} placeholder="Enter wifi name"  placeholderTextColor = 'white'
-           onChangeText={ text => {
-             setInputText(text)
-           }}>
-        </TextInput>
+            marginTop: 10,
+            borderColor: 'leeow',
+            borderStyle: 'solid',
+            borderTopWidth: StyleSheet.hairlineWidth * 2,
+            flex:1,
+          }}>
 
-        <TextInput 
-          style={{
-           paddingLeft: 10,
-           paddingRight: 10,
-           backgroundColor: theme.colorBorder,
-           height: 50,
-           marginTop:20,
-           width: width,
-           fontSize: 16, 
-           color:'white',
-           flex: 1,}} placeholder="Enter wifi password" placeholderTextColor = 'white'
-           
-           onChangeText={ text => {
-             setInputTextPassWord(text)
-           }}>
-        </TextInput>
 
-      
+
+          <Text style={{marginTop:13,fontSize:22, color: 'white',textAlign:'center',fontWeight:'bold'}}>
+            Connect to WiFi
+          </Text>
+
+          <Text style={{marginTop:13,marginLeft:50,marginRight:50,fontSize:18, color: 'gray',textAlign:'center'}}>
+            Pleace ensure your phone and the Ec cube are on the ssame network
+          </Text>
+
+          <ImageBackground
+            source={require('./assets/beijingBlu.png')}
+            style={{height:240,width:240,alignSelf:'center',marginTop:20}}> 
+          </ImageBackground>
+              
+          <View style ={{height:60,width:300,alignSelf:'center',marginTop:30,backgroundColor:theme.colorBorder,borderRadius:10,flexDirection: 'row',flex:1}}>
+              <ImageBackground
+                source={require('./assets/namepass.png')}
+                style={{height:40,width:40,marginLeft:20,marginTop:10}}
+                resizeMode='contain'
+                > 
+              </ImageBackground>
+
+              <TextInput
+                  style={{
+                    paddingLeft: 10,
+                    paddingRight: 10,
+                    // backgroundColor: 'red',
+                    height: 60,
+                    width: 230,
+                    fontSize: 19,
+                    color: theme.colorBgTextActive,
+                    marginLeft: 10,
+                  }}
+                  placeholder="Enter wifi name"
+                  placeholderTextColor='white'
+                  onChangeText={(text: any) => {
+                    setInputText(text)
+                  }}>
+                </TextInput>
+            </View>
+
+
+            <View style ={{height:60,width:300,alignSelf:'center',marginTop:10,backgroundColor:theme.colorBorder,borderRadius:10,flexDirection: 'row',flex:1}}>
+              
+              <ImageBackground
+                source={require('./assets/wiftpassword.png')}
+                style={{height:40,width:40,marginLeft:20,marginTop:10}}
+                resizeMode='contain'
+                > 
+              </ImageBackground>
+
+              <TextInput 
+                style={{
+                paddingLeft: 10,
+                paddingRight: 10,
+                // backgroundColor: 'red',
+                height: 60,
+                marginTop:0,
+                width: 230,
+                fontSize: 19, 
+                color:'white',
+                marginLeft:10,
+                }} placeholder="Enter wifi password" placeholderTextColor = 'white'
+                
+                onChangeText={ (text: any) => {
+                  setInputTextPassWord(text)
+                }}>
+              </TextInput>
+
+            </View>
+
+
+
+          {/* <TextInput 
+            style={{
+            paddingLeft: 10,
+            paddingRight: 10,
+            backgroundColor: theme.colorBorder,
+            height: 50,
+            width: width,
+            fontSize: 16,
+            color:'white',
+            flex: 1,}} placeholder="Enter wifi name"  placeholderTextColor = 'white'
+            onChangeText={ (text: any) => {
+              setInputText(text)
+            }}>
+          </TextInput>
+
+          <TextInput 
+            style={{
+            paddingLeft: 10,
+            paddingRight: 10,
+            backgroundColor: theme.colorBorder,
+            height: 50,
+            marginTop:20,
+            width: width,
+            fontSize: 16, 
+            color:'white',
+            flex: 1,}} placeholder="Enter wifi password" placeholderTextColor = 'white'
+            
+            onChangeText={ text => {
+              setInputTextPassWord(text)
+            }}>
+          </TextInput> */}
+
+        
+    
+
+
         <TouchableOpacity style={{
-          height:50,
-          marginTop:10,
-          // width:width,
-          backgroundColor: theme.colorBorder,
-          marginLeft:50,
-          marginRight:50,
-          // alignSelf:"center"
-        }}
-        activeOpacity={1.0}
-        onPress={() => {
-          {writeEc3Data()}
-        }}>
-       <Text style={{marginTop:13,fontSize:20, color: 'white',textAlign:'center'}}>
-        发送
-       </Text>
-       </TouchableOpacity>
-
-       <Text style={{
-          marginTop: 5,
-          marginBottom: 15,
-          backgroundColor: 'black',
-          color: 'white',
-       }}>{receiveData}</Text>
-
-       <TouchableOpacity style={{
-          height:50,
-          marginTop:10,
-          // width:width,
-          backgroundColor: theme.colorBorder,
-          marginLeft:50,
-          marginRight:50,
-          // alignSelf:"center"
-        }}
-        activeOpacity={1.0}
-        onPress={() => {
-          {notifyEc3()}
-        }}>
-       <Text style={{marginTop:13,fontSize:20, color: 'white',textAlign:'center'}}>
-        启动接收数据
-       </Text>
-       </TouchableOpacity>
+                height:50,
+                marginTop:20,
+                width:180,
+                backgroundColor: theme.colorPrimaryTextHover,
+                alignSelf:"center",
+                borderRadius:25,
+              }}
+                activeOpacity={1.0}
+                onPress={() => {  
+                  {writeEc3Data()}
+                }}>
+              <Text style={{marginTop:13,fontSize:20, color: 'white',textAlign:'center'}}>
+                Send
+              </Text>     
+          </TouchableOpacity>
 
 
 
-       <Characteristic
-          label="写数据（write）："
-          action="发送"
-          content={writeData}
-          characteristics={bleModule.writeWithResponseCharacteristicUUID}
-          onPress={write('write')}
-          input={{inputText, setInputText}}
-        />
 
-        <Characteristic
-          label="写数据（writeWithoutResponse）："
-          action="发送"
-          content={writeData}
-          characteristics={bleModule.writeWithoutResponseCharacteristicUUID}
-          onPress={write('writeWithoutResponse')}
-          input={{inputText, setInputText}}
-        />
 
-        <Characteristic
-          label="读取的数据："
-          action="读取"
-          content={readData}
-          characteristics={bleModule.readCharacteristicUUID}
-          onPress={read}
-        />
 
-        <Characteristic
-          label={`通知监听接收的数据（${
-            isMonitoring ? '监听已开启' : '监听未开启'
-          }）：`}
-          action="开启通知"
-          content={receiveData}
-          characteristics={bleModule.nofityCharacteristicUUID}
-          onPress={notify}
-        /> 
-      </ScrollView>
+        <Text style={{
+            marginTop: 5,
+            marginBottom: 15,
+            backgroundColor: 'black',
+            color: 'white',
+        }}>{receiveData}</Text>
+
+        <TouchableOpacity style={{
+            height:50,
+            marginTop:10,
+            // width:width,
+            backgroundColor: theme.colorBorder,
+            marginLeft:50,
+            marginRight:50,
+            // alignSelf:"center"
+          }}
+          activeOpacity={1.0}
+          onPress={() => {
+            {notifyEc3()}
+          }}>
+        <Text style={{marginTop:13,fontSize:20, color: 'white',textAlign:'center'}}>
+          启动接收数据
+        </Text>
+        </TouchableOpacity>
+
+
+
+
+        </ScrollView>
+      </KeyboardAwareScrollView>
+
     );
   }
 
@@ -581,7 +635,7 @@ export const CrowdloansScreen = () => {
       />
       <FlatList
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: { id: any; }) => item.id}
         data={data}
         extraData={connectingId}
       />
