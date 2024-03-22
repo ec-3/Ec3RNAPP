@@ -10,12 +10,13 @@ import withPageWrapper from 'components/pageWrapper';
 import i18n from 'utils/i18n/i18n';
 import { downloadData, showReward, getReward, mining } from 'messaging/index';
 import { Text, View } from 'react-native-animatable';
-import { ActivityIndicator, Image, Button, TouchableOpacity,Dimensions } from 'react-native';
+import { ActivityIndicator, Image, Button, TouchableOpacity,Dimensions,  Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ToggleItem } from 'components/ToggleItem';
 import { SubScreenContainer } from 'components/SubScreenContainer';
 import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
 import { dev } from '@polkadot/types/interfaces/definitions';
+import { mmkvStore } from 'utils/storage';
 
 export type NFTStackParamList = {
   CollectionList: undefined;
@@ -31,6 +32,10 @@ const {width, height, scale} = Dimensions.get('window');
 export const renderEmptyNFT = () => {
   return <EmptyList title={i18n.emptyScreen.nftEmptyTitle} icon={Image} message={i18n.emptyScreen.nftEmptyMessage} />;
 };
+
+function alert(text: string) {
+  Alert.alert('提示', text, [{text: '确定', onPress: () => {}}]);
+}
 
 export const  NFTStackScreen = () => {
   const NFTStack = createNativeStackNavigator<NFTStackParamList>();
@@ -57,7 +62,8 @@ export const  NFTStackScreen = () => {
     console.log({myString})
     console.log("****焦焦焦****")
     setName((myString.substring(0,myString.length)))
-    setDevID("2ied383udldndabfiu")
+    const resultStore = mmkvStore.getString('__ble_device_did_addr__');
+    setDevID(resultStore)
     setInitTime("06/05/2024")
     // setTodayData((myString.substring(0,myString.length)))
     // setWeeklyData((myString.substring(0,myString.length)))
@@ -87,7 +93,7 @@ export const  NFTStackScreen = () => {
     
     getReward().then(reward => {
       // setReward(reward)
-
+      alert("领取成功")
       setLoading(false); // 隐藏等待框
     });
     // mining();

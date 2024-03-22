@@ -38,6 +38,9 @@ import { CrowdloanItemType } from 'types/index';
 import { color } from 'react-native-reanimated';
 import { TextInput } from 'react-native-gesture-handler';
 import { text } from '@fortawesome/fontawesome-svg-core';
+import { mmkvStore } from 'utils/storage';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 
 
@@ -93,7 +96,6 @@ export const CrowdloansScreen = () => {
     return result;
   }, [items]);
 
-  
   // 蓝牙是否连接
   const [isConnected, setIsConnected] = useState(false);
   // 正在扫描中
@@ -125,7 +127,6 @@ export const CrowdloansScreen = () => {
   useEffect(()=>{
     bleModule.start();
   },[])
-
 
 
 
@@ -177,6 +178,7 @@ export const CrowdloansScreen = () => {
       const result = convertDataToString(data.value);
       bleReceiveData.current.push(result);
       console.log('BluetoothUpdateValue *****result:', result); // 输出: 
+      mmkvStore.set('__ble_device_did_addr__', result);
       setReceiveData(bleReceiveData.current.join(' -- '));
 
       // bleProtocol.parseData(value);
@@ -210,6 +212,7 @@ export const CrowdloansScreen = () => {
     bleModule.initUUID();
     // 断开后显示上次的扫描结果
     setData([...deviceMap.current.values()]);
+    console.log('**** initData set connected = false');
     setIsConnected(false);
     setWriteData('');
     setReadData('');
@@ -305,9 +308,12 @@ export const CrowdloansScreen = () => {
     bleModule
       .connect(item.id)
       .then(peripheralInfo => {
+        console.log('**** 11 set connected = true');
         setIsConnected(true);
         // 连接成功后，列表只显示已连接的设备
         setData([item]);
+        
+        notifyEc3();
       })
       .catch(err => {
         alert('连接失败');
@@ -329,11 +335,11 @@ export const CrowdloansScreen = () => {
       .startEc3Notification(SERVICE_UUID, NOTIFY_CHARACTERISTIC_UUID)
       .then(() => {
         setIsMonitoring(true);
-        alert('开启成功');
+        alert('广播接收开启成功');
       })
       .catch(err => {
         setIsMonitoring(false);
-        alert('开启失败');
+        alert('广播接收开启失败');
       });
   }
 
@@ -466,7 +472,7 @@ export const CrowdloansScreen = () => {
           </Text>
 
           <Text style={{marginTop:13,marginLeft:50,marginRight:50,fontSize:18, color: 'gray',textAlign:'center'}}>
-            Pleace ensure your phone and the Ec cube are on the ssame network
+            Pleace ensure your phone and the Ec cube are on the same network
           </Text>
 
           <ImageBackground
@@ -490,11 +496,12 @@ export const CrowdloansScreen = () => {
                     height: 60,
                     width: 230,
                     fontSize: 19,
-                    color: theme.colorBgTextActive,
+                    color:'white',
                     marginLeft: 10,
                   }}
                   placeholder="Enter wifi name"
-                  placeholderTextColor='white'
+                  placeholderTextColor='gray'
+                  value={inputText} 
                   onChangeText={(text: any) => {
                     setInputText(text)
                   }}>
@@ -522,10 +529,12 @@ export const CrowdloansScreen = () => {
                 fontSize: 19, 
                 color:'white',
                 marginLeft:10,
-                }} placeholder="Enter wifi password" placeholderTextColor = 'white'
-                
-                onChangeText={ (text: any) => {
-                  setInputTextPassWord(text)
+                }}
+                placeholder="Enter wifi password"
+                placeholderTextColor="gray"
+                value={inputTextPassWord} 
+                onChangeText={(text: any) => {
+                  setInputTextPassWord(text);
                 }}>
               </TextInput>
 
@@ -590,15 +599,17 @@ export const CrowdloansScreen = () => {
 
 
 
+          <Text style={{
+              marginTop: 5,
+              marginBottom: 15,
+              backgroundColor: 'transparent', 
+              color: 'white',
+              paddingLeft: 10, 
+              paddingRight: 10,
+          }}>{receiveData}</Text>
 
-        <Text style={{
-            marginTop: 5,
-            marginBottom: 15,
-            backgroundColor: 'black',
-            color: 'white',
-        }}>{receiveData}</Text>
 
-        <TouchableOpacity style={{
+        {/* <TouchableOpacity style={{
             height:50,
             marginTop:10,
             // width:width,
@@ -614,7 +625,7 @@ export const CrowdloansScreen = () => {
         <Text style={{marginTop:13,fontSize:20, color: 'white',textAlign:'center'}}>
           启动接收数据
         </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
 
 
