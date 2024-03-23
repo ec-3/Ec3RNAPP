@@ -41,3 +41,9 @@ export const DEVICE: DeviceInfo = {
   height: deviceHeight,
 };
 export const ALL_KEY = 'all';
+
+
+
+export const BLE_DEVICE_DID_ADDR_KEY = '__ble_device_did_addr__';
+export const BLE_DEVICE_INIT_TIME_KEY = '__ble_device_init_time__';
+export const DEVICE_DATA_PREFIX = '__device_data_prefix__';

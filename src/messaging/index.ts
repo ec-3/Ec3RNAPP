@@ -208,7 +208,7 @@ const createStorageKeys = (args: string | any[]) => {
   const key = u8aConcat(...keysByteArray);
   // encode the key using blake2b
   const hashed_key = blake2AsHex(key, 256);
-  console.log("hashed_key", hashed_key);
+  console.log("*****hashed_key*** ", hashed_key);
   return { hashed_key };
 };
 

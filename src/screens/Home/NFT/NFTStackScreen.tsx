@@ -17,6 +17,7 @@ import { SubScreenContainer } from 'components/SubScreenContainer';
 import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
 import { dev } from '@polkadot/types/interfaces/definitions';
 import { mmkvStore } from 'utils/storage';
+import { BLE_DEVICE_DID_ADDR_KEY, BLE_DEVICE_INIT_TIME_KEY, DEVICE_DATA_PREFIX } from 'constants/index';
 
 export type NFTStackParamList = {
   CollectionList: undefined;
@@ -61,7 +62,6 @@ export const  NFTStackScreen = () => {
     return nearestMultipleOf5;
   };
 
-  console.disableYellowBox = true;
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -69,17 +69,23 @@ export const  NFTStackScreen = () => {
         console.log("Nearest multiple of 5 seconds:", nearestMultiple);
         console.log("**************** start getdata:", Date.now());
         const myData = await downloadData();
-        myString =  myData as String;
-        console.log({myString})
+        myString =  myData as string;
+        console.log("******** myString == ", myString);
+        
+        console.log("******** key == ", DEVICE_DATA_PREFIX + `${nearestMultiple}`);
+        mmkvStore.set(DEVICE_DATA_PREFIX + `${nearestMultiple}`, myString);
+
         // 模拟从API获取的JSON数据
         const jsonData = '{"name": "John", "age": 30, "city": "New York"}';
         // 解析JSON数据
         const parsedData = JSON.parse(jsonData);
         console.log("******** json.parsedData.name == ",parsedData.name)
+
         setName((myString.substring(0,myString.length)))
-        const resultStore = mmkvStore.getString('__ble_device_did_addr__');
+        const resultStore = mmkvStore.getString(BLE_DEVICE_DID_ADDR_KEY) ?? "";
         setDevID(resultStore);
-        setInitTime("06/05/2024");
+        const initTime = mmkvStore.getString(BLE_DEVICE_INIT_TIME_KEY) ?? "06/05/2024";
+        setInitTime(initTime);
         // setCumulativeData((myString.substring(0,myString.length)))
         setTodayData("1.03 kwh");
         setWeeklyData("4.54 kwh");

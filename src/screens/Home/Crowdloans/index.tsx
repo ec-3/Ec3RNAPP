@@ -40,7 +40,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import { mmkvStore } from 'utils/storage';
 import { useFocusEffect } from '@react-navigation/native';
-
+import { BLE_DEVICE_DID_ADDR_KEY, BLE_DEVICE_INIT_TIME_KEY } from 'constants/index';
 
 
 
@@ -125,7 +125,6 @@ export const CrowdloansScreen = () => {
   /** 使用Map类型保存搜索到的蓝牙设备，确保列表不显示重复的设备 */
   const deviceMap = useRef(new Map<string, Peripheral>());
 
-  console.disableYellowBox = true;
 
   useEffect(()=>{
     if(!isConnected) {
@@ -171,7 +170,8 @@ export const CrowdloansScreen = () => {
     };
   }, []);
 
-
+    
+    let resultPin: string = ''; 
     /** 接收到新数据 */
     function handleUpdateValue(data: any) {
       console.log('BluetoothUpdateValue data:', data);
@@ -184,23 +184,72 @@ export const CrowdloansScreen = () => {
       const result = convertDataToString(data.value);
       bleReceiveData.current.push(result);
       console.log('BluetoothUpdateValue *****result:', result); // 输出: 
-      const resultStore = mmkvStore.getString('__ble_device_did_addr__');
+      
       console.log('BluetoothUpdateValue value:', value);
-      console.log('BluetoothUpdateValue resultStore:', resultStore);
-      let resultPin: string = ''+resultStore; // 初始化为一个空字符串
       console.log('BluetoothUpdateValue *****resultPin:', resultPin); 
-      console.log('BluetoothUpdateValue *****resultPin.length:', resultPin.length); 
-      if (resultPin.length == 20 || resultPin.length == 40) {
-        resultPin = resultStore + result; // 拼接结果
+      if (result.startsWith("peaqID,")) {
+        resultPin = result;
       } else {
-        resultPin = result; // 清空数据, 存本次最新的一段
+        resultPin = resultPin + result;
       }
-      console.log('BluetoothUpdateValue *****resultPin222:', resultPin); 
-      mmkvStore.set('__ble_device_did_addr__', resultPin);
+      if (resultPin.endsWith(",END")) {
+        resultPin = resultPin.replace(/,END$/, ''); // 替换掉最后的",END"
+        console.log('BluetoothUpdateValue *****resultPin222:', resultPin); 
+        mmkvStore.set(BLE_DEVICE_DID_ADDR_KEY, resultPin);
+
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // 月份从0开始，所以需要加1，并且保证两位数的格式
+        const day = String(currentDate.getDate()).padStart(2, '0'); // 保证两位数的格式
+        const formattedDate = `${day}/${month}/${year}`;
+        mmkvStore.set(BLE_DEVICE_INIT_TIME_KEY, formattedDate);
+      }
       setReceiveData(bleReceiveData.current.join(' -- '));
 
-      // bleProtocol.parseData(value);
     }
+
+    // function handleUpdateValueBAK(data: any) {
+    //   console.log('BluetoothUpdateValue data:', data);
+    //   let value = data.value as string;
+    //   console.log('BluetoothUpdateValue value:', value);
+  
+    //   bleReceiveData.current.push(value);
+    //   setReceiveData(bleReceiveData.current.join(' -- '));
+  
+    //   const result = convertDataToString(data.value);
+    //   bleReceiveData.current.push(result);
+    //   console.log('BluetoothUpdateValue *****result:', result); // 输出: 
+    //   const resultStore = mmkvStore.getString(BLE_DEVICE_DID_ADDR_KEY);
+    //   console.log('BluetoothUpdateValue value:', value);
+    //   console.log('BluetoothUpdateValue resultStore:', resultStore);
+    //   let resultPin: string = ''+resultStore; // 初始化为一个空字符串
+    //   console.log('BluetoothUpdateValue *****resultPin:', resultPin); 
+    //   console.log('BluetoothUpdateValue *****resultPin.length:', resultPin.length); 
+    //   // if (resultPin.length == 20 || resultPin.length == 40) {
+    //   //   resultPin = resultStore + result; // 拼接结果
+    //   // } else {
+    //   //   resultPin = result; // 清空数据, 存本次最新的一段
+    //   // }
+    //   if (result.startsWith("peaqID,")) {
+    //     resultPin = result;
+    //   } else {
+    //     resultPin = resultStore + result;
+    //   }
+    //   if (resultPin.endsWith(",END")) {
+    //     resultPin = resultPin.replace(/,END$/, ''); // 替换掉最后的",END"
+    //   }
+    //   console.log('BluetoothUpdateValue *****resultPin222:', resultPin); 
+    //   mmkvStore.set(BLE_DEVICE_DID_ADDR_KEY, resultPin);
+    //   setReceiveData(bleReceiveData.current.join(' -- '));
+
+      
+    //   const currentDate = new Date();
+    //   const year = currentDate.getFullYear();
+    //   const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // 月份从0开始，所以需要加1，并且保证两位数的格式
+    //   const day = String(currentDate.getDate()).padStart(2, '0'); // 保证两位数的格式
+    //   const formattedDate = `${day}/${month}/${year}`;
+    //   mmkvStore.set(BLE_DEVICE_INIT_TIME_KEY, formattedDate);
+    // }
 
   // LOG  BluetoothUpdateValue: [1, 1, 9, 5, 1, 2, 3, 4, 5, 225]
     function convertDataToString(data: number[]): string {
@@ -709,7 +758,7 @@ const styles = StyleSheet.create({
   // },
   item: {
     flexDirection: 'column',
-    borderColor: 'white',
+    borderColor: 'gray',
     borderStyle: 'solid',
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingLeft: 10,

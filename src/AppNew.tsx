@@ -139,7 +139,7 @@ export const AppNew = () => {
   useEffect(() => {
     if (buildNumber === 1) {
       // Set default value on the first time install
-      updateShowZeroBalanceState(false);
+      updateShowZeroBalanceState(true);
       const buildNumberInt = parseInt(getBuildNumber(), 10);
       dispatch(setBuildNumber(buildNumberInt));
     }
