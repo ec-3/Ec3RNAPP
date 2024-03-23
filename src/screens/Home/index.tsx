@@ -150,7 +150,8 @@ const MainScreen = () => {
       />
       <Tab.Screen
         name={'Crowdloans'}
-        component={withPageWrapper(CrowdloansScreen, ['crowdloan', 'price', 'chainStore', 'logoMaps'])}
+        component={CrowdloansScreen}
+        // component={withPageWrapper(CrowdloansScreen, ['crowdloan', 'price', 'chainStore', 'logoMaps'])}
         options={{
           tabBarLabel: "Bluetooth",
           tabBarHideOnKeyboard: Platform.OS === 'android',

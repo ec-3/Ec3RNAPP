@@ -382,7 +382,7 @@ export const CrowdloansScreen = () => {
         .then(() => {
           bleReceiveData.current = [];
           console.log("write inputText==","connectwifi"+inputText+inputTextPassWord)
-          setWriteData("connectwifi"+inputText+inputTextPassWord);
+          setWriteData("connectwifi,"+inputText+","+inputTextPassWord);
           setInputText('');
           setInputTextPassWord('');
         })
@@ -404,7 +404,7 @@ export const CrowdloansScreen = () => {
       return;
     }
 
-    let data = "connectwifi "+inputText+" "+inputTextPassWord;
+    let data = "connectwifi,"+inputText+","+inputTextPassWord;
     bleModule['writeEc3DataWithoutResponse'](data, SERVICE_UUID, WRITE_CHARACTERISTIC_UUID)
       .then(() => {
         bleReceiveData.current = [];
