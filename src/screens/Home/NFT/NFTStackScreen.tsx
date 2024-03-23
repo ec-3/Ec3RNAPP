@@ -55,32 +55,52 @@ export const  NFTStackScreen = () => {
   const [cumulativeData, setCumulativeData] = useState(String());
   const [reward, setReward] = useState(String());
 
-  downloadData()
-  .then(myData => {
-    myString =  myData as String;
-    console.log("****焦焦焦****")
-    console.log({myString})
-    console.log("****焦焦焦****")
-    setName((myString.substring(0,myString.length)))
-    const resultStore = mmkvStore.getString('__ble_device_did_addr__');
-    setDevID(resultStore)
-    setInitTime("06/05/2024")
-    // setTodayData((myString.substring(0,myString.length)))
-    // setWeeklyData((myString.substring(0,myString.length)))
-    // setCumulativeData((myString.substring(0,myString.length)))
-    setTodayData("1.03 kwh")
-    setWeeklyData("4.54 kwh")
-    setCumulativeData("24.90 kwh")
-    // setLoading(false); // 隐藏等待框
-    showReward().then(reward => {
-      setReward(reward)
+  const getNearestMultipleOf5Seconds = () => {
+    const currentTimestamp = Date.now();
+    const nearestMultipleOf5 = Math.floor(currentTimestamp / 5000) * 5000;
+    return nearestMultipleOf5;
+  };
 
-      setLoading(false); // 隐藏等待框
-    });
-  })
-  .catch(e => {
-    console.log('--- subscribeActiveCronAndSubscriptionServiceMap error:', e)
-  });
+  console.disableYellowBox = true;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const nearestMultiple = getNearestMultipleOf5Seconds();
+        console.log("Nearest multiple of 5 seconds:", nearestMultiple);
+        console.log("**************** start getdata:", Date.now());
+        const myData = await downloadData();
+        myString =  myData as String;
+        console.log({myString})
+        // 模拟从API获取的JSON数据
+        const jsonData = '{"name": "John", "age": 30, "city": "New York"}';
+        // 解析JSON数据
+        const parsedData = JSON.parse(jsonData);
+        console.log("******** json.parsedData.name == ",parsedData.name)
+        setName((myString.substring(0,myString.length)))
+        const resultStore = mmkvStore.getString('__ble_device_did_addr__');
+        setDevID(resultStore);
+        setInitTime("06/05/2024");
+        // setCumulativeData((myString.substring(0,myString.length)))
+        setTodayData("1.03 kwh");
+        setWeeklyData("4.54 kwh");
+        setCumulativeData("24.90 kwh");
+        showReward().then(reward => {
+          setReward(reward);
+          setLoading(false); // 隐藏等待框
+          console.log("**************** end getdata:", Date.now());
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData(); // 首次加载执行一次
+
+    const intervalId = setInterval(fetchData, 10*1000); // 每60秒执行一次
+
+    return () => clearInterval(intervalId); // 组件卸载时清除定时器
+  }, []); // 依赖项为空数组，确保仅在组件挂载时执行一次
+
   
   const handleButtonClick = () => {
     setLoading(true); // 显示等待框
@@ -154,6 +174,7 @@ export const  NFTStackScreen = () => {
 };
 
 export default NFTStackScreen;
+
 function createStorageKeys(arg0: { value: string; type: number; }[]): { hashed_key: any; } {
   throw new Error('Function not implemented.');
 }

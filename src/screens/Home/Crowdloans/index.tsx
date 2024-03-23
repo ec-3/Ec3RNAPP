@@ -96,6 +96,8 @@ export const CrowdloansScreen = () => {
     return result;
   }, [items]);
 
+
+  const [currConnectItemName, setCurrConnectItemName] = useState('');
   // 蓝牙是否连接
   const [isConnected, setIsConnected] = useState(false);
   // 正在扫描中
@@ -123,9 +125,12 @@ export const CrowdloansScreen = () => {
   /** 使用Map类型保存搜索到的蓝牙设备，确保列表不显示重复的设备 */
   const deviceMap = useRef(new Map<string, Peripheral>());
 
+  console.disableYellowBox = true;
 
   useEffect(()=>{
-    bleModule.start();
+    if(!isConnected) {
+      bleModule.start();
+    }
   },[])
 
 
@@ -166,6 +171,7 @@ export const CrowdloansScreen = () => {
     };
   }, []);
 
+
     /** 接收到新数据 */
     function handleUpdateValue(data: any) {
       console.log('BluetoothUpdateValue data:', data);
@@ -178,7 +184,19 @@ export const CrowdloansScreen = () => {
       const result = convertDataToString(data.value);
       bleReceiveData.current.push(result);
       console.log('BluetoothUpdateValue *****result:', result); // 输出: 
-      mmkvStore.set('__ble_device_did_addr__', result);
+      const resultStore = mmkvStore.getString('__ble_device_did_addr__');
+      console.log('BluetoothUpdateValue value:', value);
+      console.log('BluetoothUpdateValue resultStore:', resultStore);
+      let resultPin: string = ''+resultStore; // 初始化为一个空字符串
+      console.log('BluetoothUpdateValue *****resultPin:', resultPin); 
+      console.log('BluetoothUpdateValue *****resultPin.length:', resultPin.length); 
+      if (resultPin.length == 20 || resultPin.length == 40) {
+        resultPin = resultStore + result; // 拼接结果
+      } else {
+        resultPin = result; // 清空数据, 存本次最新的一段
+      }
+      console.log('BluetoothUpdateValue *****resultPin222:', resultPin); 
+      mmkvStore.set('__ble_device_did_addr__', resultPin);
       setReceiveData(bleReceiveData.current.join(' -- '));
 
       // bleProtocol.parseData(value);
@@ -188,7 +206,7 @@ export const CrowdloansScreen = () => {
     function convertDataToString(data: number[]): string {
       console.log('convertDataToString data:', data);
       let resultString = '';
-      for (let i = 4; i < data.length-1; i++) {
+      for (let i = 0; i < data.length; i++) {
           resultString += String.fromCharCode(data[i]);
           console.log('convertDataToString *****data[i]:', data[i]);
           console.log('convertDataToString *****i:', i);
@@ -293,6 +311,7 @@ export const CrowdloansScreen = () => {
   /** 连接蓝牙 */
   function connect(item: Peripheral) {
     setConnectingId(item.id);
+    console.log("item.id******",item.id);
 
     if (scaning) {
       // 当前正在扫描中，连接时关闭扫描
@@ -308,6 +327,7 @@ export const CrowdloansScreen = () => {
     bleModule
       .connect(item.id)
       .then(peripheralInfo => {
+        setCurrConnectItemName(item.name == undefined ? "" : item.name);
         console.log('**** 11 set connected = true');
         setIsConnected(true);
         // 连接成功后，列表只显示已连接的设备
@@ -335,11 +355,13 @@ export const CrowdloansScreen = () => {
       .startEc3Notification(SERVICE_UUID, NOTIFY_CHARACTERISTIC_UUID)
       .then(() => {
         setIsMonitoring(true);
-        alert('广播接收开启成功');
+        // alert('广播接收开启成功');
+        console.log('**** 广播接收开启成功');
       })
       .catch(err => {
         setIsMonitoring(false);
-        alert('广播接收开启失败');
+        // alert('广播接收开启失败');
+        console.log('**** 广播接收开启失败');
       });
   }
 
@@ -418,6 +440,19 @@ export const CrowdloansScreen = () => {
       });
   }
 
+  function readPeaqIDEc3Data() {
+    let data = "peaqID";
+    bleModule['writeEc3DataWithoutResponse'](data, SERVICE_UUID, WRITE_CHARACTERISTIC_UUID)
+      .then(() => {
+        bleReceiveData.current = [];
+        console.log("write inputText==",data)
+        setWriteData(data);
+      })
+      .catch(err => {
+        alert('发送失败');
+      });
+  }
+
   function alert(text: string) {
     Alert.alert('提示', text, [{text: '确定', onPress: () => {}}]);
   }
@@ -437,15 +472,19 @@ export const CrowdloansScreen = () => {
         onPress={() => {
           connect(data);
         }}
-        style={[styles.item, {opacity: disabled ? 1 : 1}]}>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{color: 'white'}}>{data.name ? data.name : 'Unnamed device'}</Text>
-          <Text style={{marginLeft: 50, color: 'white'}}>
+        style={[styles.item, { opacity: disabled ? 1 : 1 }]}
+      >
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'column' }}>
+            <Text style={{ color: 'white' }}>{data.name ? data.name : 'Unnamed device'}</Text>
+            <Text style={{ color: 'white' }}>{data.id}</Text>
+          </View>
+          <Text style={{ color: 'white', marginRight: 10 }}>
             {connectingId === data.id ? 'Connecting...' : ''}
           </Text>
         </View>
-        <Text style={{color:'white'}}>{data.id}</Text>
       </TouchableOpacity>
+
     );
   }
 
@@ -467,11 +506,11 @@ export const CrowdloansScreen = () => {
 
 
 
-          <Text style={{marginTop:13,fontSize:22, color: 'white',textAlign:'center',fontWeight:'bold'}}>
+          <Text style={{marginTop:13,fontSize:20, color: 'white',textAlign:'center',fontWeight:'bold'}}>
             Connect to WiFi
           </Text>
 
-          <Text style={{marginTop:13,marginLeft:50,marginRight:50,fontSize:18, color: 'gray',textAlign:'center'}}>
+          <Text style={{marginTop:13,marginLeft:50,marginRight:50,fontSize:16, color: 'gray',textAlign:'center'}}>
             Pleace ensure your phone and the Ec cube are on the same network
           </Text>
 
@@ -480,10 +519,10 @@ export const CrowdloansScreen = () => {
             style={{height:240,width:240,alignSelf:'center',marginTop:20}}> 
           </ImageBackground>
               
-          <View style ={{height:60,width:300,alignSelf:'center',marginTop:30,backgroundColor:theme.colorBorder,borderRadius:10,flexDirection: 'row',flex:1}}>
+          <View style ={{height:50,width:300,alignSelf:'center',marginTop:30,backgroundColor:theme.colorBorder,borderRadius:15,flexDirection: 'row',flex:1}}>
               <ImageBackground
                 source={require('./assets/namepass.png')}
-                style={{height:40,width:40,marginLeft:20,marginTop:10}}
+                style={{height:30,width:30,marginLeft:20,marginTop:10}}
                 resizeMode='contain'
                 > 
               </ImageBackground>
@@ -493,7 +532,7 @@ export const CrowdloansScreen = () => {
                     paddingLeft: 10,
                     paddingRight: 10,
                     // backgroundColor: 'red',
-                    height: 60,
+                    height: 50,
                     width: 230,
                     fontSize: 19,
                     color:'white',
@@ -509,11 +548,11 @@ export const CrowdloansScreen = () => {
             </View>
 
 
-            <View style ={{height:60,width:300,alignSelf:'center',marginTop:10,backgroundColor:theme.colorBorder,borderRadius:10,flexDirection: 'row',flex:1}}>
+            <View style ={{height:50,width:300,alignSelf:'center',marginTop:10,backgroundColor:theme.colorBorder,borderRadius:15,flexDirection: 'row',flex:1}}>
               
               <ImageBackground
                 source={require('./assets/wiftpassword.png')}
-                style={{height:40,width:40,marginLeft:20,marginTop:10}}
+                style={{height:30,width:30,marginLeft:20,marginTop:10}}
                 resizeMode='contain'
                 > 
               </ImageBackground>
@@ -523,7 +562,7 @@ export const CrowdloansScreen = () => {
                 paddingLeft: 10,
                 paddingRight: 10,
                 // backgroundColor: 'red',
-                height: 60,
+                height: 50,
                 marginTop:0,
                 width: 230,
                 fontSize: 19, 
@@ -582,7 +621,7 @@ export const CrowdloansScreen = () => {
                 height:50,
                 marginTop:20,
                 width:180,
-                backgroundColor: theme.colorPrimaryTextHover,
+                backgroundColor: '#62F3A5',
                 alignSelf:"center",
                 borderRadius:25,
               }}
@@ -590,7 +629,7 @@ export const CrowdloansScreen = () => {
                 onPress={() => {  
                   {writeEc3Data()}
                 }}>
-              <Text style={{marginTop:13,fontSize:20, color: 'white',textAlign:'center'}}>
+              <Text style={{marginTop:13,fontSize:20, color: 'black',textAlign:'center'}}>
                 Send
               </Text>     
           </TouchableOpacity>
@@ -620,7 +659,10 @@ export const CrowdloansScreen = () => {
           }}
           activeOpacity={1.0}
           onPress={() => {
-            {notifyEc3()}
+            {
+              // notifyEc3()
+              readPeaqIDEc3Data()
+            }
           }}>
         <Text style={{marginTop:13,fontSize:20, color: 'white',textAlign:'center'}}>
           启动接收数据
@@ -639,17 +681,21 @@ export const CrowdloansScreen = () => {
   return (
     <SafeAreaView style={{flex:1,backgroundColor:theme.colorBgContainer}}>
       <Header
+        itemName={currConnectItemName}
         isConnected={isConnected}
         scaning={scaning}
         disabled={scaning || !!connectingId}
         onPress={isConnected ? disconnect : scan}
       />
-      <FlatList
-        renderItem={renderItem}
-        keyExtractor={(item: { id: any; }) => item.id}
-        data={data}
-        extraData={connectingId}
-      />
+      {!isConnected && (
+        <FlatList
+          renderItem={renderItem}
+          keyExtractor={(item: { id: any }) => item.id}
+          data={data}
+          extraData={connectingId}
+        />
+      )}
+
       {renderFooter()}
     </SafeAreaView>
   );

@@ -1,11 +1,11 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View,Dimensions, Image} from 'react-native';
-
+import {StyleSheet, Text, TouchableOpacity, View,Dimensions, Image, Platform} from 'react-native';
 
 
 const {width, height, scale} = Dimensions.get('window');
 
 interface HeaderProps {
+  itemName: string;
   isConnected: boolean;
   scaning: boolean;
   disabled: boolean;
@@ -13,60 +13,69 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({
+  itemName,
   isConnected,
   scaning,
   disabled,
   onPress,
 }) => {
+  console.log("--------------------------itemName=--",itemName)
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        activeOpacity={0.7}
-        style={[styles.buttonView, {opacity: disabled ? 1 : 1}]}
-        disabled={disabled}
-        onPress={onPress}>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={[styles.buttonView, { opacity: disabled ? 0.5 : 1 }]}
+          disabled={disabled}
+          onPress={onPress}>
 
-        <Image 
-         source={ require('./assets/bluetooth.png')}
-         style={{height:30,width:30,marginHorizontal:20}} >
-        </Image>
+          <Image
+            source={require('./assets/bluetooth.png')}
+            style={{ height: 24, width: 24, marginRight: 8 }}>
+          </Image>
 
-        <Text style={[styles.buttonText]}>
-          {scaning ? 'Searching' : isConnected ? 'Unconnect' : 'Scan'}
-        </Text>
+          <Text style={styles.buttonText}>
+            {scaning ? 'Searching' : isConnected ? 'Unconnect' : 'Scan'}
+          </Text>
 
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
 
-      <Text style={{marginLeft: 10, marginTop: 10,color:'white'}}>
-        {isConnected ? 'Current connect device' : 'Available devices'}
+      <Text style={styles.text}>
+        {isConnected ? 'Current connect device: '+itemName : 'Available devices'}
       </Text>
     </View>
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: Platform.OS === 'ios' ? 20 : 40,
+    alignItems: 'center', // 让内容在纵向方向上居中对齐
+  },
+  buttonContainer: {
+    alignSelf: 'center', // 让按钮容器水平居中
   },
   buttonView: {
     backgroundColor: '#454545',
-    // paddingHorizontal: 10,
-    marginHorizontal:((width-220)/2) ,
-    borderRadius: 5,
+    borderRadius: 10,
     marginTop: 10,
-    height: 58,
-    width:220,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flexDirection:'row'
-    
-    // width:500,
+    height: 40,
+    flexDirection: 'row', // 沿水平方向布局
+    alignItems: 'center', // 让内容在水平方向上居中对齐
+    paddingHorizontal: 20, // 添加水平边距
   },
   buttonText: {
-    marginHorizontal:-10,
     color: 'white',
-    fontSize: 30,
+    fontSize: 20,
+  },
+  text: {
+    marginLeft: 10,
+    marginTop: 10,
+    color: 'white'
   },
 });
+
 
 export default Header;
