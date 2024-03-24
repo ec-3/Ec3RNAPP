@@ -259,6 +259,22 @@ export const downloadData = async () => {
     return  error
   }
 };
+export const downloadDataWith = async (dataKey: string) => {
+  try {
+    const { hashed_key } = createStorageKeys([
+      { value: "5DFmLstsw1nT35roGkeqMshyEftwHecv11F7oriVtECeuesQ", type: 0 },  
+      // { value: "5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L", type: 0 }, 
+      // { value: "5HC4Egd2CowaZszX4konLHb8xKbivmdh3iuDwcf77B2a5u6M_1711182720"+dataKey, type: 1 },
+      { value: "5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L_1711182720", type: 1 },
+    ]);
+    const checkIfExists = await makePalletQuery("peaqStorage", "itemStore", [
+      hashed_key,
+    ]);
+    return String.fromCharCode(...checkIfExists);
+  } catch (error) {
+    return error;
+  }
+};
 
 
 
@@ -1201,7 +1217,7 @@ export const showReward = async () => {
   console.log("do  start:::");
 
   let reward = "";
-  await myContract.methods.showReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 1).call((err, result) => {
+  await myContract.methods.showReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", round).call((err, result) => {
     if (!err) {
       console.log('Function result: ', result);
       reward = result;
@@ -1250,7 +1266,7 @@ export const getReward = async () => {
     gasPrice: 2000, //4100, // gas 价格
     // getReward(did, round, user);
     // round可以是101，102
-    data: myContract.methods.getReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", 100, "0xcb4d593ffaa7268929c6901edd94767ab7e1afa0").encodeABI(),
+    data: myContract.methods.getReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", round, "0xcb4d593ffaa7268929c6901edd94767ab7e1afa0").encodeABI(),
     // data: myContract.methods.mint(5100).encodeABI(),
     value: 0,
   };
@@ -1295,7 +1311,8 @@ export const getReward = async () => {
     });
 };
 
-export const mining = async () => {
+const round = 102;
+export const mining = async (data) => {
   console.log("now mining");
 
   // 使用 Web3.js 的例子
@@ -1316,8 +1333,7 @@ export const mining = async () => {
 
   const myContract = new web3.eth.Contract(contractAbiDev, contractAddress);
 
-  const data = 200;
-  const round = 99;
+  // const data = 200;
 
   console.log("do  start:::");
   const transactionObject = {
@@ -1369,7 +1385,9 @@ export const mining = async () => {
       console.error('*********Signing Error:', error);
     });
 };
-
+// LOG  *********Transaction Hash: 0x76da57da11f39bbc0eb33b31bbf9452b5a1df6b0b2a26f25a085a0637c4fec87
+// DEBUG  ### Web Runner Ping 1711217780307
+// LOG  *********Transaction Receipt: {"blockHash": "0x2742f7bc9fadb910d0d0381e82b5fa23112d31e85876fdcf1705e07578552e6d", "blockNumber": 2033882, "contractAddress": null, "cumulativeGasUsed": 33712, "effectiveGasPrice": 2048, "from": "0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", "gasUsed": 33712, "logs": [], "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", "status": true, "to": "0xefc6899a558096d4f853682d29bbc2e46227fb10", "transactionHash": "0x76da57da11f39bbc0eb33b31bbf9452b5a1df6b0b2a26f25a085a0637c4fec87", "transactionIndex": 0, "type": "0x0"}
 
 
 // Support restart web-runner

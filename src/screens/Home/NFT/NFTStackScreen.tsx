@@ -8,7 +8,7 @@ import { EmptyList } from 'components/EmptyList';
 // import { Image } from 'phosphor-react-native';
 import withPageWrapper from 'components/pageWrapper';
 import i18n from 'utils/i18n/i18n';
-import { downloadData, showReward, getReward, mining } from 'messaging/index';
+import { downloadData, showReward, getReward, mining, downloadDataWith } from 'messaging/index';
 import { Text, View } from 'react-native-animatable';
 import { ActivityIndicator, Image, Button, TouchableOpacity,Dimensions,  Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -35,7 +35,7 @@ export const renderEmptyNFT = () => {
 };
 
 function alert(text: string) {
-  Alert.alert('title', text, [{text: 'Confirm', onPress: () => {}}]);
+  Alert.alert('', text, [{text: 'Confirm', onPress: () => {}}]);
 }
 
 export const  NFTStackScreen = () => {
@@ -68,7 +68,8 @@ export const  NFTStackScreen = () => {
         const nearestMultiple = getNearestMultipleOf5Seconds();
         console.log("Nearest multiple of 5 seconds:", nearestMultiple);
         console.log("**************** start getdata:", Date.now());
-        const myData = await downloadData();
+        // const myData = await downloadDataWith("sensorData");
+        const myData = await downloadDataWith((nearestMultiple/1000).toString());
         myString =  myData as string;
         console.log("******** myString == ", myString);
         
@@ -76,25 +77,29 @@ export const  NFTStackScreen = () => {
         mmkvStore.set(DEVICE_DATA_PREFIX + `${nearestMultiple}`, myString);
 
         // 模拟从API获取的JSON数据
-        const jsonData = '{"name": "John", "age": 30, "city": "New York"}';
+        // const jsonData = '{"name": "John", "age": 30, "city": "New York"}';
         // 解析JSON数据
-        const parsedData = JSON.parse(jsonData);
+        const parsedData = JSON.parse(myString);
         console.log("******** json.parsedData.name == ",parsedData.name)
 
         setName((myString.substring(0,myString.length)))
         const resultStore = mmkvStore.getString(BLE_DEVICE_DID_ADDR_KEY) ?? "";
         setDevID(resultStore);
-        const initTime = mmkvStore.getString(BLE_DEVICE_INIT_TIME_KEY) ?? "06/05/2024";
+        const initTime = mmkvStore.getString(BLE_DEVICE_INIT_TIME_KEY) ?? "06/03/2024";
         setInitTime(initTime);
         // setCumulativeData((myString.substring(0,myString.length)))
-        setTodayData("1.03 kwh");
-        setWeeklyData("4.54 kwh");
-        setCumulativeData("24.90 kwh");
-        showReward().then(reward => {
-          setReward(reward);
-          setLoading(false); // 隐藏等待框
-          console.log("**************** end getdata:", Date.now());
-        });
+        setTodayData(parsedData.Consumption+" kwh");
+        setWeeklyData(parsedData.Consumption+" kwh");
+        setCumulativeData(parsedData.Consumption+" kwh");
+
+    mining(1).then(() => {
+      showReward().then(reward => {
+        setReward(reward);
+        setLoading(false); // 隐藏等待框
+        console.log("**************** end getdata:", Date.now());
+      });
+    });
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -102,7 +107,7 @@ export const  NFTStackScreen = () => {
 
     fetchData(); // 首次加载执行一次
 
-    const intervalId = setInterval(fetchData, 10*1000); // 每60秒执行一次
+    const intervalId = setInterval(fetchData, 6000*1000); // 每60秒执行一次
 
     return () => clearInterval(intervalId); // 组件卸载时清除定时器
   }, []); // 依赖项为空数组，确保仅在组件挂载时执行一次
@@ -120,8 +125,16 @@ export const  NFTStackScreen = () => {
       // setReward(reward)
       alert("Congratulations!Rewards received.Pleace check your wallet")
        setLoading(false); // 隐藏等待框
+      
+      showReward().then(reward => {
+        setReward(reward);
+        setLoading(false); // 隐藏等待框
+        console.log("**************** end getdata:", Date.now());
+      });
     });
-    // mining();
+    // mining(4).then(() => {
+
+    // });
   };
 
 

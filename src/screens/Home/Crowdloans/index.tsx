@@ -188,7 +188,7 @@ export const CrowdloansScreen = () => {
       console.log('BluetoothUpdateValue value:', value);
       console.log('BluetoothUpdateValue *****resultPin:', resultPin); 
       if (result.startsWith("peaqID,")) {
-        resultPin = result;
+        resultPin = result.substring(7); // 去掉前缀 "peaqID,"
       } else {
         resultPin = resultPin + result;
       }
@@ -342,7 +342,7 @@ export const CrowdloansScreen = () => {
     if (Platform.OS === 'ios') {
       alert('make sure bluetooth open');
     } else {
-      Alert.alert('title', 'place open bluetooth', [
+      Alert.alert('', 'pleace open bluetooth', [
         {
           text: 'Cancle',
           onPress: () => {},
@@ -504,7 +504,7 @@ export const CrowdloansScreen = () => {
   }
 
   function alert(text: string) {
-    Alert.alert('title', text, [{text: 'OK', onPress: () => {}}]);
+    Alert.alert('', text, [{text: 'OK', onPress: () => {}}]);
   }
 
   function renderItem(item: ListRenderItemInfo<Peripheral>) {
@@ -698,7 +698,7 @@ export const CrowdloansScreen = () => {
           }}>{receiveData}</Text>
 
 
-        {/* <TouchableOpacity style={{
+        <TouchableOpacity style={{
             height:50,
             marginTop:10,
             // width:width,
@@ -717,7 +717,7 @@ export const CrowdloansScreen = () => {
         <Text style={{marginTop:13,fontSize:20, color: 'white',textAlign:'center'}}>
           启动接收数据
         </Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
 
 
 
