@@ -35,7 +35,7 @@ export const renderEmptyNFT = () => {
 };
 
 function alert(text: string) {
-  Alert.alert('提示', text, [{text: '确定', onPress: () => {}}]);
+  Alert.alert('title', text, [{text: 'Confirm', onPress: () => {}}]);
 }
 
 export const  NFTStackScreen = () => {
@@ -116,11 +116,10 @@ export const  NFTStackScreen = () => {
     //   setLoading(false); // 隐藏等待框
     // });
 
-    
     getReward().then(reward => {
       // setReward(reward)
-      alert("领取成功")
-      setLoading(false); // 隐藏等待框
+      alert("Congratulations!Rewards received.Pleace check your wallet")
+       setLoading(false); // 隐藏等待框
     });
     // mining();
   };

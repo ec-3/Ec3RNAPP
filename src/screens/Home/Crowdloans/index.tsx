@@ -340,15 +340,15 @@ export const CrowdloansScreen = () => {
 
   function enableBluetooth() {
     if (Platform.OS === 'ios') {
-      alert('请开启手机蓝牙');
+      alert('make sure bluetooth open');
     } else {
-      Alert.alert('提示', '请开启手机蓝牙', [
+      Alert.alert('title', 'place open bluetooth', [
         {
-          text: '取消',
+          text: 'Cancle',
           onPress: () => {},
         },
         {
-          text: '打开',
+          text: 'Open',
           onPress: () => {
             bleModule.enableBluetooth();
           },
@@ -385,7 +385,7 @@ export const CrowdloansScreen = () => {
         notifyEc3();
       })
       .catch(err => {
-        alert('连接失败');
+        alert('connect field');
       })
       .finally(() => {
         setConnectingId('');
@@ -483,6 +483,7 @@ export const CrowdloansScreen = () => {
         setWriteData(data);
         setInputText('');
         setInputTextPassWord('');
+        alert("Send cuccessfly")
       })
       .catch(err => {
         alert('发送失败');
@@ -503,7 +504,7 @@ export const CrowdloansScreen = () => {
   }
 
   function alert(text: string) {
-    Alert.alert('提示', text, [{text: '确定', onPress: () => {}}]);
+    Alert.alert('title', text, [{text: 'OK', onPress: () => {}}]);
   }
 
   function renderItem(item: ListRenderItemInfo<Peripheral>) {
