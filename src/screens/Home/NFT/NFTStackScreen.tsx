@@ -107,7 +107,7 @@ export const  NFTStackScreen = () => {
 
     fetchData(); // 首次加载执行一次
 
-    const intervalId = setInterval(fetchData, 6000*1000); // 每60秒执行一次
+    const intervalId = setInterval(fetchData, 60*1000); // 每60秒执行一次
 
     return () => clearInterval(intervalId); // 组件卸载时清除定时器
   }, []); // 依赖项为空数组，确保仅在组件挂载时执行一次
@@ -123,7 +123,7 @@ export const  NFTStackScreen = () => {
 
     getReward().then(reward => {
       // setReward(reward)
-      alert("Congratulations!Rewards received.Pleace check your wallet")
+      alert("Congratulations! Rewards received. Pleace check your wallet.")
        setLoading(false); // 隐藏等待框
       
       showReward().then(reward => {

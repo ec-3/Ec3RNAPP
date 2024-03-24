@@ -172,7 +172,11 @@ export const CrowdloansScreen = () => {
 
     
     let resultPin: string = ''; 
-    /** 接收到新数据 */
+    /** 接收到新数据  不断接收拼接数据, 知道碰到以",END"结尾的, 就开始处理前面的数据, 前面数据可能包括多个信息段, 注意分开解析, 可能的命令如下:
+     * $START,Connect Wifi ERROR!,END
+     * $START,Connect Wifi Successfully!,END
+     * peaqID,*********,END
+    */
     function handleUpdateValue(data: any) {
       console.log('BluetoothUpdateValue data:', data);
       let value = data.value as string;
@@ -187,22 +191,36 @@ export const CrowdloansScreen = () => {
       
       console.log('BluetoothUpdateValue value:', value);
       console.log('BluetoothUpdateValue *****resultPin:', resultPin); 
-      if (result.startsWith("peaqID,")) {
-        resultPin = result.substring(7); // 去掉前缀 "peaqID,"
-      } else {
+      // if (result.startsWith("peaqID,")) {
+      //   resultPin = result.substring(7); // 去掉前缀 "peaqID,"
+      // } else {
         resultPin = resultPin + result;
-      }
+      // }
       if (resultPin.endsWith(",END")) {
-        resultPin = resultPin.replace(/,END$/, ''); // 替换掉最后的",END"
-        console.log('BluetoothUpdateValue *****resultPin222:', resultPin); 
-        mmkvStore.set(BLE_DEVICE_DID_ADDR_KEY, resultPin);
+        if (resultPin.includes("$START,Connect Wifi ERROR!,END")) {
+          // 如果resultPin包括 "$START,Connect Wifi ERROR!,END" 就提示连接错误
+          console.log('Connection error: Connect Wifi ERROR!');
+          resultPin = resultPin.replace('$START,Connect Wifi ERROR!,END', ''); //
+        } else if (resultPin.includes("$START,Connect Wifi Successfully!,END")) {
+          // 如果resultPin包括 "$START,Connect Wifi ERROR!,END" 就提示连接错误
+          console.log('Connection error: Connect Wifi ERROR!');
+          resultPin = resultPin.replace('$START,Connect Wifi Successfully!,END', ''); //
+        }
 
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // 月份从0开始，所以需要加1，并且保证两位数的格式
-        const day = String(currentDate.getDate()).padStart(2, '0'); // 保证两位数的格式
-        const formattedDate = `${day}/${month}/${year}`;
-        mmkvStore.set(BLE_DEVICE_INIT_TIME_KEY, formattedDate);
+        if (resultPin.startsWith("peaqID,") && resultPin.endsWith(",END")) {
+          resultPin = resultPin.substring(7); // 去掉前缀 "peaqID,"
+          resultPin = resultPin.replace(/,END$/, ''); // 替换掉最后的",END"
+          console.log('BluetoothUpdateValue *****resultPin222:', resultPin); 
+          mmkvStore.set(BLE_DEVICE_DID_ADDR_KEY, resultPin);
+
+          const currentDate = new Date();
+          const year = currentDate.getFullYear();
+          const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // 月份从0开始，所以需要加1，并且保证两位数的格式
+          const day = String(currentDate.getDate()).padStart(2, '0'); // 保证两位数的格式
+          const formattedDate = `${day}/${month}/${year}`;
+          mmkvStore.set(BLE_DEVICE_INIT_TIME_KEY, formattedDate);
+        }
+
       }
       setReceiveData(bleReceiveData.current.join(' -- '));
 
@@ -475,7 +493,7 @@ export const CrowdloansScreen = () => {
       return;
     }
 
-    let data = "connectwifi,"+inputText+","+inputTextPassWord;
+    let data = "$START,connectwifi,"+inputText+","+inputTextPassWord+",END";
     bleModule['writeEc3DataWithoutResponse'](data, SERVICE_UUID, WRITE_CHARACTERISTIC_UUID)
       .then(() => {
         bleReceiveData.current = [];
@@ -483,7 +501,7 @@ export const CrowdloansScreen = () => {
         setWriteData(data);
         setInputText('');
         setInputTextPassWord('');
-        alert("Send cuccessfly")
+        alert("Sent successfully")
       })
       .catch(err => {
         alert('发送失败');
