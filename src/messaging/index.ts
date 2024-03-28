@@ -157,6 +157,10 @@ import { _ChainAsset, _ChainInfo } from '@subwallet/chain-list/types';
 import { AuthUrls } from '@subwallet/extension-base/services/request-service/types';
 import { _getKnownHashes } from 'utils/defaultChains';
 
+import { mmkvStore } from 'utils/storage';
+import { BLE_DEVICE_DID_ADDR_KEY, BLE_DEVICE_INIT_TIME_KEY, generateDeviceDataPrefix, generateDeviceDataConsumptionPrefix, calculateRound,
+  generateDeviceRewardValuePrefix, generateDeviceRewardStatusPrefix, generateDeviceMiningLastRoundPrefix, generateDeviceGetRewardLastRoundPrefix } from 'constants/index';
+
 import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
 const { blake2AsHex, decodeAddress } = require("@polkadot/util-crypto");
 const { u8aConcat, u8aToU8a } = require("@polkadot/util");
@@ -262,11 +266,14 @@ export const downloadData = async () => {
 export const downloadDataWith = async (dataKey: string) => {
   try {
     const { hashed_key } = createStorageKeys([
-      { value: "5DFmLstsw1nT35roGkeqMshyEftwHecv11F7oriVtECeuesQ", type: 0 },  
+      { value: "5DFmLstsw1nT35roGkeqMshyEftwHecv11F7oriVtECeuesQ", type: 0 },  //设备那边签名的钱包地址--固定
       // { value: "5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L", type: 0 }, 
-      // { value: "5HC4Egd2CowaZszX4konLHb8xKbivmdh3iuDwcf77B2a5u6M_1711182720"+dataKey, type: 1 },
-      { value: "5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L_1711182720", type: 1 },
+      { value: "5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L_"+dataKey, type: 1 },  //设备did+时间戳
+      // { value: "5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L_1711182720", type: 1 },
+      // { value: "5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L_1711457230", type: 1 },
+      // 5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L_1711457230   
     ]);
+    console.info("********downloadDataWith hashed_key==", "5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L_"+dataKey);
     const checkIfExists = await makePalletQuery("peaqStorage", "itemStore", [
       hashed_key,
     ]);
@@ -1162,6 +1169,11 @@ const contractAbiDev = [
 export const showReward = async () => {
   // 用于将某个设备的某一轮激励提取到指定以太坊地址
 
+  // 使用当前时间戳计算轮次值
+  const timestamp = Date.now(); // 当前时间戳
+  const round = calculateRound(timestamp);
+  console.log("当前时间戳对应的轮次值是：", round);
+
   // 调用激励合约中的getReward(address did, uint round, address user)方法
   // did和round同showReward
   // user为获得激励的以太坊账户
@@ -1221,6 +1233,11 @@ export const showReward = async () => {
     if (!err) {
       console.log('Function result: ', result);
       reward = result;
+      if (result > 0) {
+         //保存次轮奖励的值, 大于0才存, 因为这里同一个round可能获取多次奖励值,而此过程中有可能奖励已经被领完变成0了会冲掉原本记录的值, 如果是又有新的奖励mining到此round了, 增加的正值也是可以刷新保存的
+        mmkvStore.set(generateDeviceRewardValuePrefix(round), result);
+        mmkvStore.set(generateDeviceRewardStatusPrefix(round), false); //保存为未领取的状态
+      }
     } else {
       console.error('Error: ', err);
       reward = err;
@@ -1232,9 +1249,14 @@ export const showReward = async () => {
 };
 
 
-export const getReward = async () => {
+export const getReward = async (toAddress: string) => {
   console.log("now get reward");
   // 用于将某个设备的某一轮激励提取到指定以太坊地址
+
+  // 使用当前时间戳计算轮次值
+  const timestamp = Date.now(); // 当前时间戳
+  const round = calculateRound(timestamp);
+  console.log("当前时间戳对应的轮次值是：", round);
 
   // 调用激励合约中的getReward(address did, uint round, address user)方法
   // did和round同showReward
@@ -1266,7 +1288,8 @@ export const getReward = async () => {
     gasPrice: 2000, //4100, // gas 价格
     // getReward(did, round, user);
     // round可以是101，102
-    data: myContract.methods.getReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", round, "0xcb4d593ffaa7268929c6901edd94767ab7e1afa0").encodeABI(),
+    // data: myContract.methods.getReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", round, "0xcb4d593ffaa7268929c6901edd94767ab7e1afa0").encodeABI(),
+    data: myContract.methods.getReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", round, toAddress).encodeABI(),
     // data: myContract.methods.mint(5100).encodeABI(),
     value: 0,
   };
@@ -1285,35 +1308,54 @@ export const getReward = async () => {
 
     // 使用 transactionObject 执行后续操作
     console.log("***Transaction Object:", transactionObject);
+
+    // 使用以太坊账户签署交易
+    const signedTransaction = await web3.eth.accounts.signTransaction(transactionObject, account.privateKey);
+
+    // 发送签名交易到区块链
+    const receipt = await web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
+    console.log('*********Transaction Receipt:', receipt);
+    mmkvStore.set(generateDeviceRewardStatusPrefix(round), true); //领取成功
+    mmkvStore.set(generateDeviceGetRewardLastRoundPrefix(), round); //领取成功, 最新一次领取的round轮次
+    return receipt;
+
   } catch (error) {
-    console.error("***Error:", error);
+    console.error('*********Transaction Error:', error);
+    throw error; // 抛出错误以便在调用方处理
   }
 
   // console.log("do  signTransaction:::", web3.eth);
   // 使用以太坊账户签署交易
-  web3.eth.accounts.signTransaction(transactionObject, account.privateKey)
-    .then((signedTransaction: { rawTransaction: any; }) => {
-      // 发送签名交易到区块链
-      console.log(signedTransaction)
-      web3.eth.sendSignedTransaction(signedTransaction.rawTransaction)
-        .on('transactionHash', (hash: any) => {
-          console.log('*********Transaction Hash:', hash);
-        })
-        .on('receipt', (receipt: any) => {
-          console.log('*********Transaction Receipt:', receipt);
-        })
-        .on('error', (error: any) => {
-          console.error('*********Transaction Error:', error);
-        });
-    })
-    .catch((error: any) => {
-      console.error('*********Signing Error:', error);
-    });
+  // web3.eth.accounts.signTransaction(transactionObject, account.privateKey)
+  //   .then((signedTransaction: { rawTransaction: any; }) => {
+  //     // 发送签名交易到区块链
+  //     console.log(signedTransaction)
+  //     web3.eth.sendSignedTransaction(signedTransaction.rawTransaction)
+  //       .on('transactionHash', (hash: any) => {
+  //         console.log('*********Transaction Hash:', hash);
+  //       })
+  //       .on('receipt', (receipt: any) => {
+  //         console.log('*********Transaction Receipt:', receipt);
+  //         mmkvStore.set(generateDeviceRewardStatusPrefix(round), true); //领取成功
+  //         mmkvStore.set(generateDeviceGetRewardLastRoundPrefix(), round); //领取成功, 最新一次领取的round轮次
+  //       })
+  //       .on('error', (error: any) => {
+  //         console.error('*********Transaction Error:', error);
+  //       });
+  //   })
+  //   .catch((error: any) => {
+  //     console.error('*********Signing Error:', error);
+  //   });
 };
 
-const round = 102;
+// const round = 102;
 export const mining = async (data) => {
   console.log("now mining");
+
+  // 使用当前时间戳计算轮次值
+  const timestamp = Date.now(); // 当前时间戳
+  const round = calculateRound(timestamp);
+  console.log("当前时间戳对应的轮次值是：", round);
 
   // 使用 Web3.js 的例子
   const web3 = new Web3('https://rpcpc1-qa.agung.peaq.network');
@@ -1360,30 +1402,55 @@ export const mining = async (data) => {
 
     // 使用 transactionObject 执行后续操作
     console.log("***Transaction Object:", transactionObject);
-  } catch (error) {
-    console.error("***Error:", error);
-  }
 
-  // console.log("do  signTransaction:::", web3.eth);
-  // 使用以太坊账户签署交易
-  web3.eth.accounts.signTransaction(transactionObject, account.privateKey)
-    .then((signedTransaction: { rawTransaction: any; }) => {
-      // 发送签名交易到区块链
-      console.log(signedTransaction)
+    // 使用以太坊账户签署交易
+    const signedTransaction = await web3.eth.accounts.signTransaction(transactionObject, account.privateKey);
+
+    // 发送签名交易到区块链
+    const receipt = await new Promise((resolve, reject) => {
       web3.eth.sendSignedTransaction(signedTransaction.rawTransaction)
         .on('transactionHash', (hash: any) => {
           console.log('*********Transaction Hash:', hash);
         })
         .on('receipt', (receipt: any) => {
           console.log('*********Transaction Receipt:', receipt);
+          mmkvStore.set(generateDeviceMiningLastRoundPrefix(), round); //mining成功, 保存最近一次mining的round轮数
+          resolve(receipt);
         })
         .on('error', (error: any) => {
           console.error('*********Transaction Error:', error);
+          reject(error);
         });
-    })
-    .catch((error: any) => {
-      console.error('*********Signing Error:', error);
     });
+
+    return receipt;
+
+  } catch (error) {
+    console.error('*********Error:', error);
+    throw error; // 抛出错误以便在调用方处理
+  }
+
+  // console.log("do  signTransaction:::", web3.eth);
+  // 使用以太坊账户签署交易
+  // web3.eth.accounts.signTransaction(transactionObject, account.privateKey)
+  //   .then((signedTransaction: { rawTransaction: any; }) => {
+  //     // 发送签名交易到区块链
+  //     console.log(signedTransaction)
+  //     web3.eth.sendSignedTransaction(signedTransaction.rawTransaction)
+  //       .on('transactionHash', (hash: any) => {
+  //         console.log('*********Transaction Hash:', hash);
+  //       })
+  //       .on('receipt', (receipt: any) => {
+  //         console.log('*********Transaction Receipt:', receipt);
+  //         mmkvStore.set(generateDeviceMiningLastRoundPrefix(), round); //mining成功, 保存最近一次mining的round轮数
+  //       })
+  //       .on('error', (error: any) => {
+  //         console.error('*********Transaction Error:', error);
+  //       });
+  //   })
+  //   .catch((error: any) => {
+  //     console.error('*********Signing Error:', error);
+  //   });
 };
 // LOG  *********Transaction Hash: 0x76da57da11f39bbc0eb33b31bbf9452b5a1df6b0b2a26f25a085a0637c4fec87
 // DEBUG  ### Web Runner Ping 1711217780307

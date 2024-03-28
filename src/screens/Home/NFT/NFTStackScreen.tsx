@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 import NftCollectionList from 'screens/Home/NFT/Collection/NftCollectionList';
 import NftItemList from 'screens/Home/NFT/Item/NftItemList';
@@ -17,7 +17,13 @@ import { SubScreenContainer } from 'components/SubScreenContainer';
 import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
 import { dev } from '@polkadot/types/interfaces/definitions';
 import { mmkvStore } from 'utils/storage';
-import { BLE_DEVICE_DID_ADDR_KEY, BLE_DEVICE_INIT_TIME_KEY, DEVICE_DATA_PREFIX } from 'constants/index';
+import { BLE_DEVICE_DID_ADDR_KEY, BLE_DEVICE_INIT_TIME_KEY, generateDeviceDataPrefix, generateDeviceDataConsumptionPrefix, calculateRound,
+  generateDeviceRewardValuePrefix, generateDeviceRewardStatusPrefix, generateDeviceMiningLastRoundPrefix, generateDeviceGetRewardLastRoundPrefix, 
+  calculateTimestampByRound, generateDeviceDataConsumptionBAKPrefix } from 'constants/index';
+
+import { useSelector } from 'react-redux';
+import { RootState } from 'stores/index';
+import { isAccountAll } from '@subwallet/extension-base/utils';
 
 export type NFTStackParamList = {
   CollectionList: undefined;
@@ -56,31 +62,134 @@ export const  NFTStackScreen = () => {
   const [cumulativeData, setCumulativeData] = useState(String());
   const [reward, setReward] = useState(String());
 
-  const getNearestMultipleOf5Seconds = () => {
+  const formatTimestampToDateTimeString = (timestamp) => {  //timestamp单位为秒
+    const date = new Date(timestamp * 1000); // 注意JavaScript中的时间戳是以毫秒为单位的，所以乘以1000转换为毫秒
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 月份从0开始，需要加1，并且保证两位数
+    const day = date.getDate().toString().padStart(2, '0'); // 保证两位数
+    const hours = date.getHours().toString().padStart(2, '0'); // 保证两位数
+    const minutes = date.getMinutes().toString().padStart(2, '0'); // 保证两位数
+    const seconds = date.getSeconds().toString().padStart(2, '0'); // 保证两位数
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
+
+  // 获取当前时间前面一个5秒的倍数时间戳的秒值
+  // const getNearestMultipleOf5Seconds = () => {
+  //   const currentTimestamp = Date.now();
+  //   const nearestMultipleOf5 = Math.floor(currentTimestamp / 5000) * 5; //000;
+  //   return nearestMultipleOf5 - 200;  
+  // };
+  const getNearestMultipleOf5Seconds = () => {  //取100秒的整数, 单位为秒
     const currentTimestamp = Date.now();
-    const nearestMultipleOf5 = Math.floor(currentTimestamp / 5000) * 5000;
-    return nearestMultipleOf5;
+    const nearestMultipleOf100 = Math.floor(currentTimestamp / 100000) * 100; //000;
+    return nearestMultipleOf100 - 200;
   };
+
+  // 获取当天的零点时间戳的秒值
+  const getTodayStartTimestampInSeconds = () => { 
+      const now = new Date();
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      return Math.floor(todayStart.getTime() / 1000);
+  }; 
+  
+  // 获取本周第一天的零点时间戳的秒值
+  const getFirstDayOfWeekStartTimestampInSeconds = () => {
+      const now = new Date();
+      const firstDayOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 1);
+      return Math.floor(firstDayOfWeek.getTime() / 1000);
+  };
+  
+  const getCertainTimeConsumption = async (certainTime: number): Promise<number> => {
+    console.log("******** start check certain time == ", certainTime);
+    let certainTimeConsumption = mmkvStore.getNumber(generateDeviceDataConsumptionPrefix(certainTime)) ?? -1;
+    console.log("******** mmkvstore certainTimeConsumption == ", certainTimeConsumption);
+    if (certainTimeConsumption == -1) {
+      const myDataCertainTime = await downloadDataWith((certainTime).toString());
+      const myStringCertainTime =  myDataCertainTime as string;
+      console.log("******** myDataCertainTime == ", myDataCertainTime);
+      if (myStringCertainTime.length > 0) {
+        const parsedDataCertainTime = JSON.parse(myStringCertainTime);
+        console.log("******** json.parsedDataCertainTime.Consumption == ",parsedDataCertainTime.Consumption)
+        certainTimeConsumption = parsedDataCertainTime.Consumption;
+        mmkvStore.set(generateDeviceDataConsumptionPrefix(certainTime), certainTimeConsumption);
+      } else {
+        certainTimeConsumption = mmkvStore.getNumber(generateDeviceDataConsumptionBAKPrefix(certainTime)) ?? -1;
+        console.log("******** get bak data Consumption == ",certainTimeConsumption)
+        if (certainTimeConsumption == -1) {
+          certainTimeConsumption = 0;
+          // mmkvStore.set(generateDeviceDataConsumptionBAKPrefix(certainTime), certainTimeConsumption);
+        }
+      }
+    }
+    console.log("******** end check certain got == ", certainTimeConsumption);
+    return certainTimeConsumption;
+  }
+  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const nearestMultiple = getNearestMultipleOf5Seconds();
-        console.log("Nearest multiple of 5 seconds:", nearestMultiple);
+        console.log("获取当前时间前面一个5秒的倍数时间戳的秒值:", nearestMultiple);
+        var formattedDateTimeString = formatTimestampToDateTimeString(nearestMultiple);
+        console.log("***以上对应通用显示形式:", formattedDateTimeString);
         console.log("**************** start getdata:", Date.now());
         // const myData = await downloadDataWith("sensorData");
-        const myData = await downloadDataWith((nearestMultiple/1000).toString());
+        console.log("******** nearestMultiple == ", nearestMultiple); 
+        const myData = await downloadDataWith((nearestMultiple).toString());
         myString =  myData as string;
         console.log("******** myString == ", myString);
         
-        console.log("******** key == ", DEVICE_DATA_PREFIX + `${nearestMultiple}`);
-        mmkvStore.set(DEVICE_DATA_PREFIX + `${nearestMultiple}`, myString);
+        console.log("******** key == ", generateDeviceDataPrefix(nearestMultiple));
+        mmkvStore.set(generateDeviceDataPrefix(nearestMultiple), myString);
 
         // 模拟从API获取的JSON数据
-        // const jsonData = '{"name": "John", "age": 30, "city": "New York"}';
+        // const jsonData = '{"Voltage":"78.77","Current":"17.97","Power":"1.42","Consumption":"0.04","Polarity":"1"}';
         // 解析JSON数据
         const parsedData = JSON.parse(myString);
-        console.log("******** json.parsedData.name == ",parsedData.name)
+        console.log("******** json.parsedData.Consumption == ",parsedData.Consumption)
+        const currConsumption: number = Number(parsedData.Consumption);
+        const today0Time = getTodayStartTimestampInSeconds();
+        console.log("当天的零点时间戳的秒值:", today0Time);
+        formattedDateTimeString = formatTimestampToDateTimeString(today0Time);
+        console.log("***以上对应通用显示形式:", formattedDateTimeString);
+        if (nearestMultiple == today0Time) {
+          mmkvStore.set(generateDeviceDataConsumptionPrefix(nearestMultiple), currConsumption);
+        }
+        const nextDay0Time = today0Time + 24*60*60;
+        mmkvStore.set(generateDeviceDataConsumptionBAKPrefix(nextDay0Time), currConsumption); //备份为后一天的零点的数据
+        console.log("*** set bak data for nextDay0Time:", nextDay0Time, currConsumption);
+        const checkdata = mmkvStore.getNumber(generateDeviceDataConsumptionBAKPrefix(nextDay0Time)) ?? "-1";
+        console.log("*** get bak data for nextDay0Time:", nextDay0Time, checkdata);
+        if (mmkvStore.getNumber(generateDeviceDataConsumptionPrefix(0)) ?? -1 < 0) {  //存储设备添加后的第一条数据记录
+          mmkvStore.set(generateDeviceDataConsumptionPrefix(0), currConsumption);
+        }
+        // var today0TimeConsumption = mmkvStore.getNumber(generateDeviceDataConsumptionPrefix(today0Time)) ?? -1;
+        // if (today0TimeConsumption == -1) {
+        //   const myDataToday0Time = await downloadDataWith((today0Time).toString());
+        //   const myStringToday0Time =  myDataToday0Time as string;
+        //   console.log("******** myDataToday0Time == ", myDataToday0Time);
+        //   if (myStringToday0Time.length > 0) {
+        //     const parsedDataToday0Time = JSON.parse(myStringToday0Time);
+        //     console.log("******** json.parsedDataToday0Time.Consumption == ",parsedDataToday0Time.Consumption)
+        //     today0TimeConsumption = parsedDataToday0Time.Consumption;
+        //   } else {
+        //     today0TimeConsumption = 0;
+        //   }
+        // }
+        const today0TimeConsumption = await getCertainTimeConsumption(today0Time);
+        console.log("***** get today0TimeConsumption:", today0TimeConsumption);
+
+
+        const weekly0Time = getFirstDayOfWeekStartTimestampInSeconds();
+        console.log("本周第一天的零点时间戳的秒值:", weekly0Time);
+        formattedDateTimeString = formatTimestampToDateTimeString(weekly0Time);
+        console.log("***以上对应通用显示形式:", formattedDateTimeString);
+        // const weekly0TimeConsumption = mmkvStore.getNumber(generateDeviceDataConsumptionPrefix(weekly0Time)) ?? 0;
+        const weekly0TimeConsumption = await getCertainTimeConsumption(weekly0Time);
+        console.log("***** get weekly0TimeConsumption:", weekly0TimeConsumption);
 
         setName((myString.substring(0,myString.length)))
         const resultStore = mmkvStore.getString(BLE_DEVICE_DID_ADDR_KEY) ?? "";
@@ -88,17 +197,52 @@ export const  NFTStackScreen = () => {
         const initTime = mmkvStore.getString(BLE_DEVICE_INIT_TIME_KEY) ?? "06/03/2024";
         setInitTime(initTime);
         // setCumulativeData((myString.substring(0,myString.length)))
-        setTodayData(parsedData.Consumption+" kwh");
-        setWeeklyData(parsedData.Consumption+" kwh");
-        setCumulativeData(parsedData.Consumption+" kwh");
 
-    mining(1).then(() => {
-      showReward().then(reward => {
-        setReward(reward);
-        setLoading(false); // 隐藏等待框
-        console.log("**************** end getdata:", Date.now());
-      });
-    });
+        setTodayData((currConsumption - today0TimeConsumption).toFixed(2)+" kwh");
+        setWeeklyData((currConsumption - weekly0TimeConsumption).toFixed(2)+" kwh");
+        setCumulativeData(currConsumption+" kwh");
+
+
+
+        // 使用当前时间戳计算轮次值
+        const timestamp = Date.now(); // 当前时间戳
+        const round = calculateRound(timestamp);
+        console.log("当前时间戳对应的轮次值是：", round);
+        const lastMiningRound = mmkvStore.getNumber(generateDeviceMiningLastRoundPrefix()) ?? 0;
+        console.log("*** lastMiningRound:", lastMiningRound);
+
+        //以下的计算等测试完整后需要移到下面的if之内
+        const lastMiningRoundNext0Time = calculateTimestampByRound(lastMiningRound);
+        console.log("***最后一次mining的轮次后面一天的零点时间戳[也就是下次mining的数据起点]是:", lastMiningRoundNext0Time);
+        formattedDateTimeString = formatTimestampToDateTimeString(lastMiningRoundNext0Time);
+        console.log("***以上对应通用显示形式:", formattedDateTimeString);
+        const startTimeData = mmkvStore.getNumber(generateDeviceDataConsumptionPrefix(lastMiningRoundNext0Time)) ?? 0;
+        const data = Number((today0TimeConsumption - startTimeData).toFixed(2)) * 1000;
+        console.log("***mining startTimeData:", startTimeData);
+        console.log("***mining today0TimeConsumption:", today0TimeConsumption);
+        console.log("***mining data:", data);
+
+        if (round > lastMiningRound) {
+          if (data > 0) {
+            mining(data).then(() => {
+              showReward().then(reward => {
+                setReward(reward);
+                setLoading(false); // 隐藏等待框
+                console.log("**************** end getdata:", Date.now());
+              });
+            });
+          } else {  //0值可以不处理, 下一轮有新值时依然可以从此轮开始算起
+            setReward("0");
+            setLoading(false); // 隐藏等待框
+          }
+        } else {
+          showReward().then(reward => {
+            setReward(reward);
+            setLoading(false); // 隐藏等待框
+            console.log("**************** end getdata:", Date.now());
+          });
+        }
+
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -107,22 +251,36 @@ export const  NFTStackScreen = () => {
 
     fetchData(); // 首次加载执行一次
 
-    const intervalId = setInterval(fetchData, 60*1000); // 每60秒执行一次
+    const intervalId = setInterval(fetchData, 100*1000); // 每60秒执行一次
 
     return () => clearInterval(intervalId); // 组件卸载时清除定时器
   }, []); // 依赖项为空数组，确保仅在组件挂载时执行一次
 
+
+
   
-  const handleButtonClick = () => {
+  const fullAccounts = useSelector((state: RootState) => state.accountState.accounts);
+  const currentAccountAddress = useSelector((state: RootState) => state.accountState.currentAccount?.address);
+  // const accounts = useMemo(() => {
+  //   if (fullAccounts.length > 2) {
+  //     return fullAccounts;
+  //   }
+
+  //   return fullAccounts.filter(a => !isAccountAll(a.address));
+  // }, [fullAccounts]);
+
+
+  const handleButtonClick = () => { 
+    console.log("*******fullAccounts=:", fullAccounts);
+    console.log("*******currentAccountAddress=:", currentAccountAddress);
+    // console.log("*******accounts=:", accounts);
+
+    const ethereumAccounts = fullAccounts.filter(account => account.type === 'ethereum');
+    console.log("Ethereum Accounts:", ethereumAccounts);
+    console.log("Ethereum Accounts address:::", ethereumAccounts[0].address);
+
     setLoading(true); // 显示等待框
-    // showReward().then(reward => {
-    //   setReward(reward)
-
-    //   setLoading(false); // 隐藏等待框
-    // });
-
-    getReward().then(reward => {
-      // setReward(reward)
+    getReward(ethereumAccounts[0].address).then(reward => {
       alert("Congratulations! Rewards received. Pleace check your wallet.")
        setLoading(false); // 隐藏等待框
       
@@ -132,9 +290,7 @@ export const  NFTStackScreen = () => {
         console.log("**************** end getdata:", Date.now());
       });
     });
-    // mining(4).then(() => {
-
-    // });
+    
   };
 
 

@@ -46,4 +46,63 @@ export const ALL_KEY = 'all';
 
 export const BLE_DEVICE_DID_ADDR_KEY = '__ble_device_did_addr__';
 export const BLE_DEVICE_INIT_TIME_KEY = '__ble_device_init_time__';
-export const DEVICE_DATA_PREFIX = '__device_data_prefix__';
+export const DEVICE_DATA_PREFIX = '__device_data_prefix__'; //+时间戳   多设备时还需要加上did
+export const DEVICE_DATA_CONSUMPTION_PREFIX = '__device_data_consumption_prefix__'; //+时间戳   多设备时还需要加上did
+export const DEVICE_REWARD_VALUE_PREFIX = '__device_reward_value_prefix__';  //+round   多设备时还需要加上did
+export const DEVICE_REWARD_STATUS_PREFIX = '__device_reward_status_prefix__';  //+round   多设备时还需要加上did
+// 生成带有时间戳后缀的常量值
+export function generateDeviceDataPrefix(timestamp, did = '') {
+  return `${DEVICE_DATA_PREFIX}_${timestamp}${did ? '_' + did : ''}`;
+}
+// 生成带有时间戳后缀的常量值
+export function generateDeviceDataConsumptionPrefix(timestamp, did = '') { //如果timestamp为0表示是设备添加后的第一条记录
+  return `${DEVICE_DATA_CONSUMPTION_PREFIX}_v2${timestamp}${did ? '_' + did : ''}`;
+}
+export function generateDeviceDataConsumptionBAKPrefix(timestamp, did = '') { //通过平常获取的值备份存给下一个最近的零点, 防止服务器上也没有获取到对应的零点值
+  return `${DEVICE_DATA_CONSUMPTION_PREFIX}_BAK223456${timestamp}${did ? '_' + did : ''}`;
+}
+// 生成带有round后缀的常量值
+export function generateDeviceRewardValuePrefix(round, did = '') {
+  return `${DEVICE_REWARD_VALUE_PREFIX}_${round}${did ? '_' + did : ''}`;
+}
+// 生成带有round后缀的常量值
+export function generateDeviceRewardStatusPrefix(round, did = '') { //false:未领取; true:已经领取
+  return `${DEVICE_REWARD_STATUS_PREFIX}_${round}${did ? '_' + did : ''}`;
+}
+export const DEVICE_MINING_LAST_ROUND_PREFIX = '__device_mining_last_rounds_prefix__';  //  多设备时还需要加上did
+// 生成带有did后缀的常量值
+export function generateDeviceMiningLastRoundPrefix(did = '') { //最新一次mining的轮次
+  return `${DEVICE_MINING_LAST_ROUND_PREFIX}_${did ? '_' + did : ''}`;
+}
+export const DEVICE_GET_REWARD_LAST_ROUND_PREFIX = '__device_get_reward_last_rounds_prefix__';  //  多设备时还需要加上did
+// 生成带有did后缀的常量值
+export function generateDeviceGetRewardLastRoundPrefix(did = '') {  //最新一次领过奖励的round轮次
+  return `${DEVICE_GET_REWARD_LAST_ROUND_PREFIX}_${did ? '_' + did : ''}`;
+}
+
+
+//timestamp 毫秒值
+export function calculateRound(timestamp) {
+  const startDateTimestamp = new Date('2024-01-01').getTime();
+  const timeDiff = timestamp - startDateTimestamp;// + 24*60*60*1000;
+  const round = Math.floor(timeDiff / (24 * 60 * 60 * 1000)) + 1;
+  return round;
+}
+// export function calculateTimestampByRound(round) {
+//   const startDateTimestamp = new Date('2024-01-01 00:00:00').getTime();
+//   const timeDiff = round * (24 * 60 * 60 * 1000) + startDateTimestamp;// + 24*60*60*1000;
+//   return timeDiff/1000;
+// }
+export function calculateTimestampByRound(round) {
+  // 获取当前轮次的起始日期
+  const startDate = new Date('2024-01-01');
+  
+  // 计算下一天的日期
+  const nextDayDate = new Date(startDate.getTime() + round * 24 * 60 * 60 * 1000);
+
+  // 设置时间为零点
+  nextDayDate.setHours(0, 0, 0, 0);
+
+  // 返回下一天零点的时间戳
+  return nextDayDate.getTime() / 1000;
+}
