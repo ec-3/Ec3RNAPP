@@ -72,7 +72,7 @@ export function generateDeviceRewardStatusPrefix(round, did = '') { //false:未�
 export const DEVICE_MINING_LAST_ROUND_PREFIX = '__device_mining_last_rounds_prefix__';  //  多设备时还需要加上did
 // 生成带有did后缀的常量值
 export function generateDeviceMiningLastRoundPrefix(did = '') { //最新一次mining的轮次
-  return `${DEVICE_MINING_LAST_ROUND_PREFIX}_${did ? '_' + did : ''}`;
+  return `${DEVICE_MINING_LAST_ROUND_PREFIX}_aa${did ? '_' + did : ''}`;
 }
 export const DEVICE_GET_REWARD_LAST_ROUND_PREFIX = '__device_get_reward_last_rounds_prefix__';  //  多设备时还需要加上did
 // 生成带有did后缀的常量值
@@ -82,12 +82,24 @@ export function generateDeviceGetRewardLastRoundPrefix(did = '') {  //最新一�
 
 
 //timestamp 毫秒值
+// export function calculateRound(timestamp) {
+//   const startDateTimestamp = new Date('2024-01-01');
+//   // 设置时间为零点
+//   startDateTimestamp.setHours(0, 0, 0, 0);
+//   const timeDiff = timestamp - startDateTimestamp.getTime();// + 24*60*60*1000; 
+//   // const round = Math.floor(timeDiff / (24 * 60 * 60 * 1000)) + 1;  //一天
+//   const round = Math.floor(timeDiff / (10 * 60 * 1000)) + 1;  //10分钟
+//   return round;
+// }
 export function calculateRound(timestamp) {
-  const startDateTimestamp = new Date('2024-01-01').getTime();
-  const timeDiff = timestamp - startDateTimestamp;// + 24*60*60*1000;
-  const round = Math.floor(timeDiff / (24 * 60 * 60 * 1000)) + 1;
+  const startDateTimestamp = new Date('2024-01-01');
+    // 设置时间为零点
+  startDateTimestamp.setHours(0, 0, 0, 0);
+  const timeDiffMinutes = Math.floor((timestamp - startDateTimestamp.getTime()) / (60 * 1000));
+  const round = Math.floor(timeDiffMinutes / 10) + 1; // 10分钟对应一个轮次
   return round;
 }
+
 // export function calculateTimestampByRound(round) {
 //   const startDateTimestamp = new Date('2024-01-01 00:00:00').getTime();
 //   const timeDiff = round * (24 * 60 * 60 * 1000) + startDateTimestamp;// + 24*60*60*1000;
@@ -96,12 +108,16 @@ export function calculateRound(timestamp) {
 export function calculateTimestampByRound(round) {
   // 获取当前轮次的起始日期
   const startDate = new Date('2024-01-01');
+  // 设置时间为零点
+  startDate.setHours(0, 0, 0, 0); 
   
   // 计算下一天的日期
-  const nextDayDate = new Date(startDate.getTime() + round * 24 * 60 * 60 * 1000);
-
+  // const nextDayDate = new Date(startDate.getTime() + round * 24 * 60 * 60 * 1000); //一天
   // 设置时间为零点
-  nextDayDate.setHours(0, 0, 0, 0);
+  // nextDayDate.setHours(0, 0, 0, 0);
+
+  const nextDayDate = new Date(startDate.getTime() + round * 10 * 60 * 1000); //10分钟
+
 
   // 返回下一天零点的时间戳
   return nextDayDate.getTime() / 1000;

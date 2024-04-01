@@ -44,7 +44,10 @@ function alert(text: string) {
   Alert.alert('', text, [{text: 'Confirm', onPress: () => {}}]);
 }
 
-export const  NFTStackScreen = () => {
+export const  DeviceActionScreen = () => {
+  const [activeTab, setActiveTab] = useState('battery');
+
+
   const NFTStack = createNativeStackNavigator<NFTStackParamList>();
   const navigation = useNavigation<RootNavigationProps>();
 
@@ -107,7 +110,7 @@ export const  NFTStackScreen = () => {
     let certainTimeConsumption = mmkvStore.getNumber(generateDeviceDataConsumptionPrefix(certainTime)) ?? -1;
     console.log("******** mmkvstore certainTimeConsumption == ", certainTimeConsumption);
     if (certainTimeConsumption == -1) {
-      const myDataCertainTime = await downloadDataWith((certainTime).toString());
+      const myDataCertainTime = ""; //await downloadDataWith((certainTime).toString());
       const myStringCertainTime =  myDataCertainTime as string;
       console.log("******** myDataCertainTime == ", myDataCertainTime);
       if (myStringCertainTime.length > 0) {
@@ -206,6 +209,7 @@ export const  NFTStackScreen = () => {
 
         // setName((myString.substring(0,myString.length)))
         const resultStore = mmkvStore.getString(BLE_DEVICE_DID_ADDR_KEY) ?? "";
+        // setDevID('5GBpnoZbJ5NWi95wxAeET1UUD1ouvpayFwSTTiisshtVnk1u');
         setDevID(resultStore);
         const initTime = mmkvStore.getString(BLE_DEVICE_INIT_TIME_KEY) ?? "06/03/2024";
         setInitTime(initTime);
@@ -225,7 +229,7 @@ export const  NFTStackScreen = () => {
         console.log("***以上对应通用显示形式:", formattedDateTimeString);
         // const startTimeData = mmkvStore.getNumber(generateDeviceDataConsumptionPrefix(lastMiningRoundNext0Time)) ?? 0;
         const startTimeData = await getCertainTimeConsumption(lastMiningRoundNext0Time);
-        const data = Number((today0TimeConsumption - startTimeData).toFixed(2)) * 1000;
+        const data = 1;//Number((today0TimeConsumption - startTimeData).toFixed(2)) * 1000;
         console.log("***mining startTimeData:", startTimeData);
         console.log("***mining today0TimeConsumption:", today0TimeConsumption);
         console.log("***mining data:", data);
@@ -311,59 +315,80 @@ export const  NFTStackScreen = () => {
 
 
   return (
-
-
     <View style={{ height: height, backgroundColor: theme.colorBgSecondary, justifyContent: 'flex-start', alignItems: 'center' }}>
-      <View style={{ borderBottomWidth: 0.5, borderBottomColor: 'white', width: '100%' }}>
-        <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 40, paddingBottom: 10,  color: 'white' }}>Action Log</Text>
+      <View style={{ borderBottomWidth: 0, borderBottomColor: 'white', width: '100%' }}>
+        <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 40, paddingBottom: 10, color: 'white' }}>Action Log</Text>
       </View>
-      <View style={{ height: 'auto', backgroundColor: theme.colorBgSecondary, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 20 }}>
-        <View style={{ marginLeft: 20, flex: 1 }}>
-          <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>ID: {devID}</Text>
-          <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Initial Connection Time: {initTime}</Text>
-          <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Discharge Capacity</Text>
-          <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Today: {todayData}</Text>
-          <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Weekly: {weeklyData}</Text>
-          <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Cumulative: {cumulativeData}</Text>
-          <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Reward: {reward ? reward + ' ECT' : null}</Text>
-        </View>
-        <View style={{ marginRight: 20,  justifyContent: 'center', alignItems: 'center' }}>
-          <Image source={require('assets/BatteryCharging.png')} style={{ width: 32, height: 32 }} />
-          {/* <TouchableOpacity onPress={handleButtonClick} style={{ marginTop: 20, backgroundColor: '#242424', borderRadius: 15, paddingHorizontal: 10, paddingVertical: 5, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: 'white', fontSize: 16 }}>getReward</Text>
-          </TouchableOpacity> */}
 
+      {/* Tab Buttons */}
+      <View style={{ borderBottomWidth: 0.5, borderBottomColor: '#444', width: '100%', paddingTop: 10 }}>
+        
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 50 }}>
+        <View style={{ borderBottomWidth: 1, borderBottomColor: activeTab === 'battery' ? 'white' : '#444', width: '30%' }}>
+            <TouchableOpacity onPress={() => setActiveTab('battery')} style={{ paddingHorizontal: 10, paddingVertical: 5 }}>
+              <Text style={{ color: activeTab === 'battery' ? 'white' : '#888' }}>Battery</Text>
+            </TouchableOpacity>
         </View>
-      </View>
-      
-      {parseFloat(reward) > 0 && (
-      <View style={{ height: 'auto', backgroundColor: theme.colorBgSecondary, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 0 }}>
-        <View style={{ marginLeft: 20, flex: 1 }}>
-        </View>
-        <View style={{ marginRight: 20,  justifyContent: 'center', alignItems: 'center' }}>
-          <TouchableOpacity onPress={handleButtonClick} style={{ marginTop: 20, backgroundColor: '#454545', borderRadius: 5, paddingHorizontal: 10, paddingVertical: 5, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: 'white', fontSize: 20 }}>Get Rewards</Text>
+
+        <View style={{ borderBottomWidth: 1, borderBottomColor: activeTab === 'inverter' ? 'white' : '#444', width: '30%' }}>
+          <TouchableOpacity onPress={() => setActiveTab('inverter')} style={{ paddingHorizontal: 10, paddingVertical: 5 }}>
+            <Text style={{ color: activeTab === 'inverter' ? 'white' : '#888' }}>Inverter</Text>
           </TouchableOpacity>
-
         </View>
+        </View>
+
       </View>
+
+      {/* Content based on Active Tab */}
+      {activeTab === 'battery' && (
+        <View style={{ flex: 1 }}>
+          {/* Battery Content */}
+          <View style={{ backgroundColor: theme.colorBgSecondary, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', paddingTop: 20 }}>
+            <View style={{ marginLeft: 10 }}>
+              <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>ID: {devID}</Text>
+              <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Initial Connection Time: {initTime}</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Discharge Capacity</Text>
+                <Image source={require('assets/BatteryCharging.png')} style={{ width: 32, height: 32 }} />
+              </View>
+              <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Today: {todayData}</Text>
+              <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Weekly: {weeklyData}</Text>
+              <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Cumulative: {cumulativeData}</Text>
+              <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Reward: {reward ? reward + ' ECT' : null}</Text>
+            </View>
+          </View>
+
+          {/* Get Rewards Button */}
+          {parseFloat(reward) > 0 && (
+            <View style={{ backgroundColor: theme.colorBgSecondary, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 20 }}>
+              <TouchableOpacity onPress={handleButtonClick} style={{ backgroundColor: '#454545', borderRadius: 5, paddingHorizontal: 10, paddingVertical: 5 }}>
+                <Text style={{ color: 'white', fontSize: 20 }}>Get Rewards</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {/* Loading Indicator */}
+          {loading && (
+            <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+              <ActivityIndicator size="large" color="white" />
+            </View>
+          )}
+        </View>
       )}
-      
-      {loading && (
-        <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+
+
+      {activeTab === 'inverter' && (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ fontSize: 20, color: 'white' }}>Upcoming</Text>
           <ActivityIndicator size="large" color="white" />
         </View>
       )}
-
-      {/* <View style={{ borderBottomWidth: 0.5, borderBottomColor: 'white', width: '100%' }}>
-        <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 10, color: 'white' }}></Text>
-      </View> */}
     </View>
-    
   );
+  
 };
 
-export default NFTStackScreen;
+export default DeviceActionScreen;
 
 function createStorageKeys(arg0: { value: string; type: number; }[]): { hashed_key: any; } {
   throw new Error('Function not implemented.');

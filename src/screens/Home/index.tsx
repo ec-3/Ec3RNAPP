@@ -16,6 +16,7 @@ import { CrowdloansScreen } from 'screens/Home/Crowdloans';
 import { BrowserScreen } from 'screens/Home/Browser';
 import { HomeStackParamList } from 'routes/home';
 import NFTStackScreen from 'screens/Home/NFT/NFTStackScreen';
+import DeviceActionScreen from 'screens/Home/Device/DeviceActionScreen';
 import withPageWrapper from 'components/pageWrapper';
 import RequestCreateMasterPasswordModal from 'screens/MasterPassword/RequestCreateMasterPasswordModal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -140,7 +141,8 @@ const MainScreen = () => {
       
        <Tab.Screen
         name={'NFTs'}
-        component={NFTStackScreen}
+        // component={NFTStackScreen}
+        component={DeviceActionScreen}
         options={{
           // tabBarLabel: i18n.tabName.nfts,
           tabBarLabel: "Device Info",

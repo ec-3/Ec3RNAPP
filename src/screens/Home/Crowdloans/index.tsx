@@ -716,7 +716,7 @@ export const CrowdloansScreen = () => {
           }}>{receiveData}</Text>
 
 
-        <TouchableOpacity style={{
+        {/* <TouchableOpacity style={{
             height:50,
             marginTop:10,
             // width:width,
@@ -735,7 +735,7 @@ export const CrowdloansScreen = () => {
         <Text style={{marginTop:13,fontSize:20, color: 'white',textAlign:'center'}}>
           启动接收数据
         </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
 
 

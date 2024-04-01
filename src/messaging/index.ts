@@ -268,12 +268,12 @@ export const downloadDataWith = async (dataKey: string) => {
     const { hashed_key } = createStorageKeys([
       { value: "5DFmLstsw1nT35roGkeqMshyEftwHecv11F7oriVtECeuesQ", type: 0 },  //设备那边签名的钱包地址--固定
       // { value: "5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L", type: 0 }, 
-      { value: "5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L_"+dataKey, type: 1 },  //设备did+时间戳
+      { value: "5GBpnoZbJ5NWi95wxAeET1UUD1ouvpayFwSTTiisshtVnk1u_"+dataKey, type: 1 },  //设备did+时间戳
       // { value: "5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L_1711182720", type: 1 },
       // { value: "5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L_1711457230", type: 1 },
       // 5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L_1711457230   
     ]);
-    console.info("********downloadDataWith hashed_key==", "5FKrHYGD6SMGt6LjrtgSqfvueRZLQNYWA5SWECGMrPh8UD1L_"+dataKey);
+    console.info("********downloadDataWith hashed_key==", "5GBpnoZbJ5NWi95wxAeET1UUD1ouvpayFwSTTiisshtVnk1u_"+dataKey);
     const checkIfExists = await makePalletQuery("peaqStorage", "itemStore", [
       hashed_key,
     ]);
@@ -1166,12 +1166,12 @@ const contractAbiDev = [
   }
 ];
 
-export const showReward = async () => {
+export const showReward = async (round) => {
   // 用于将某个设备的某一轮激励提取到指定以太坊地址
 
   // 使用当前时间戳计算轮次值
-  const timestamp = Date.now(); // 当前时间戳
-  const round = calculateRound(timestamp);
+  // const timestamp = Date.now(); // 当前时间戳
+  // const round = calculateRound(timestamp);
   console.log("当前时间戳对应的轮次值是：", round);
 
   // 调用激励合约中的getReward(address did, uint round, address user)方法
@@ -1226,7 +1226,7 @@ export const showReward = async () => {
   console.log("account address:::", account.address);
 
   const myContract = new web3.eth.Contract(contractAbiDev, contractAddress);
-  console.log("do  start:::");
+  console.log("showward do  start:::");
 
   let reward = "";
   await myContract.methods.showReward("0xcb4d593ffaa7268929c6901edd94767ab7e1afa0", round).call((err, result) => {
@@ -1249,13 +1249,13 @@ export const showReward = async () => {
 };
 
 
-export const getReward = async (toAddress: string) => {
+export const getReward = async (toAddress: string, round: Number) => {
   console.log("now get reward");
   // 用于将某个设备的某一轮激励提取到指定以太坊地址
 
   // 使用当前时间戳计算轮次值
-  const timestamp = Date.now(); // 当前时间戳
-  const round = calculateRound(timestamp);
+  // const timestamp = Date.now(); // 当前时间戳
+  // const round = calculateRound(timestamp);
   console.log("当前时间戳对应的轮次值是：", round);
 
   // 调用激励合约中的getReward(address did, uint round, address user)方法
@@ -1280,7 +1280,7 @@ export const getReward = async (toAddress: string) => {
   console.log("account address:::", account.address);
 
   const myContract = new web3.eth.Contract(contractAbiDev, contractAddress);
-  console.log("do  start:::");
+  console.log("getreward do  start:::");
   const transactionObject = {
     from: account.address,
     to: contractAddress,
@@ -1349,12 +1349,12 @@ export const getReward = async (toAddress: string) => {
 };
 
 // const round = 102;
-export const mining = async (data) => {
+export const mining = async (data, round) => {
   console.log("now mining");
 
   // 使用当前时间戳计算轮次值
-  const timestamp = Date.now(); // 当前时间戳
-  const round = calculateRound(timestamp);
+  // const timestamp = Date.now(); // 当前时间戳
+  // const round = calculateRound(timestamp);
   console.log("当前时间戳对应的轮次值是：", round);
 
   // 使用 Web3.js 的例子
@@ -1377,7 +1377,7 @@ export const mining = async (data) => {
 
   // const data = 200;
 
-  console.log("do  start:::");
+  console.log("mining do  start:::");
   const transactionObject = {
     from: account.address,
     to: contractAddress,
