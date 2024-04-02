@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef, } from 'react';
 import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 import NftCollectionList from 'screens/Home/NFT/Collection/NftCollectionList';
 import NftItemList from 'screens/Home/NFT/Item/NftItemList';
@@ -10,7 +10,7 @@ import withPageWrapper from 'components/pageWrapper';
 import i18n from 'utils/i18n/i18n';
 import { downloadData, showReward, getReward, mining, downloadDataWith } from 'messaging/index';
 import { Text, View } from 'react-native-animatable';
-import { ActivityIndicator, Image, Button, TouchableOpacity,Dimensions,  Alert } from 'react-native';
+import { ActivityIndicator, Image, Button, TouchableOpacity,Dimensions,  Alert, Animated, Easing } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ToggleItem } from 'components/ToggleItem';
 import { SubScreenContainer } from 'components/SubScreenContainer';
@@ -24,6 +24,7 @@ import { BLE_DEVICE_DID_ADDR_KEY, BLE_DEVICE_INIT_TIME_KEY, generateDeviceDataPr
 import { useSelector } from 'react-redux';
 import { RootState } from 'stores/index';
 import { isAccountAll } from '@subwallet/extension-base/utils';
+import SpinnerGap from 'assets/SpinnerGap.png'; // 替换为SpinnerGap图片的路径
 
 export type NFTStackParamList = {
   CollectionList: undefined;
@@ -46,6 +47,27 @@ function alert(text: string) {
 
 export const  DeviceActionScreen = () => {
   const [activeTab, setActiveTab] = useState('battery');
+
+  const spinValue = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(
+        spinValue,
+        {
+          toValue: 1,
+          duration: 1500,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }
+      )
+    ).start();
+  }, []);
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
 
 
   const NFTStack = createNativeStackNavigator<NFTStackParamList>();
@@ -208,7 +230,7 @@ export const  DeviceActionScreen = () => {
         console.log("***** get weekly0TimeConsumption:", weekly0TimeConsumption);
 
         // setName((myString.substring(0,myString.length)))
-        const resultStore = mmkvStore.getString(BLE_DEVICE_DID_ADDR_KEY) ?? "";
+        const resultStore = mmkvStore.getString(BLE_DEVICE_DID_ADDR_KEY) ?? "5GBpnoZbJ5NWi95wxAeET1UUD1ouvpayFwSTTiisshtVnk1u";
         // setDevID('5GBpnoZbJ5NWi95wxAeET1UUD1ouvpayFwSTTiisshtVnk1u');
         setDevID(resultStore);
         const initTime = mmkvStore.getString(BLE_DEVICE_INIT_TIME_KEY) ?? "06/03/2024";
@@ -321,34 +343,33 @@ export const  DeviceActionScreen = () => {
       </View>
 
       {/* Tab Buttons */}
-      <View style={{ borderBottomWidth: 0.5, borderBottomColor: '#444', width: '100%', paddingTop: 10 }}>
-        
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 50 }}>
-        <View style={{ borderBottomWidth: 1, borderBottomColor: activeTab === 'battery' ? 'white' : '#444', width: '30%' }}>
-            <TouchableOpacity onPress={() => setActiveTab('battery')} style={{ paddingHorizontal: 10, paddingVertical: 5 }}>
-              <Text style={{ color: activeTab === 'battery' ? 'white' : '#888' }}>Battery</Text>
-            </TouchableOpacity>
-        </View>
+      <View style={{ borderBottomWidth: 1, borderBottomColor: '#FFF', width: '100%', paddingTop: 10 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 70 }}>
+          <TouchableOpacity 
+            onPress={() => setActiveTab('battery')} 
+            style={{ borderBottomWidth: activeTab === 'battery' ? 2 : 0, borderBottomColor: activeTab === 'battery' ? 'white' : 'transparent', paddingHorizontal: 10, paddingVertical: 5 }}>
+            <Text style={{ color: activeTab === 'battery' ? 'white' : '#888', fontSize: 16 }}>Battery</Text>
+          </TouchableOpacity>
 
-        <View style={{ borderBottomWidth: 1, borderBottomColor: activeTab === 'inverter' ? 'white' : '#444', width: '30%' }}>
-          <TouchableOpacity onPress={() => setActiveTab('inverter')} style={{ paddingHorizontal: 10, paddingVertical: 5 }}>
-            <Text style={{ color: activeTab === 'inverter' ? 'white' : '#888' }}>Inverter</Text>
+          <TouchableOpacity 
+            onPress={() => setActiveTab('inverter')} 
+            style={{ borderBottomWidth: activeTab === 'inverter' ? 2 : 0, borderBottomColor: activeTab === 'inverter' ? 'white' : 'transparent', paddingHorizontal: 10, paddingVertical: 5 }}>
+            <Text style={{ color: activeTab === 'inverter' ? 'white' : '#888', fontSize: 16 }}>Inverter</Text>
           </TouchableOpacity>
         </View>
-        </View>
-
       </View>
+
 
       {/* Content based on Active Tab */}
       {activeTab === 'battery' && (
         <View style={{ flex: 1 }}>
           {/* Battery Content */}
           <View style={{ backgroundColor: theme.colorBgSecondary, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', paddingTop: 20 }}>
-            <View style={{ marginLeft: 10 }}>
+            <View style={{ marginLeft: '6%', marginRight:'6%', width: '88%'  }}>
               <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>ID: {devID}</Text>
               <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Initial Connection Time: {initTime}</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Discharge Capacity</Text>
+                <Text style={{ flex: 1, textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Discharge Capacity</Text>
                 <Image source={require('assets/BatteryCharging.png')} style={{ width: 32, height: 32 }} />
               </View>
               <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Today: {todayData}</Text>
@@ -378,10 +399,18 @@ export const  DeviceActionScreen = () => {
 
 
       {activeTab === 'inverter' && (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ fontSize: 20, color: 'white' }}>Upcoming</Text>
-          <ActivityIndicator size="large" color="white" />
-        </View>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ fontSize: 30, color: 'white', bottom: 41 }}>Upcoming</Text>
+            {/* <ActivityIndicator size="large" color="white" /> */}
+            <Animated.Image
+              source={SpinnerGap}
+              style={{
+                width: 50,
+                height: 50,
+                transform: [{ rotate: spin }],
+              }}
+            />
+          </View>
       )}
     </View>
   );
