@@ -32,6 +32,9 @@ export type RootStackParamList = {
   ConnectWalletConnect: undefined;
   MigratePassword: undefined;
   CreateAccount: { keyTypes?: KeypairType[]; isBack?: boolean };
+  CrowdloansScreen: undefined; 
+  PrepareConnectScreen: undefined;
+  DeviceAddScreen: undefined;
   QrScanner: undefined;
   AccountsScreen: { pathName?: string };
   EditAccount: { address: string; name: string };

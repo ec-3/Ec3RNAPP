@@ -26,6 +26,8 @@ import { RootState } from 'stores/index';
 import { isAccountAll } from '@subwallet/extension-base/utils';
 import SpinnerGap from 'assets/SpinnerGap.png'; // 替换为SpinnerGap图片的路径
 
+import { useFocusEffect } from '@react-navigation/native';
+
 export type NFTStackParamList = {
   CollectionList: undefined;
   Collection: { collectionId: string };
@@ -50,7 +52,8 @@ export const  DeviceActionScreen = () => {
 
   const spinValue = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
+  const startAnimation = () => {
+    // console.log("**************** startAnimation");
     Animated.loop(
       Animated.timing(
         spinValue,
@@ -62,7 +65,39 @@ export const  DeviceActionScreen = () => {
         }
       )
     ).start();
-  }, []);
+  };
+
+  const stopAnimation = () => {
+    // console.log("**************** stopAnimation");
+    Animated.loop(
+      Animated.timing(
+        spinValue,
+        {
+          toValue: 0,
+          duration: 0,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }
+      )
+    ).start();
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // console.log("**************** user focus effect callback:");
+      if (activeTab == 'inverter') {
+        startAnimation();
+      }
+
+      return () => {
+        // console.log("**************** user focus effect callback: return ");
+        // if (activeTab == 'battery') {
+          stopAnimation();
+        // }
+      };
+    }, [activeTab])
+  );
+
 
   const spin = spinValue.interpolate({
     inputRange: [0, 1],
@@ -346,13 +381,22 @@ export const  DeviceActionScreen = () => {
       <View style={{ borderBottomWidth: 1, borderBottomColor: '#FFF', width: '100%', paddingTop: 10 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 70 }}>
           <TouchableOpacity 
-            onPress={() => setActiveTab('battery')} 
+            onPress={() => {
+              // console.log("**************** onpress battery:");
+              // 在这里执行所需的操作
+              setActiveTab('battery');
+            }} 
             style={{ borderBottomWidth: activeTab === 'battery' ? 2 : 0, borderBottomColor: activeTab === 'battery' ? 'white' : 'transparent', paddingHorizontal: 10, paddingVertical: 5 }}>
             <Text style={{ color: activeTab === 'battery' ? 'white' : '#888', fontSize: 16 }}>Battery</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
-            onPress={() => setActiveTab('inverter')} 
+            // onPress={() => setActiveTab('inverter')} 
+            onPress={() => {
+              // console.log("**************** onpress inverter:");
+              // 在这里执行所需的操作
+              setActiveTab('inverter');
+            }} 
             style={{ borderBottomWidth: activeTab === 'inverter' ? 2 : 0, borderBottomColor: activeTab === 'inverter' ? 'white' : 'transparent', paddingHorizontal: 10, paddingVertical: 5 }}>
             <Text style={{ color: activeTab === 'inverter' ? 'white' : '#888', fontSize: 16 }}>Inverter</Text>
           </TouchableOpacity>

@@ -12,11 +12,12 @@ import { BOTTOM_BAR_HEIGHT, deviceWidth } from 'constants/index';
 import { ColorMap } from 'styles/color';
 import useCheckEmptyAccounts from 'hooks/useCheckEmptyAccounts';
 import { FirstScreen } from 'screens/Home/FirstScreen';
-import { CrowdloansScreen } from 'screens/Home/Crowdloans';
+import { CrowdloansScreen } from 'screens/Home/Crowdloans/CrowdloansScreen';
 import { BrowserScreen } from 'screens/Home/Browser';
 import { HomeStackParamList } from 'routes/home';
 import NFTStackScreen from 'screens/Home/NFT/NFTStackScreen';
 import DeviceActionScreen from 'screens/Home/Device/DeviceActionScreen';
+import DeviceRewardScreen from 'screens/Home/Device/DeviceRewardScreen';
 import withPageWrapper from 'components/pageWrapper';
 import RequestCreateMasterPasswordModal from 'screens/MasterPassword/RequestCreateMasterPasswordModal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -152,7 +153,8 @@ const MainScreen = () => {
       />
       <Tab.Screen
         name={'Crowdloans'}
-        component={CrowdloansScreen}
+        component={DeviceRewardScreen}
+        // component={CrowdloansScreen}
         // component={withPageWrapper(CrowdloansScreen, ['crowdloan', 'price', 'chainStore', 'logoMaps'])}
         options={{
           tabBarLabel: "Bluetooth",

@@ -75,7 +75,7 @@ const SERVICE_UUID = '55E405D2-AF9F-A98F-E54A-7DFE43535355';
 const WRITE_CHARACTERISTIC_UUID = '16962447-C623-61BA-D94B-4D1E43535349';
 const NOTIFY_CHARACTERISTIC_UUID = 'B39B7234-BEEC-D4A8-F443-418843535349';
 
-export const CrowdloansScreen = () => {
+export const DeviceAddScreen = () => {
   const theme = useSubWalletTheme().swThemes;
 
   const items: CrowdloanItemType[] = useGetCrowdloanList();
@@ -583,13 +583,13 @@ export const CrowdloansScreen = () => {
           </Text>
 
           <ImageBackground
-            source={require('./assets/beijingBlu.png')}
+            source={require('assets/beijingBlu.png')}
             style={{height:240,width:240,alignSelf:'center',marginTop:20}}> 
           </ImageBackground>
               
           <View style ={{height:50,width:300,alignSelf:'center',marginTop:30,backgroundColor:theme.colorBorder,borderRadius:15,flexDirection: 'row',flex:1}}>
               <ImageBackground
-                source={require('./assets/namepass.png')}
+                source={require('assets/namepass.png')}
                 style={{height:30,width:30,marginLeft:20,marginTop:10}}
                 resizeMode='contain'
                 > 
@@ -619,7 +619,7 @@ export const CrowdloansScreen = () => {
             <View style ={{height:50,width:300,alignSelf:'center',marginTop:10,backgroundColor:theme.colorBorder,borderRadius:15,flexDirection: 'row',flex:1}}>
               
               <ImageBackground
-                source={require('./assets/wiftpassword.png')}
+                source={require('assets/wiftpassword.png')}
                 style={{height:30,width:30,marginLeft:20,marginTop:10}}
                 resizeMode='contain'
                 > 
@@ -770,7 +770,7 @@ export const CrowdloansScreen = () => {
 };
 
 
-export default CrowdloansScreen;
+export default DeviceAddScreen;
 
 const styles = StyleSheet.create({
 

@@ -72,6 +72,10 @@ import { LockScreen } from 'screens/LockScreen';
 import { STATUS_BAR_LIGHT_CONTENT } from 'styles/sharedStyles';
 import { UnlockModal } from 'components/common/Modal/UnlockModal';
 import { AppModalContext } from 'providers/AppModalContext';
+import CrowdloansScreen from 'screens/Home/Crowdloans/index'; // 导入 CrowdloansScreen 组件
+import PrepareConnectScreen from 'screens/Home/Device/PrepareConnectScreen'; 
+import DeviceAddScreen from 'screens/Home/Device/DeviceAddScreen'; 
+
 
 interface Props {
   isAppReady: boolean;
@@ -264,6 +268,9 @@ const AppNavigator = ({ isAppReady }: Props) => {
                 <Stack.Screen name="NetworkSettingDetail" component={NetworkSettingDetail} />
                 <Stack.Screen name="ImportNetwork" component={ImportNetwork} options={{ gestureEnabled: false }} />
                 <Stack.Screen name="CreateAccount" component={CreateAccount} />
+                <Stack.Screen name="CrowdloansScreen" component={CrowdloansScreen} />
+                <Stack.Screen name="PrepareConnectScreen" component={PrepareConnectScreen} />
+                <Stack.Screen name="DeviceAddScreen" component={DeviceAddScreen} />
                 <Stack.Screen
                   name="MigratePassword"
                   component={ApplyMasterPassword}
