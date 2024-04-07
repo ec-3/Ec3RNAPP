@@ -1235,7 +1235,7 @@ export const showReward = async (round) => {
       reward = result;
       if (result > 0) {
          //保存次轮奖励的值, 大于0才存, 因为这里同一个round可能获取多次奖励值,而此过程中有可能奖励已经被领完变成0了会冲掉原本记录的值, 如果是又有新的奖励mining到此round了, 增加的正值也是可以刷新保存的
-        mmkvStore.set(generateDeviceRewardValuePrefix(round), result);
+        mmkvStore.set(generateDeviceRewardValuePrefix(round), web3.utils.fromWei(result, "ether"));
         mmkvStore.set(generateDeviceRewardStatusPrefix(round), false); //保存为未领取的状态
       }
     } else {

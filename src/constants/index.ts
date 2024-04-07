@@ -44,7 +44,7 @@ export const ALL_KEY = 'all';
 
 
 
-export const BLE_DEVICE_DID_ADDR_KEY = '__ble_device_did_addr__';
+export const BLE_DEVICE_DID_ADDR_KEY = '__ble_device_did_addr__'; //支持多设备后, 此字段需要废弃
 export const BLE_DEVICE_INIT_TIME_KEY = '__ble_device_init_time__';
 export const DEVICE_DATA_PREFIX = '__device_data_prefix__'; //+时间戳   多设备时还需要加上did
 export const DEVICE_DATA_CONSUMPTION_PREFIX = '__device_data_consumption_prefix__'; //+时间戳   多设备时还需要加上did
@@ -79,6 +79,15 @@ export const DEVICE_GET_REWARD_LAST_ROUND_PREFIX = '__device_get_reward_last_rou
 export function generateDeviceGetRewardLastRoundPrefix(did = '') {  //最新一次领过奖励的round轮次
   return `${DEVICE_GET_REWARD_LAST_ROUND_PREFIX}_${did ? '_' + did : ''}`;
 }
+
+
+export const DEVICE_COUNT = '__device_count__';  //  设备总数量
+export const DEVICE_DID_OF_INDEX_PREFIX = '__device_did_of_index_prefix__';  //  设备
+// 生成带有did后缀的常量值
+export function generateDeviceDidPrefixOfIndex(index) {  //按编号index获取设备did
+  return `${DEVICE_GET_REWARD_LAST_ROUND_PREFIX}_${index}`;
+}
+
 
 
 //timestamp 毫秒值
@@ -122,3 +131,16 @@ export function calculateTimestampByRound(round) {
   // 返回下一天零点的时间戳
   return nextDayDate.getTime() / 1000;
 }
+
+
+export const formatTimestampToDateTimeString = (timestamp) => {  //timestamp单位为秒
+  const date = new Date(timestamp * 1000); // 注意JavaScript中的时间戳是以毫秒为单位的，所以乘以1000转换为毫秒
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 月份从0开始，需要加1，并且保证两位数
+  const day = date.getDate().toString().padStart(2, '0'); // 保证两位数
+  const hours = date.getHours().toString().padStart(2, '0'); // 保证两位数
+  const minutes = date.getMinutes().toString().padStart(2, '0'); // 保证两位数
+  const seconds = date.getSeconds().toString().padStart(2, '0'); // 保证两位数
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};

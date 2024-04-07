@@ -19,7 +19,7 @@ import { dev } from '@polkadot/types/interfaces/definitions';
 import { mmkvStore } from 'utils/storage';
 import { BLE_DEVICE_DID_ADDR_KEY, BLE_DEVICE_INIT_TIME_KEY, generateDeviceDataPrefix, generateDeviceDataConsumptionPrefix, calculateRound,
   generateDeviceRewardValuePrefix, generateDeviceRewardStatusPrefix, generateDeviceMiningLastRoundPrefix, generateDeviceGetRewardLastRoundPrefix, 
-  calculateTimestampByRound, generateDeviceDataConsumptionBAKPrefix } from 'constants/index';
+  calculateTimestampByRound, generateDeviceDataConsumptionBAKPrefix, formatTimestampToDateTimeString } from 'constants/index';
 
 import { useSelector } from 'react-redux';
 import { RootState } from 'stores/index';
@@ -121,18 +121,6 @@ export const  DeviceActionScreen = () => {
   const [weeklyData, setWeeklyData] = useState(String());
   const [cumulativeData, setCumulativeData] = useState(String());
   const [reward, setReward] = useState(String());
-
-  const formatTimestampToDateTimeString = (timestamp) => {  //timestamp单位为秒
-    const date = new Date(timestamp * 1000); // 注意JavaScript中的时间戳是以毫秒为单位的，所以乘以1000转换为毫秒
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 月份从0开始，需要加1，并且保证两位数
-    const day = date.getDate().toString().padStart(2, '0'); // 保证两位数
-    const hours = date.getHours().toString().padStart(2, '0'); // 保证两位数
-    const minutes = date.getMinutes().toString().padStart(2, '0'); // 保证两位数
-    const seconds = date.getSeconds().toString().padStart(2, '0'); // 保证两位数
-
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-};
 
 
   // 获取当前时间前面一个5秒的倍数时间戳的秒值

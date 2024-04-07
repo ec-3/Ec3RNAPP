@@ -40,7 +40,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import { mmkvStore } from 'utils/storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { BLE_DEVICE_DID_ADDR_KEY, BLE_DEVICE_INIT_TIME_KEY } from 'constants/index';
+import { BLE_DEVICE_DID_ADDR_KEY, BLE_DEVICE_INIT_TIME_KEY, DEVICE_COUNT, generateDeviceDidPrefixOfIndex } from 'constants/index';
 
 
 
@@ -212,6 +212,10 @@ export const CrowdloansScreen = () => {
           resultPin = resultPin.replace(/,END$/, ''); // 替换掉最后的",END"
           console.log('BluetoothUpdateValue *****resultPin222:', resultPin); 
           mmkvStore.set(BLE_DEVICE_DID_ADDR_KEY, resultPin);
+
+          var deviceCount = mmkvStore.getNumber(DEVICE_COUNT) ?? 0;
+          mmkvStore.set(DEVICE_COUNT, deviceCount+1);
+          mmkvStore.set(generateDeviceDidPrefixOfIndex(deviceCount+1), resultPin);
 
           const currentDate = new Date();
           const year = currentDate.getFullYear();
