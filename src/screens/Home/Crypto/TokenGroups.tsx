@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { TokenBalanceItemType } from 'types/balance';
 import { CryptoNavigationProps } from 'routes/home';
@@ -27,6 +27,7 @@ import { useToast } from 'react-native-toast-notifications';
 import { TokenSearchModal } from 'screens/Home/Crypto/TokenSearchModal';
 import { SelectAccAndTokenModal } from 'screens/Home/Crypto/shared/SelectAccAndTokenModal';
 import { tokenItem } from 'constants/itemHeight';
+import useChainChecker from 'hooks/chain/useChainChecker';
 
 const renderActionsStyle: StyleProp<any> = {
   flexDirection: 'row',
@@ -70,6 +71,14 @@ export const TokenGroups = () => {
   } = useReceiveQR();
 
   const toast = useToast();
+
+  const { turnOnChain, checkChainConnected } = useChainChecker();
+  useEffect(() => {
+    const isConnected = checkChainConnected("agung");
+    if (!isConnected) {
+      turnOnChain("agung");
+    }
+  }, []); // empty dependency array to run this effect only once when component mounts
 
   const onPressItem = useCallback(
     (item: TokenBalanceItemType) => {
