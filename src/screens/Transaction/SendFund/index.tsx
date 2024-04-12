@@ -150,6 +150,7 @@ function getTokenAvailableDestinations(
   const result: ChainInfo[] = [];
   const originChain = chainInfoMap[_getOriginChainOfAsset(tokenSlug)];
 
+  console.log("******* getTokenAvailableDestinations=:", originChain);
   // Firstly, push the originChain of token
   result.push({
     name: originChain.name,

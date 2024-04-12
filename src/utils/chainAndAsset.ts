@@ -22,8 +22,9 @@ export function isTokenAvailable(
   if (chainAsset.slug === "krest_network-NATIVE-KREST" 
       || chainAsset.slug === "agung_network-NATIVE-AGUNG"
       || chainAsset.slug === "polygon-NATIVE-MATIC"
-      || chainAsset.slug === "agung_network-NATIVE-ECT"
-      || chainAsset.slug === "ethereum-ERC20-ECT-0xefc6899a558096d4f853682d29bbc2e46227fb10"
+      // || chainAsset.slug === "agung_network-NATIVE-ECT"
+      // || chainAsset.slug === "ethereum-ERC20-ECT-0xefc6899a558096d4f853682d29bbc2e46227fb10"
+      || chainAsset.slug === "agung_network-ERC20-ECT-0xefc6899a558096d4f853682d29bbc2e46227fb10"
       || chainAsset.slug === "agung-NATIVE-ECT") {
     return true;
   } else {
