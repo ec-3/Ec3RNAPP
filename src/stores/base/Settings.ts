@@ -11,7 +11,7 @@ import { AppSettings, ReduxStatus } from 'stores/types';
 
 const initialState = {
   // UI settings
-  isShowBalance: false,
+  isShowBalance: true, //false,
   isShowZeroBalance: false,
   accountAllLogo: '',
   theme: ThemeNames.DARK,
@@ -41,7 +41,7 @@ const settingsSlice = createSlice({
         ...state,
         // todo: will save language, theme, isShowZeroBalance in background
         browserConfirmationType: payload.browserConfirmationType,
-        isShowBalance: payload.isShowBalance,
+        isShowBalance: true,  //payload.isShowBalance,
         accountAllLogo: payload.accountAllLogo,
         reduxStatus: ReduxStatus.READY,
       };

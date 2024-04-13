@@ -27,11 +27,9 @@ import { useToast } from 'react-native-toast-notifications';
 import { TokenSearchModal } from 'screens/Home/Crypto/TokenSearchModal';
 import { SelectAccAndTokenModal } from 'screens/Home/Crypto/shared/SelectAccAndTokenModal';
 import { tokenItem } from 'constants/itemHeight';
-<<<<<<< HEAD
 import useChainChecker from 'hooks/chain/useChainChecker';
-=======
 import { Background } from 'styles/color';
->>>>>>> 54877ef8 (修改首页)
+
 
 const renderActionsStyle: StyleProp<any> = {
   flexDirection: 'row',
@@ -78,9 +76,9 @@ export const TokenGroups = () => {
 
   const { turnOnChain, checkChainConnected } = useChainChecker();
   useEffect(() => {
-    const isConnected = checkChainConnected("agung");
+    const isConnected = checkChainConnected("agung_network");
     if (!isConnected) {
-      turnOnChain("agung");
+      turnOnChain("agung_network");
     }
   }, []); // empty dependency array to run this effect only once when component mounts
 
