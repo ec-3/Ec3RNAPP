@@ -9,7 +9,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import { ColorMap } from 'styles/color';
+import { Background, ColorMap } from 'styles/color';
 import { Coins } from 'phosphor-react-native';
 import { EmptyList } from 'components/EmptyList';
 import { ActivityIndicator, AnimatedFlatlist } from 'components/design-system-ui';
@@ -197,7 +197,7 @@ export const TokensLayout = ({
 
   // TODO: Move these codes to style folder in next refactor
   const flex1 = { flex: 1 };
-  const listContainerStyle = { paddingHorizontal: 16 };
+  const listContainerStyle = { paddingHorizontal: 16,paddingTop:50 };
   const stickyActionHeaderStyle = [
     {
       paddingHorizontal: 16,

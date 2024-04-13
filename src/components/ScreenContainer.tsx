@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
+    // backgroundColor:'red',
   },
   contentContainer: { flex: 1, overflow: 'hidden', paddingTop: Platform.OS === 'ios' ? 0 : 8 },
 });

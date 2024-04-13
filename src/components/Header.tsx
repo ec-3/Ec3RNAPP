@@ -17,6 +17,7 @@ import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { DisabledStyle } from 'styles/sharedStyles';
 import { validWalletConnectUri } from 'utils/scanner/walletConnect';
 import { addConnection } from 'messaging/index';
+import { Background } from 'styles/color';
 
 export interface HeaderProps {
   rightComponent?: JSX.Element;
@@ -111,7 +112,7 @@ export const Header = ({ rightComponent, disabled }: HeaderProps) => {
         )}
       </View>
 
-      <AddressScanner
+      {/* <AddressScanner
         qrModalVisible={isScanning}
         onPressCancel={() => {
           setError(undefined);
@@ -120,7 +121,7 @@ export const Header = ({ rightComponent, disabled }: HeaderProps) => {
         onChangeAddress={onScanAddress}
         error={error}
         isShowError={true}
-      />
+      /> */}
     </View>
   );
 };

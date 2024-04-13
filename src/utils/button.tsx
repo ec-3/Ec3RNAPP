@@ -5,7 +5,7 @@ import { SWIconProps } from 'components/design-system-ui/icon';
 
 export function getButtonIcon(
   icon: React.ElementType<IconProps>,
-  weight: SWIconProps['weight'] = 'fill',
+  weight: SWIconProps['weight'] = 'thin',
   size: SWIconProps['size'] = 'lg',
 ) {
   return (color: string) => <Icon phosphorIcon={icon} weight={weight} iconColor={color} size={size} />;

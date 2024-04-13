@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleProp, TouchableOpacityProps, View, ViewStyle } from 'react-native';
+import { StyleProp, TouchableOpacity, TouchableOpacityProps, View, ViewStyle } from 'react-native';
 import Text from '../components/Text';
 import { FontMedium } from 'styles/sharedStyles';
-import { Button } from 'components/design-system-ui';
+import { Button, Icon } from 'components/design-system-ui';
 import { ThemeTypes } from 'styles/themes';
 import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
 import { ButtonPropsType } from 'components/design-system-ui/button/PropsType';
@@ -26,17 +26,28 @@ function getButtonTextStyle(disabled: boolean, theme: ThemeTypes) {
 const ActionButton = (actionButtonProps: Props) => {
   const theme = useSubWalletTheme().swThemes;
   const { label, icon, disabled, onPress, buttonWrapperStyle } = actionButtonProps;
+  if(typeof icon === 'function') {
+    console.log("----------2")
+  }else {
+    console.log("----------1")
+
+  }
   return (
     <View style={{ alignItems: 'center' }}>
       <View style={buttonWrapperStyle}>
-        <Button
-          shape={'squircle'}
+        {/* <Button
+          // shape={'squircle'}
           size={'sm'}
+          contentAlign='center'
           disabled={!!disabled}
-          icon={icon}
+          icon={typeof icon === 'function' ? icon('white') : icon}
           // @ts-ignore
           onPress={() => onPress && onPress()}
-        />
+        /> */}
+          <TouchableOpacity onPress={onPress}>
+          {typeof icon === 'function' ? icon('white') : icon}
+          </TouchableOpacity>
+
       </View>
 
       {!!label && <Text style={getButtonTextStyle(!!disabled, theme)}>{label}</Text>}

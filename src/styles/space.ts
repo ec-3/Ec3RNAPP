@@ -11,5 +11,6 @@ export const SpaceStyle = StyleSheet.create({
   oneContainer: {
     paddingLeft: grid,
     paddingRight: grid,
+    // backgroundColor:'red'
   },
 });
