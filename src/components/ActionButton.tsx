@@ -26,12 +26,7 @@ function getButtonTextStyle(disabled: boolean, theme: ThemeTypes) {
 const ActionButton = (actionButtonProps: Props) => {
   const theme = useSubWalletTheme().swThemes;
   const { label, icon, disabled, onPress, buttonWrapperStyle } = actionButtonProps;
-  if(typeof icon === 'function') {
-    console.log("----------2")
-  }else {
-    console.log("----------1")
-
-  }
+ 
   return (
     <View style={{ alignItems: 'center' }}>
       <View style={buttonWrapperStyle}>

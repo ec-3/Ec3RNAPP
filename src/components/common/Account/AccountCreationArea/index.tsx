@@ -10,6 +10,7 @@ import {
   ShareNetwork,
   Swatches,
   Wallet,
+  TextH,
 } from 'phosphor-react-native';
 import { EVM_ACCOUNT_TYPE } from 'constants/index';
 import i18n from 'utils/i18n/i18n';
@@ -20,10 +21,18 @@ import { RootNavigationProps, RootStackParamList } from 'routes/index';
 import ToastContainer from 'react-native-toast-notifications';
 import { SelectAccountTypeModal } from 'components/Modal/SelectAccountTypeModal';
 import { KeypairType } from '@polkadot/util-crypto/types';
-import { canDerive } from '@subwallet/extension-base/utils';
+import { canDerive, isAccountAll } from '@subwallet/extension-base/utils';
 import { AccountActionSelectModal, ActionItemType } from 'components/Modal/AccountActionSelectModal';
 import { ModalRef } from 'types/modalRef';
 import useGoHome from 'hooks/screen/useGoHome';
+import { View } from 'react-native-animatable';
+// import { Avatar, Icon } from 'react-native-elements';
+import { Image, Text } from 'react-native';
+import AccountSelectField from '../AccountSelectField';
+import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { Avatar, Icon, Typography } from 'components/design-system-ui';
+// import { Text } from 'react-native-svg';
+
 
 interface Props {
   createAccountRef: React.MutableRefObject<ModalRef | undefined>;
@@ -141,13 +150,13 @@ export const AccountCreationArea = ({
         icon: PlusCircle,
         label: i18n.createAccount.createWithNewSeedPhrase,
       },
-      {
-        key: 'derive',
-        backgroundColor: '#E6478E',
-        icon: ShareNetwork,
-        label: i18n.createAccount.deriveFromAnExistingAcc,
-        disabled: !canDerivedAccounts.length,
-      },
+      // {
+      //   key: 'derive',
+      //   backgroundColor: '#E6478E',
+      //   icon: ShareNetwork,
+      //   label: i18n.createAccount.deriveFromAnExistingAcc,
+      //   disabled: !canDerivedAccounts.length,
+      // },
     ];
   }, [canDerivedAccounts.length]);
 
@@ -155,7 +164,9 @@ export const AccountCreationArea = ({
     if (item.key === 'createAcc') {
       if (allowToShowSelectType) {
         selectTypeRef && selectTypeRef.current?.onOpenModal();
+        console.log("dddddds1")
       } else {
+        console.log("dddddds2")
         createAccountRef?.current?.onCloseModal();
         setTimeout(() => {
           if (hasMasterPassword) {
@@ -219,22 +230,62 @@ export const AccountCreationArea = ({
       }
     }, 300);
   };
+  
+  const theme = useSubWalletTheme().swThemes;
+  // const _style = AccountSelectField(theme);
+  const currentAccount = useSelector((state: RootState) => state.accountState.currentAccount);
+  const isAll = useMemo((): boolean => !!currentAccount && isAccountAll(currentAccount.address), [currentAccount]);
+  // TODO: reformat address when have new network info
 
   return (
     <>
+
       <AccountActionSelectModal
         accActionRef={createAccountRef}
-        modalTitle={i18n.header.createNewAcc}
+        // modalTitle={i18n.header.createNewAcc}
+        modalTitle={''}
         items={createAccountAction}
         onSelectItem={createAccountFunc}>
         <DeriveAccountModal deriveAccModalRef={deriveAccModalRef} goHome={goHome} navigation={navigation} />
+       
+        <View style={{height:40,marginBottom:10,backgroundColor:'black',flexDirection:'row',alignItems:'center'}}>
+          
+          {/* <AccountSelectField
+          disabled={true}
+          onPress={() =>{
+            // navigation.navigate('AccountsScreen', { pathName: nearestPathName })
+            createAccountRef?.current?.onOpenModal()
+          } }
+          /> */}
+          
+          <View style={{marginLeft:10}}>
+            <Avatar
+                value={currentAccount?.address || ''}
+                size={28}
+                identPrefix={42}
+                theme={currentAccount?.type === 'ethereum' ? 'ethereum' : 'polkadot'}
+              />
+          </View>
+        
+          <View style={{ justifyContent: 'center', width: 280, alignItems: 'flex-start' }}>
+            <Text style={{ textAlign: 'left',fontSize:20,marginLeft:10,color:'white' }}>
+              {currentAccount?.name}
+            </Text>
+          </View>
+
+          <Image
+            source={require('./acuntAvatarSelect.png')}
+            style={{width:18,height:18,marginLeft:10}}
+           />
+
+        </View>
       </AccountActionSelectModal>
 
       <SelectAccountTypeModal selectTypeRef={selectTypeRef} onConfirm={onSelectAccountTypes} />
 
       <AccountActionSelectModal
         accActionRef={importAccountRef}
-        modalTitle={i18n.header.importAcc}
+        modalTitle={'i18n.header.importAcc'}
         items={importAccountActions}
         onSelectItem={importAccountActionFunc}
       />

@@ -37,6 +37,9 @@ interface Props<T> {
   isUseForceHidden?: boolean;
   level?: number;
   isUseModalV2?: boolean;
+  firstShowChilden?: boolean;
+
+
 }
 
 function _BasicSelectModal<T>(selectModalProps: Props<T>, ref: ForwardedRef<any>) {
@@ -62,6 +65,7 @@ function _BasicSelectModal<T>(selectModalProps: Props<T>, ref: ForwardedRef<any>
     isUseForceHidden,
     isUseModalV2 = true,
     level,
+    firstShowChilden = false
   } = selectModalProps;
   const modalBaseV2Ref = useRef<SWModalRefProps>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -154,8 +158,9 @@ function _BasicSelectModal<T>(selectModalProps: Props<T>, ref: ForwardedRef<any>
             !isUseModalV2 && onCloseModal();
             onChangeModalVisible && onChangeModalVisible();
           }}>
-          <View style={{ width: '100%' }}>
+          <View style={{ width: '100%',backgroundColor:'blue' }}>
             {beforeListItem}
+            {firstShowChilden ? children : null}
             <ScrollView
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps={'handled'}
@@ -165,7 +170,9 @@ function _BasicSelectModal<T>(selectModalProps: Props<T>, ref: ForwardedRef<any>
             </ScrollView>
 
             {selectModalType === 'multi' && renderFooter()}
-            {children}
+            {/* {children} */}
+            {firstShowChilden ? null : children}
+
           </View>
         </SwModal>
       ) : (

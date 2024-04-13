@@ -259,7 +259,9 @@ export const zh = {
     yourJsonFile: '你的JSON文件',
   },
   createAccount: {
-    createWithNewSeedPhrase: '使用新助记词创建新帐户',
+    // createWithNewSeedPhrase: '使用新助记词创建新帐户',
+    createWithNewSeedPhrase: 'Add  New  Wallet',
+
     deriveFromAnExistingAcc: '从现有账户派生新账户',
     substrate: 'Substrate',
     ethereum: '以太坊',

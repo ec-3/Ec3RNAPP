@@ -261,7 +261,8 @@ export const en = {
     yourJsonFile: 'Your json file',
   },
   createAccount: {
-    createWithNewSeedPhrase: 'Create with new seed phrase',
+    // createWithNewSeedPhrase: 'Create with new seed phrase',
+    createWithNewSeedPhrase: 'Add new Wallet',
     deriveFromAnExistingAcc: 'Derive from an existing account',
     substrate: 'Substrate',
     ethereum: 'Ethereum',

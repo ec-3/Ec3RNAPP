@@ -45,6 +45,7 @@ export const AccountActionSelectModal = ({
         selectModalType={'single'}
         isShowInput={false}
         onBackButtonPress={() => accActionRef?.current?.onCloseModal()}
+        firstShowChilden={true}
         onSelectItem={onSelectItem}>
         <>
           {children}

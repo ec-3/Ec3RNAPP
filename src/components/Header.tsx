@@ -1,5 +1,5 @@
 import { QrCode } from 'phosphor-react-native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Keyboard, StyleProp, View } from 'react-native';
 import { RESULTS } from 'react-native-permissions';
 import { SpaceStyle } from 'styles/space';
@@ -18,6 +18,8 @@ import { DisabledStyle } from 'styles/sharedStyles';
 import { validWalletConnectUri } from 'utils/scanner/walletConnect';
 import { addConnection } from 'messaging/index';
 import { Background } from 'styles/color';
+import { AccountCreationArea } from './common/Account/AccountCreationArea';
+import { ModalRef } from 'types/modalRef';
 
 export interface HeaderProps {
   rightComponent?: JSX.Element;
@@ -77,12 +79,19 @@ export const Header = ({ rightComponent, disabled }: HeaderProps) => {
     },
     [navigation],
   );
+  
+   
 
+
+  const createAccountRef = useRef<ModalRef>();
+  const importAccountRef = useRef<ModalRef>();
+  const attachAccountRef = useRef<ModalRef>();
+  
   return (
     <View style={[SpaceStyle.oneContainer, headerWrapper]}>
-      <View style={{ position: 'absolute', left: 16 ,display:'none'}}>
+      <View style={{ position: 'absolute', left: 16 }}>
         <Button
-          style={[{ marginLeft: -8 }, disabled && DisabledStyle]}
+          style={[{ marginLeft: -8 ,backgroundColor:'red'}, disabled && DisabledStyle]}
           disabled={disabled}
           type={'ghost'}
           size={'xs'}
@@ -94,9 +103,22 @@ export const Header = ({ rightComponent, disabled }: HeaderProps) => {
         />
       </View>
 
+      <AccountCreationArea
+        createAccountRef={createAccountRef}
+        importAccountRef={importAccountRef}
+        attachAccountRef={attachAccountRef}
+        allowToShowSelectType={true}
+      />
+
+
+
       <AccountSelectField
         disabled={disabled}
-        onPress={() => navigation.navigate('AccountsScreen', { pathName: nearestPathName })}
+        onPress={() =>{
+          // navigation.navigate('AccountsScreen', { pathName: nearestPathName })
+          createAccountRef?.current?.onOpenModal()
+
+        } }
       />
 
       <View style={{ flexDirection: 'row', position: 'absolute', right: 16,display:'none' }}>
@@ -112,7 +134,7 @@ export const Header = ({ rightComponent, disabled }: HeaderProps) => {
         )}
       </View>
 
-      {/* <AddressScanner
+      <AddressScanner
         qrModalVisible={isScanning}
         onPressCancel={() => {
           setError(undefined);
@@ -121,7 +143,7 @@ export const Header = ({ rightComponent, disabled }: HeaderProps) => {
         onChangeAddress={onScanAddress}
         error={error}
         isShowError={true}
-      /> */}
+      />
     </View>
   );
 };
