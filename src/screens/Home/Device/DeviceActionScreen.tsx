@@ -82,21 +82,21 @@ export const  DeviceActionScreen = () => {
     ).start();
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      // console.log("**************** user focus effect callback:");
-      if (activeTab == 'inverter') {
-        startAnimation();
-      }
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     // console.log("**************** user focus effect callback:");
+  //     if (activeTab == 'inverter') {
+  //       startAnimation();
+  //     }
 
-      return () => {
-        // console.log("**************** user focus effect callback: return ");
-        // if (activeTab == 'battery') {
-          stopAnimation();
-        // }
-      };
-    }, [activeTab])
-  );
+  //     return () => {
+  //       // console.log("**************** user focus effect callback: return ");
+  //       // if (activeTab == 'battery') {
+  //         stopAnimation();
+  //       // }
+  //     };
+  //   }, [activeTab])
+  // );
 
 
   const spin = spinValue.interpolate({
@@ -362,7 +362,7 @@ export const  DeviceActionScreen = () => {
   return (
     <View style={{ height: height, backgroundColor: theme.colorBgSecondary, justifyContent: 'flex-start', alignItems: 'center' }}>
       <View style={{ borderBottomWidth: 0, borderBottomColor: 'white', width: '100%' }}>
-        <Text style={{ textAlign: 'center', fontSize: 30, paddingTop: 40, paddingBottom: 10, color: 'white' }}>Action Log</Text>
+        <Text style={{ textAlign: 'center', fontSize: 26, paddingTop: 60, paddingBottom: 10, color: 'white' }}>Action Log</Text>
       </View>
 
       {/* Tab Buttons */}
@@ -434,14 +434,14 @@ export const  DeviceActionScreen = () => {
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ fontSize: 30, color: 'white', bottom: 41 }}>Upcoming</Text>
             {/* <ActivityIndicator size="large" color="white" /> */}
-            <Animated.Image
+            {/* <Animated.Image
               source={SpinnerGap}
               style={{
                 width: 50,
                 height: 50,
                 transform: [{ rotate: spin }],
               }}
-            />
+            /> */}
           </View>
       )}
     </View>

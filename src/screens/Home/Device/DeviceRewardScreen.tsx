@@ -135,7 +135,7 @@ const DeviceRewardScreen = () => {
   return (
     <View style={{ flex: 1, backgroundColor: '#000', paddingVertical: 40 }}>
       {/* 标题 */}
-      <Text style={{ textAlign: 'center', fontSize: 36, color: '#fff', marginTop: 20, marginBottom: 57 }}>Cube Overview</Text>
+      <Text style={{ textAlign: 'center', fontSize: 26, color: '#fff', marginTop: 30, marginBottom: 57 }}>Cube Overview</Text>
 
       {/* 设备信息 */}
       <View style={{ alignItems: 'center' }}>
