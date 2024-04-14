@@ -158,7 +158,7 @@ function _BasicSelectModal<T>(selectModalProps: Props<T>, ref: ForwardedRef<any>
             !isUseModalV2 && onCloseModal();
             onChangeModalVisible && onChangeModalVisible();
           }}>
-          <View style={{ width: '100%',backgroundColor:'blue' }}>
+          <View style={{ width: '100%' }}>
             {beforeListItem}
             {firstShowChilden ? children : null}
             <ScrollView

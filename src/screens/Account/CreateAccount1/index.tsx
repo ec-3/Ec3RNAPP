@@ -4,7 +4,7 @@ import { VerifySecretPhrase } from 'screens/Account/CreateAccount1/VerifySecretP
 import { ContainerWithSubHeader } from 'components/ContainerWithSubHeader';
 import { createAccountSuriV2, createSeedV2 } from 'messaging/index';
 import { useNavigation } from '@react-navigation/native';
-import { CreateAccountProps, RootNavigationProps } from 'routes/index';
+import { CreateAccountProps, RootNavigationProps, RootStackParamList } from 'routes/index';
 import i18n from 'utils/i18n/i18n';
 import { backToHome } from 'utils/navigation';
 import useGoHome from 'hooks/screen/useGoHome';
@@ -22,6 +22,7 @@ import { SelectAccountTypeModal } from 'components/Modal/SelectAccountTypeModal'
 import { useSelector } from 'react-redux';
 import { RootState } from 'stores/index';
 import LinearGradient from 'react-native-linear-gradient';
+import { ActionItemType } from 'components/Modal/AccountActionSelectModal';
 // import { Text } from 'react-native-svg';
 const { width } = Dimensions.get('window');
 
@@ -118,7 +119,7 @@ const renderItem = ({ item, index }:{item:any,index:any}) => {
 
         <View style={{flexDirection :'row',justifyContent: 'space-between'}}>
 
-          <TouchableOpacity style={[styles.importButton, { marginRight: 20 }]} onPress={onCreateAccount}>
+          <TouchableOpacity style={[styles.importButton, { marginRight: 20 }]} onPress={() => importAccountActionFunc('secretPhrase')}>
             <LinearGradient
                 colors={['#6F63F6', '#5AEB46']}
                 start={{x: 0, y: 0}} // 从左到右
@@ -130,7 +131,7 @@ const renderItem = ({ item, index }:{item:any,index:any}) => {
 
 
           
-            <TouchableOpacity style={[styles.importButton, { marginRight: 20 }]} onPress={onCreateAccount}>
+            <TouchableOpacity style={[styles.importButton, { marginRight: 20 }]} onPress={() => importAccountActionFunc('privateKey')}>
             <LinearGradient
                 colors={['#6F63F6', '#5AEB46']}
                 start={{x: 0, y: 0}} // 从左到右
@@ -177,8 +178,42 @@ const renderItem = ({ item, index }:{item:any,index:any}) => {
 
   const onCreateAccount = () => {
       navigation.navigate('CreateAccount', { keyTypes: params?.keyTypes || defaultKeyTypes });
-
   };
+
+  // const importSecretPhrase = () => {
+  //   navigation.navigate('CreateAccount', { keyTypes: params?.keyTypes || defaultKeyTypes });
+  // };
+
+  const { accounts, hasMasterPassword } = useSelector((state: RootState) => state.accountState);
+
+  const importAccountActionFunc = (item: string) => {
+    let pathName: keyof RootStackParamList;
+    if (item === 'secretPhrase') {
+      pathName = 'ImportSecretPhrase';
+    } else if (item === 'restoreJson') {
+      pathName = 'RestoreJson';
+    } else if (item === 'privateKey') {
+      pathName = 'ImportPrivateKey';
+    } else {
+      pathName = 'ImportQrCode';
+    }
+    console.log("jiaoqilong--====")
+    console.log(item)
+    console.log(pathName)
+
+    
+    console.log(pathName)
+    setTimeout(() => {
+      if (hasMasterPassword) {
+        // @ts-ignore
+        navigation.navigate(pathName);
+      } else {
+        // @ts-ignore
+        navigation.navigate('CreatePassword', { pathName: pathName });
+      }
+    }, 300);
+  };
+
 
   const getTitle = (index: number) => {
     if(index === 0) {

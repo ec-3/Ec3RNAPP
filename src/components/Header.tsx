@@ -89,7 +89,7 @@ export const Header = ({ rightComponent, disabled }: HeaderProps) => {
   
   return (
     <View style={[SpaceStyle.oneContainer, headerWrapper]}>
-      <View style={{ position: 'absolute', left: 16 }}>
+      <View style={{ position: 'absolute', left: 16,display:'none' }}>
         <Button
           style={[{ marginLeft: -8 ,backgroundColor:'red'}, disabled && DisabledStyle]}
           disabled={disabled}

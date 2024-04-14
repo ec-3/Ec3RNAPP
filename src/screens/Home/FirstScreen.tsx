@@ -89,6 +89,7 @@ export const FirstScreen = () => {
           attachAccountRef && attachAccountRef.current?.onOpenModal();
           break;
         case 'importAcc':
+          console.log("---------------")
           importAccountRef && importAccountRef.current?.onOpenModal();
           break;
       }

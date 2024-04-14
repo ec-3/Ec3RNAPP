@@ -168,10 +168,9 @@ export const AccountCreationArea = ({
     if (item.key === 'createAcc') {
       if (allowToShowSelectType) {
         // selectTypeRef && selectTypeRef.current?.onOpenModal();
+
         createAccountRef?.current?.onCloseModal();
-        console.log("dddddds1")
         navigation.navigate('CreateAccount1',  {});
-        // onSelectAccountTypes
 
       } else {
         console.log("dddddds2")
@@ -201,7 +200,9 @@ export const AccountCreationArea = ({
     } else {
       pathName = 'ImportQrCode';
     }
-
+    
+    console.log("dddds1111111111122222")
+    console.log(pathName)
     setTimeout(() => {
       if (hasMasterPassword) {
         // @ts-ignore
@@ -215,6 +216,7 @@ export const AccountCreationArea = ({
 
   const attachAccountFunc = (item: ActionItemType) => {
     let pathName: keyof RootStackParamList;
+    console.log("dddds11111111jiao11122222")
 
     if (item.key === 'ledger') {
       show(i18n.notificationMessage.comingSoon);
