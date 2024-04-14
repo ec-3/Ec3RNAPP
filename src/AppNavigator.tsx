@@ -15,6 +15,7 @@ import { BrowserListByTabview } from 'screens/Home/Browser/BrowserListByTabview'
 import { AccountsScreen } from 'screens/Account/AccountsScreen';
 import CreateMasterPassword from 'screens/MasterPassword/CreateMasterPassword';
 import { CreateAccount } from 'screens/Account/CreateAccount';
+import { CreateAccount1 } from 'screens/Account/CreateAccount1';
 import { AccountDetail } from 'screens/Account/AccountDetail';
 import { RestoreJson } from 'screens/Account/RestoreJson';
 import { ImportSecretPhrase } from 'screens/Account/ImportSecretPhrase';
@@ -268,6 +269,7 @@ const AppNavigator = ({ isAppReady }: Props) => {
                 <Stack.Screen name="NetworkSettingDetail" component={NetworkSettingDetail} />
                 <Stack.Screen name="ImportNetwork" component={ImportNetwork} options={{ gestureEnabled: false }} />
                 <Stack.Screen name="CreateAccount" component={CreateAccount} />
+                <Stack.Screen name="CreateAccount1" component={CreateAccount1 as React.ComponentType} />
                 <Stack.Screen name="CrowdloansScreen" component={CrowdloansScreen} />
                 <Stack.Screen name="PrepareConnectScreen" component={PrepareConnectScreen} />
                 <Stack.Screen name="DeviceAddScreen" component={DeviceAddScreen} />

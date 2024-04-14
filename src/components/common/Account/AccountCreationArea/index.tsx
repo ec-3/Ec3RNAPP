@@ -133,8 +133,12 @@ export const AccountCreationArea = ({
       selectTypeRef && selectTypeRef.current?.onCloseModal();
       setTimeout(() => {
         if (hasMasterPassword) {
-          navigation.navigate('CreateAccount', { keyTypes: keyTypes });
+          console.log("dddds11111")
+          // navigation.navigate('CreateAccount', { keyTypes: keyTypes });
+          navigation.navigate('CreateAccount1', { keyTypes: keyTypes });
+          
         } else {
+          console.log("dddds2222")
           navigation.navigate('CreatePassword', { pathName: 'CreateAccount', state: keyTypes });
         }
       }, 300);
@@ -163,8 +167,12 @@ export const AccountCreationArea = ({
   const createAccountFunc = (item: ActionItemType) => {
     if (item.key === 'createAcc') {
       if (allowToShowSelectType) {
-        selectTypeRef && selectTypeRef.current?.onOpenModal();
+        // selectTypeRef && selectTypeRef.current?.onOpenModal();
+        createAccountRef?.current?.onCloseModal();
         console.log("dddddds1")
+        navigation.navigate('CreateAccount1',  {});
+        // onSelectAccountTypes
+
       } else {
         console.log("dddddds2")
         createAccountRef?.current?.onCloseModal();
@@ -248,44 +256,35 @@ export const AccountCreationArea = ({
         onSelectItem={createAccountFunc}>
         <DeriveAccountModal deriveAccModalRef={deriveAccModalRef} goHome={goHome} navigation={navigation} />
        
-        <View style={{height:40,marginBottom:10,backgroundColor:'black',flexDirection:'row',alignItems:'center'}}>
+          <View style={{height:40,marginBottom:10,backgroundColor:'black',flexDirection:'row',alignItems:'center'}}>
+            <View style={{marginLeft:10}}>
+              <Avatar
+                  value={currentAccount?.address || ''}
+                  size={28}
+                  identPrefix={42}
+                  theme={currentAccount?.type === 'ethereum' ? 'ethereum' : 'polkadot'}
+                />
+            </View>
           
-          {/* <AccountSelectField
-          disabled={true}
-          onPress={() =>{
-            // navigation.navigate('AccountsScreen', { pathName: nearestPathName })
-            createAccountRef?.current?.onOpenModal()
-          } }
-          /> */}
-          
-          <View style={{marginLeft:10}}>
-            <Avatar
-                value={currentAccount?.address || ''}
-                size={28}
-                identPrefix={42}
-                theme={currentAccount?.type === 'ethereum' ? 'ethereum' : 'polkadot'}
-              />
-          </View>
-        
-          <View style={{ justifyContent: 'center', width: 280, alignItems: 'flex-start' }}>
-            <Text style={{ textAlign: 'left',fontSize:20,marginLeft:10,color:'white' }}>
-              {currentAccount?.name}
-            </Text>
-          </View>
+            <View style={{ justifyContent: 'center', width: 280, alignItems: 'flex-start' }}>
+              <Text style={{ textAlign: 'left',fontSize:20,marginLeft:10,color:'white' }}>
+                {currentAccount?.name}
+              </Text>
+            </View>
 
-          <Image
-            source={require('./acuntAvatarSelect.png')}
-            style={{width:18,height:18,marginLeft:10}}
-           />
+            <Image
+              source={require('./acuntAvatarSelect.png')}
+              style={{width:18,height:18,marginLeft:10}}
+            />
 
-        </View>
+          </View>
       </AccountActionSelectModal>
 
       <SelectAccountTypeModal selectTypeRef={selectTypeRef} onConfirm={onSelectAccountTypes} />
 
       <AccountActionSelectModal
         accActionRef={importAccountRef}
-        modalTitle={'i18n.header.importAcc'}
+        modalTitle={i18n.header.importAcc}
         items={importAccountActions}
         onSelectItem={importAccountActionFunc}
       />

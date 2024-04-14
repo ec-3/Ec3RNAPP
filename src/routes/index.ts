@@ -15,6 +15,7 @@ export type RootStackParamList = {
   CreatePassword: {
     pathName:
       | 'CreateAccount'
+      | 'CreateAccount1'
       | 'ImportSecretPhrase'
       | 'RestoreJson'
       | 'ImportPrivateKey'
@@ -32,6 +33,7 @@ export type RootStackParamList = {
   ConnectWalletConnect: undefined;
   MigratePassword: undefined;
   CreateAccount: { keyTypes?: KeypairType[]; isBack?: boolean };
+  CreateAccount1: { keyTypes?: KeypairType[]; isBack?: boolean };
   CrowdloansScreen: undefined; 
   PrepareConnectScreen: undefined;
   DeviceAddScreen: undefined;
@@ -96,6 +98,7 @@ export type NavigationProps = NativeStackScreenProps<RootStackParamList>;
 export type RootNavigationProps = NavigationProps['navigation'];
 export type RootRouteProps = NavigationProps['route'];
 export type CreateAccountProps = NativeStackScreenProps<RootStackParamList, 'CreateAccount'>;
+export type CreateAccountProps1 = NativeStackScreenProps<RootStackParamList, 'CreateAccount1'>;
 export type CreatePasswordProps = NativeStackScreenProps<RootStackParamList, 'CreatePassword'>;
 export type ImportSecretPhraseProps = NativeStackScreenProps<RootStackParamList, 'ImportSecretPhrase'>;
 export type PinCodeProps = NativeStackScreenProps<RootStackParamList, 'PinCode'>;
