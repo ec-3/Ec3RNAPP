@@ -21,6 +21,7 @@ import { KeypairType } from '@polkadot/util-crypto/types';
 import { SelectAccountTypeModal } from 'components/Modal/SelectAccountTypeModal';
 import { useSelector } from 'react-redux';
 import { RootState } from 'stores/index';
+import LinearGradient from 'react-native-linear-gradient';
 // import { Text } from 'react-native-svg';
 const { width } = Dimensions.get('window');
 
@@ -40,7 +41,7 @@ const { width } = Dimensions.get('window');
 
 const  data = [
   { key: 'page1', backgroundColor: 'black' },
-  { key: 'page2', backgroundColor: 'green' },
+  { key: 'page2', backgroundColor: 'black' },
 ];
 const ViewStep = {
   INIT_SP: 1,
@@ -97,10 +98,52 @@ const renderItem = ({ item, index }:{item:any,index:any}) => {
     );
   }else {
     return (
-      <View style={{width,height:'100%',backgroundColor:'blue',alignItems:'center',justifyContent:'center'}}>
-        <Text>{item.key}</Text>
-        <Text>{item.backgroundColor}</Text>
-        {/* 在此处添加其他页面内容 */}
+      <View style={{width,height:'100%',backgroundColor:item.backgroundColor,alignItems:'center'}}>
+     
+        <Image
+          source={require('./importWallet.png')}
+          style={{width:60,height:60,marginTop:100}}
+        />
+        <Text style={{fontSize:30,color:'white',marginTop:10,textAlign:'center'}}>
+          Import {'\n'} Wallet
+        </Text>
+        
+
+        <Text numberOfLines={2} style={{fontSize:16,color:'#5AEB46',marginTop:30,textAlign:'center'}}>
+          Access your existing wallet, have its 24-word {'\n'} passphrase ready.    
+        </Text>
+
+        
+
+
+        <View style={{flexDirection :'row',justifyContent: 'space-between'}}>
+
+          <TouchableOpacity style={[styles.importButton, { marginRight: 20 }]} onPress={onCreateAccount}>
+            <LinearGradient
+                colors={['#6F63F6', '#5AEB46']}
+                start={{x: 0, y: 0}} // 从左到右
+                end={{x: 1, y: 0}} // 从左到右
+                style={styles.gradient}>
+                  <Text style={styles.buttonText}>Mnemonic{'\n'}Phrase</Text>
+                </LinearGradient>
+            </TouchableOpacity>
+
+
+          
+            <TouchableOpacity style={[styles.importButton, { marginRight: 20 }]} onPress={onCreateAccount}>
+            <LinearGradient
+                colors={['#6F63F6', '#5AEB46']}
+                start={{x: 0, y: 0}} // 从左到右
+                end={{x: 1, y: 0}} // 从左到右
+                style={styles.gradient}>
+            <Text style={styles.buttonText}>Private {'\n'} Key</Text>
+                </LinearGradient>
+            </TouchableOpacity>
+
+
+
+        </View>
+        
       </View>
     );
   }
@@ -135,33 +178,13 @@ const renderItem = ({ item, index }:{item:any,index:any}) => {
   const onCreateAccount = () => {
       navigation.navigate('CreateAccount', { keyTypes: params?.keyTypes || defaultKeyTypes });
 
-    // if (seed) {
-    //   setIsBusy(true);
-    //   createAccountSuriV2({
-    //     name: accountName,
-    //     suri: seed,
-    //     types: params?.keyTypes || defaultKeyTypes,
-    //     isAllowed: true,
-    //   })
-    //     .then(() => {
-    //       if (!params.isBack) {
-    //         backToHome(goHome);
-    //       } else {
-    //         navigation.goBack();
-    //       }
-    //     })
-    //     .catch((error: Error): void => {
-    //       setIsBusy(false);
-    //       console.error(error);
-    //     });
-    // }
   };
 
   const getTitle = (index: number) => {
     if(index === 0) {
-      return "new"
+      return "New"
     }else {
-      return "inmport"
+      return "Import"
     }
   };
 
@@ -296,9 +319,27 @@ const styles = StyleSheet.create({
     // textAlign:'center',
     justifyContent:'center'
   },
+  importButton: {
+    // backgroundColor: '#5AEB46',
+    padding: 10,
+    borderRadius: 15, // 圆角半径，可以根据需要调整
+    width:170,
+    height:80,
+    marginTop:60,
+    // alignItems:'center',
+    // textAlign:'center',
+    justifyContent:'center'
+  },
   buttonText: {
     color: 'black',
     textAlign: 'center',
     fontSize: 25,
+  },
+  gradient: {
+    width: 170,
+    height: 80,
+    borderRadius: 20,
+    justifyContent: 'center',
+    // alignItems: 'center',
   },
 });
