@@ -30,6 +30,7 @@ import { tokenItem } from 'constants/itemHeight';
 import useChainChecker from 'hooks/chain/useChainChecker';
 import { Background } from 'styles/color';
 
+
 const renderActionsStyle: StyleProp<any> = {
   flexDirection: 'row',
   justifyContent: 'space-between',
@@ -75,9 +76,9 @@ export const TokenGroups = () => {
 
   const { turnOnChain, checkChainConnected } = useChainChecker();
   useEffect(() => {
-    const isConnected = checkChainConnected("agung");
+    const isConnected = checkChainConnected("agung_network");
     if (!isConnected) {
-      turnOnChain("agung");
+      turnOnChain("agung_network");
     }
   }, []); // empty dependency array to run this effect only once when component mounts
 

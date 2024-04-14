@@ -17,7 +17,7 @@ const PrepareConnectScreen = ({ navigation }) => {
       <View style={styles.content}>
         <Text style={styles.title}>Select connection method</Text>
         <Text style={styles.subtitle}>Before connecting, ensure the Cube is linked to the energy storage battery.</Text>
-        <Image source={require('assets/icon_ec3_cube.png')} style={styles.image} />
+        <Image source={require('assets/beijingBlu.png')} style={styles.image} />
         <TouchableOpacity style={styles.button} onPress={handleConnectPress}>
           <Image source={require('assets/icon_bluetooth.png')} style={styles.buttonIcon} />
           <Text style={styles.buttonText}>Bluetooth</Text>
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     height: 30,
   },
   content: {
+    top: 20,
     flex: 1,
     alignItems: 'center',
   },
