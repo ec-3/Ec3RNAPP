@@ -21,6 +21,7 @@ import i18n from 'utils/i18n/i18n';
 import { setAdjustResize } from 'rn-android-keyboard-adjust';
 
 interface Props extends InputProps {
+  onPressScanButton,  // 添加一个 prop 以接收外部传递的点击扫描按钮的操作
   isValidValue?: boolean;
   showAvatar?: boolean;
   showAddressBook?: boolean;
@@ -33,6 +34,7 @@ interface Props extends InputProps {
 
 const Component = (
   {
+    onPressScanButton,  // 添加一个 prop 以接收外部传递的点击扫描按钮的操作
     isValidValue,
     showAvatar = true,
     showAddressBook,
@@ -123,9 +125,14 @@ const Component = (
     const result = await requestCameraPermission();
 
     if (result === RESULTS.GRANTED) {
-      setTimeout(() => setIsShowQrModalVisible(true), 500);
+      setTimeout(() => setIsShowQrModalVisible(true), 50);
     }
   }, []);
+
+  useEffect(() => {
+    onPressScanButton && onPressScanButton(onPressQrButton);  // 调用外部传递的点击扫描按钮的操作
+  }, [onPressQrButton, onPressScanButton]);
+
 
   const RightPart = useMemo(() => {
     return (

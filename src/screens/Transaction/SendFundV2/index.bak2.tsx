@@ -1,6 +1,5 @@
 // Copyright 2019-2022 @polkadot/extension-koni-ui authors & contributors
 // SPDX-License-Identifier: Apache-2.0
-// Aaron 转账页面
 
 import { _AssetRef, _AssetType, _ChainAsset, _ChainInfo, _MultiChainAsset } from '@subwallet/chain-list/types';
 import { AssetSetting, ExtrinsicType } from '@subwallet/extension-base/background/KoniTypes';
@@ -44,8 +43,6 @@ import {
   ScrollView,
   TouchableOpacity,
   View,
-  StyleProp,
-  Image,
 } from 'react-native';
 import { ScreenContainer } from 'components/ScreenContainer';
 import { Header } from 'components/Header';
@@ -72,23 +69,6 @@ import createStylesheet from './styles';
 import { useGetBalance } from 'hooks/balance';
 import { FreeBalanceDisplay } from 'screens/Transaction/parts/FreeBalanceDisplay';
 import { ModalRef } from 'types/modalRef';
-
-import { SpaceStyle } from 'styles/space';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { requestCameraPermission } from 'utils/permission/camera';
-import { RESULTS } from 'react-native-permissions';
-import { DisabledStyle } from 'styles/sharedStyles';
-import { SVGImages } from 'assets/index';
-const headerWrapper: StyleProp<any> = {
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: 40,
-  position: 'relative',
-  zIndex: 10,
-};
-import { AddressScanner, AddressScannerProps } from 'components/Scanner/AddressScanner';
-
 
 interface TransferFormValues extends TransactionFormValues {
   to: string;
@@ -338,26 +318,6 @@ export const SendFund = ({
   const accountSelectorRef = useRef<ModalRef>();
   const tokenSelectorRef = useRef<ModalRef>();
   const chainSelectorRef = useRef<ModalRef>();
-  const drawerNavigation = useNavigation<DrawerNavigationProp<RootStackParamList>>();
-  const navigationRoutes = navigation.getState().routes;
-  const nearestPathName = navigationRoutes[navigationRoutes.length - 1].name;
-  const [isScanning, setIsScanning] = useState<boolean>(false);
-  // const onPressQrButton = useCallback(async () => {
-  //   const result = await requestCameraPermission();
-
-  //   if (result === RESULTS.GRANTED) {
-  //     setIsScanning(true);
-  //   }
-  // }, []);
-  const [isShowQrModalVisible, setIsShowQrModalVisible] = useState<boolean>(false);
-  const onPressQrButton = useCallback(async () => {
-    Keyboard.dismiss();
-    const result = await requestCameraPermission();
-
-    if (result === RESULTS.GRANTED) {
-      setTimeout(() => setIsShowQrModalVisible(true), 500);
-    }
-  }, []);
 
   const {
     title,
@@ -912,86 +872,19 @@ export const SendFund = ({
     };
   }, [setFocus, viewStep]);
 
-  const inputAddressRef = useRef(null);
-
-  const handlePressScanButton = (onPressQrButton) => {
-    // 调用 onPressQrButton 方法以触发扫描按钮的点击操作
-    isScanning && onPressQrButton();
-  };
-  
-  useEffect(() => {
-    handlePressScanButton 
-
-    return () => {
-      setIsScanning(false);
-    };
-  }, [isScanning]);
-
-
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <ScreenContainer>
         <>
-        
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: 10 }}>
-          {/* 左侧按钮 */}
-          {/* <Button title="Left Button" onPress={onPressQrButton} /> */}  
-          <TouchableOpacity onPress={() => setIsScanning(true)} style={{ width: 30, height: 40, justifyContent: 'center' }}>
-            <Image source={require('assets/icon_scan.png')} style={{ width: 30, height: 30 }} />
-          </TouchableOpacity>
-
-          {/* Header */}
           <Header disabled={loading} />
 
-          {/* 右侧按钮 */}
-          {/* <Button title="Right Button" onPress={onPressQrButton} /> */}
-
-          <TouchableOpacity onPress={() => navigation.goBack()} style={{ width: 30, height: 40, justifyContent: 'center' }}>
-            <Image source={require('assets/icon_close.png')} style={{ width: 30, height: 30 }} />
-          </TouchableOpacity>
-
-        </View>
-  
-          
-
-
-    {/* <View style={[SpaceStyle.oneContainer, headerWrapper]}>
-      <View style={{ position: 'absolute', left: 16, display:'none'  }}>
-        <Button
-          style={[{ marginLeft: -8 },  DisabledStyle]}
-          type={'ghost'}
-          size={'xs'}
-          icon={<SVGImages.MenuBarLogo />}
-          onPress={() => {
-            Keyboard.dismiss();
-          }}
-        />
-      </View>
-
-      <AccountSelectField
-        disabled={true}
-        onPress={() => navigation.navigate('AccountsScreen', { pathName: nearestPathName })}
-      />
-
-      <View style={{ flexDirection: 'row', position: 'absolute', right: 16, display:'none' }}>
-          <Button
-            style={[{ marginRight: -8 }, DisabledStyle]}
-            size={'xs'}
-            type={'ghost'}
-            icon={<Icon phosphorIcon={PaperPlaneRight} weight={'bold'} />}
-            onPress={onPressQrButton}
-          />
-      </View>
-    </View> */}
-    
-
-          <View style={{paddingTop: 40}}>
-            {/* <SubHeader  //子标题
+          <View style={stylesheet.subheader}>
+            <SubHeader
               title={viewStep === 1 ? title : 'Amount'}
               onPressBack={onSubheaderPressBack}
               disabled={loading}
               titleTextAlign={'left'}
-            /> */}
+            />
           </View>
 
           <>
@@ -1021,8 +914,8 @@ export const SendFund = ({
               )}
 
               <View style={stylesheet.row}>
-                <View style={{flex: 0.3, paddingStart: 30}}>
-                  <TokenSelector  //选择token
+                <View style={stylesheet.rowItem}>
+                  <TokenSelector
                     items={viewStep === 1 ? tokenItems : tokenItemsViewStep2}
                     selectedValueMap={{ [assetValue]: true }}
                     onSelectItem={_onChangeAsset}
@@ -1040,12 +933,12 @@ export const SendFund = ({
                   />
                 </View>
 
-                {/* <View style={stylesheet.paperPlaneIconWrapper}>
+                <View style={stylesheet.paperPlaneIconWrapper}>
                   <Icon phosphorIcon={PaperPlaneRight} size={'md'} iconColor={theme['gray-5']} />
-                </View> */}
+                </View>
 
-                {/* <View style={stylesheet.rowItem}>
-                  <ChainSelector  //选择链
+                <View style={stylesheet.rowItem}>
+                  <ChainSelector
                     items={viewStep === 1 ? destChainItems : destChainItemsViewStep2}
                     acceptDefaultValue={viewStep === 2 && destChainItemsViewStep2.length === 1}
                     selectedValueMap={{ [destChainValue]: true }}
@@ -1061,7 +954,7 @@ export const SendFund = ({
                     )}
                     disabled={!destChainItems.length || loading}
                   />
-                </View> */}
+                </View>
               </View>
 
               {viewStep === 1 && (
@@ -1070,9 +963,8 @@ export const SendFund = ({
                     control={control}
                     rules={recipientAddressRules}
                     render={({ field: { value, ref, onChange, onBlur } }) => (
-                      <InputAddress   //输入地址
+                      <InputAddress
                         ref={ref}
-                        // ref={inputAddressRef} 
                         label={'Send to'}
                         value={value}
                         onChangeText={onChange}
@@ -1082,7 +974,6 @@ export const SendFund = ({
                         disabled={loading}
                         addressPrefix={destChainNetworkPrefix}
                         networkGenesisHash={destChainGenesisHash}
-                        onPressScanButton={handlePressScanButton}
                         showAddressBook
                         saveAddress
                       />
@@ -1092,12 +983,11 @@ export const SendFund = ({
                 </>
               )}
 
-              {/* {viewStep === 2 ? ( */}
-                <View style={stylesheet.amountWrapper} //额度输入框
-                > 
+              {viewStep === 2 ? (
+                <View style={stylesheet.amountWrapper}>
                   <FormItem control={control} rules={amountRules} render={renderAmountInput} name="value" />
                 </View>
-              {/* ) : ( */}
+              ) : (
                 <View style={stylesheet.balanceWrapper}>
                   {!(!fromValue && !chainValue) && (
                     <FreeBalanceDisplay
@@ -1111,11 +1001,11 @@ export const SendFund = ({
                     />
                   )}
                 </View>
-              {/* )} */}
+              )}
             </ScrollView>
 
             <View style={stylesheet.footer}>
-              {/* {viewStep === 1 && (
+              {viewStep === 1 && (
                 <Button
                   disabled={isNextButtonDisable}
                   icon={getButtonIcon(ArrowCircleRight)}
@@ -1128,12 +1018,12 @@ export const SendFund = ({
                   }}>
                   Next
                 </Button>
-              )} */}
-              {viewStep === 1 && (
+              )}
+              {viewStep === 2 && (
                 <>
-                  {/* <View style={stylesheet.footerBalanceWrapper}>
+                  <View style={stylesheet.footerBalanceWrapper}>
                     <FreeBalanceDisplay
-                      label={viewStep === 1 ? 'Balance:' : undefined}
+                      label={viewStep === 2 ? 'Balance:' : undefined}
                       tokenSlug={assetValue}
                       nativeTokenBalance={nativeTokenBalance}
                       nativeTokenSlug={nativeTokenSlug}
@@ -1143,7 +1033,7 @@ export const SendFund = ({
                       isLoading={isGetBalanceLoading}
                     />
 
-                    {viewStep === 1 && (
+                    {viewStep === 2 && (
                       <TouchableOpacity
                         onPress={() => {
                           setForceUpdateValue({ value: maxTransfer });
@@ -1157,7 +1047,7 @@ export const SendFund = ({
                         {<Typography.Text style={stylesheet.maxText}>Max</Typography.Text>}
                       </TouchableOpacity>
                     )}
-                  </View> */}
+                  </View>
                   <Button
                     disabled={isSubmitButtonDisable}
                     loading={loading}
@@ -1171,7 +1061,6 @@ export const SendFund = ({
             </View>
             <SafeAreaView />
           </>
-
         </>
       </ScreenContainer>
     </KeyboardAvoidingView>

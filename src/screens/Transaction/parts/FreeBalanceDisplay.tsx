@@ -15,7 +15,7 @@ interface Props {
   tokenBalance?: AmountData;
   isLoading: boolean;
 }
-
+//aaron 可转账余额显示
 export const FreeBalanceDisplay = ({
   label,
   tokenSlug,

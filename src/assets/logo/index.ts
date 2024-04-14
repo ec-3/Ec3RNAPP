@@ -7,5 +7,5 @@ export const ImageLogosMap = {
   transak: require('./204.transak.png'),
   moonpay: require('./205.moonpay.png'),
   onramper: require('./206.onramper.png'),
-  default: require('./default.png'),
+  default: require('./icon_ect.png'),
 };
