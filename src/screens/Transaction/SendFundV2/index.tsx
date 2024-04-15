@@ -64,6 +64,7 @@ import { ChainSelector } from 'components/Modal/common/ChainSelector';
 import { FormItem } from 'components/common/FormItem';
 import { ValidateResult } from 'react-hook-form/dist/types/validator';
 import { Amount, isInvalidAmountValue } from 'screens/Transaction/SendFundV2/Amount';
+import { AmountEct, isInvalidAmountEctValue } from 'screens/Transaction/SendFundV2/AmountEct';
 import { ArrowCircleRight, PaperPlaneRight, PaperPlaneTilt } from 'phosphor-react-native';
 import { getButtonIcon } from 'utils/button';
 import { UseControllerReturn } from 'react-hook-form/dist/types';
@@ -89,6 +90,19 @@ const headerWrapper: StyleProp<any> = {
 };
 import { AddressScanner, AddressScannerProps } from 'components/Scanner/AddressScanner';
 
+import { StyleSheet } from 'react-native';
+// 创建样式对象
+const styles = StyleSheet.create({
+  background: {
+    backgroundColor: '#222', // 设置背景颜色为灰色
+    borderRadius: 10, // 设置边框圆角
+    padding: 10, // 设置内边距
+  },
+  container: {
+    borderTopWidth: 1, // 设置顶部边框宽度为1
+    borderTopColor: 'black', // 设置顶部边框颜色为黑色
+  },
+});
 
 interface TransferFormValues extends TransactionFormValues {
   to: string;
@@ -576,7 +590,7 @@ export const SendFund = ({
   const amountRules = useMemo(
     () => ({
       validate: (amount: string): Promise<ValidateResult> => {
-        if (isInvalidAmountValue(amount)) {
+        if (isInvalidAmountEctValue(amount)) {
           return Promise.resolve(i18n.errorMessage.invalidAmount);
         }
 
@@ -751,8 +765,9 @@ export const SendFund = ({
   const renderAmountInput = useCallback(
     ({ field: { onBlur, onChange, value, ref } }: UseControllerReturn<TransferFormValues>) => (
       <>
-        <Amount
+        <AmountEct
           ref={ref}
+          // label={'Amount'}
           value={value}
           forceUpdateValue={forceUpdateValue}
           onChangeValue={onChange}
@@ -760,14 +775,14 @@ export const SendFund = ({
           onBlur={onBlur}
           onSideEffectChange={onBlur}
           decimals={decimals}
-          placeholder={'0'}
+          placeholder={i18n.placeholder.amount}
           showMaxButton
         />
-        <AmountValueConverter
-          value={isInvalidAmountValue(value) ? '0' : value || '0'}
+        {/* <AmountValueConverter
+          value={isInvalidAmountEctValue(value) ? '0' : value || '0'}
           tokenSlug={assetValue}
           style={stylesheet.amountValueConverter}
-        />
+        /> */}
       </>
     ),
     [assetValue, decimals, forceUpdateValue, onInputChangeAmount, stylesheet.amountValueConverter],
@@ -868,7 +883,7 @@ export const SendFund = ({
   }, [assetValue, assetRegistry, chainStatus, chainValue, destChainValue, fromValue, getValues, trigger]);
 
   useEffect(() => {
-    const bnTransferAmount = new BN(isInvalidAmountValue(transferAmount) ? '0' : transferAmount || '0');
+    const bnTransferAmount = new BN(isInvalidAmountEctValue(transferAmount) ? '0' : transferAmount || '0');
     const bnMaxTransfer = new BN(maxTransfer || '0');
 
     if (bnTransferAmount.gt(BN_ZERO) && bnTransferAmount.eq(bnMaxTransfer)) {
@@ -1021,7 +1036,7 @@ export const SendFund = ({
               )}
 
               <View style={stylesheet.row}>
-                <View style={{flex: 0.3, paddingStart: 30}}>
+                <View style={{ flex: 0.4, paddingStart: 30 }}>
                   <TokenSelector  //选择token
                     items={viewStep === 1 ? tokenItems : tokenItemsViewStep2}
                     selectedValueMap={{ [assetValue]: true }}
@@ -1064,6 +1079,9 @@ export const SendFund = ({
                 </View> */}
               </View>
 
+              {/* {viewStep === 2 ? ( */}
+              <View style={[{paddingTop: 10}, styles.background]} 
+                > 
               {viewStep === 1 && (
                 <>
                   <FormItem
@@ -1073,7 +1091,7 @@ export const SendFund = ({
                       <InputAddress   //输入地址
                         ref={ref}
                         // ref={inputAddressRef} 
-                        label={'Send to'}
+                        // label={'Send to'}
                         value={value}
                         onChangeText={onChange}
                         onBlur={onBlur}
@@ -1092,13 +1110,19 @@ export const SendFund = ({
                 </>
               )}
 
-              {/* {viewStep === 2 ? ( */}
-                <View style={stylesheet.amountWrapper} //额度输入框
-                > 
-                  <FormItem control={control} rules={amountRules} render={renderAmountInput} name="value" />
+              <View style={styles.container}>
+                {/* 这里放置你的额度输入框或其他内容 */}
+                <View style={{paddingTop: 1,}}>
+                </View>
+              </View>
+              
+                  <FormItem control={control} rules={amountRules} render={renderAmountInput} name="value"  //输入金额
+                  />  
+
+
                 </View>
               {/* ) : ( */}
-                <View style={stylesheet.balanceWrapper}>
+                {/* <View style={stylesheet.balanceWrapper}>
                   {!(!fromValue && !chainValue) && (
                     <FreeBalanceDisplay
                       tokenSlug={assetValue}
@@ -1110,7 +1134,7 @@ export const SendFund = ({
                       isLoading={isGetBalanceLoading}
                     />
                   )}
-                </View>
+                </View> */}
               {/* )} */}
             </ScrollView>
 
@@ -1131,7 +1155,7 @@ export const SendFund = ({
               )} */}
               {viewStep === 1 && (
                 <>
-                  {/* <View style={stylesheet.footerBalanceWrapper}>
+                  <View style={stylesheet.footerBalanceWrapper}>
                     <FreeBalanceDisplay
                       label={viewStep === 1 ? 'Balance:' : undefined}
                       tokenSlug={assetValue}
@@ -1157,13 +1181,14 @@ export const SendFund = ({
                         {<Typography.Text style={stylesheet.maxText}>Max</Typography.Text>}
                       </TouchableOpacity>
                     )}
-                  </View> */}
+                  </View>
                   <Button
                     disabled={isSubmitButtonDisable}
                     loading={loading}
                     type={isTransferAll ? 'warning' : undefined}
                     onPress={checkAction(handleSubmit(onSubmit), extrinsicType)}
-                    icon={getButtonIcon(PaperPlaneTilt)}>
+                    // icon={getButtonIcon(PaperPlaneTilt)}
+                    >
                     {isTransferAll ? i18n.buttonTitles.transferAll : i18n.buttonTitles.transfer}
                   </Button>
                 </>

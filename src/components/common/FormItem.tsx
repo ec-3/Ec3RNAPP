@@ -48,6 +48,7 @@ function createStyleSheet(theme: ThemeTypes) {
   return StyleSheet.create({
     errorMessage: {
       marginTop: theme.sizeXS,
+      marginBottom: theme.sizeXS,
     },
   });
 }

@@ -137,7 +137,7 @@ const Component = (
   const RightPart = useMemo(() => {
     return (
       <>
-        {showAddressBook && (
+        {/* {showAddressBook && (
           <Button
             disabled={inputProps.disabled || inputProps.readonly}
             size={'xs'}
@@ -151,8 +151,8 @@ const Component = (
               />
             }
           />
-        )}
-        <Button
+        )} */}
+        {/* <Button
           style={stylesheet.scanButton}
           disabled={inputProps.disabled || inputProps.readonly}
           size={'xs'}
@@ -165,7 +165,7 @@ const Component = (
               iconColor={inputProps.readonly ? theme.colorTextLight5 : theme.colorTextLight3}
             />
           }
-        />
+        /> */}
       </>
     );
   }, [
@@ -230,21 +230,41 @@ const Component = (
     setIsShowQrModalVisible(false);
   }, []);
 
+
+const containerStyle = {
+  backgroundColor: '#222', // 设置背景颜色
+  borderRadius: 8, // 设置圆角
+  // borderWidth: 1, // 设置边框宽度
+  // borderColor: 'black', // 设置边框颜色
+};
+
+
   return (
     <>
+    <View style={containerStyle}> 
       <Input
         ref={ref}
         {...inputProps}
-        leftPart={LeftPart}
+        // leftPart={LeftPart}
         leftPartStyle={stylesheet.inputLeftPart}
         rightPart={RightPart}
         isError={!isAddressValid}
         onChangeText={onChangeInputText}
         onFocus={onInputFocus}
         onBlur={onInputBlur}
-        inputStyle={stylesheet.input}
+        // inputStyle={stylesheet.input}
+        inputStyle={{
+          textAlign: 'left',
+          fontSize: 15,
+          lineHeight: 30,
+          paddingTop: 0,
+          paddingBottom: 0,
+          height: 50,}}
         value={value}
+        containerStyle={{
+          backgroundColor: 'transparent',}}
       />
+  </View>
 
       <AddressScanner
         {...scannerProps}

@@ -54,11 +54,14 @@ const Logo: React.FC<SWLogoProps> = ({
   } else if (subNetwork) {
     srcSubLogo = chainLogoMap[subNetwork] || chainLogoMap[defaultLogoKey];
   }
+  // console.log("*******logo token:", token);
+  // console.log("*******logo srcLogo=:", srcLogo);
+  // console.log("*******logo srcSubLogo=:", srcSubLogo);
 
   return (
     <View>
       <Image
-        src={srcLogo ? { uri: srcLogo } : ImageLogosMap.default}
+        src={token === 'ect' ? require('assets/icon_ect.png') : srcLogo ? { uri: srcLogo } : ImageLogosMap.default}
         style={{ width: size, height: size, backgroundColor: 'transparent' }}
         squircleSize={size}
         shape={shape}
