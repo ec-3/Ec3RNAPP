@@ -27,12 +27,25 @@ import { ModalRef } from 'types/modalRef';
 import useGoHome from 'hooks/screen/useGoHome';
 import { View } from 'react-native-animatable';
 // import { Avatar, Icon } from 'react-native-elements';
-import { Image, Text } from 'react-native';
+import { Image, Text, TouchableOpacity } from 'react-native';
 import AccountSelectField from '../AccountSelectField';
 import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
 import { Avatar, Icon, Typography } from 'components/design-system-ui';
 // import { Text } from 'react-native-svg';
-
+import { LazyFlatList } from 'components/LazyFlatList';
+import { AccountJson } from '@subwallet/extension-base/background/types';
+import { SelectAccountItem } from 'components/common/SelectAccountItem';
+import { SelectAccountItemV2 } from 'components/common/SelectAccountItemV2';
+import { Keyboard, ListRenderItemInfo, FlatList } from 'react-native';
+import { FileArrowDown, MagnifyingGlass, } from 'phosphor-react-native';
+import { AccountsScreenProps } from 'routes/index';
+import { MarginBottomForSubmitButton } from 'styles/sharedStyles';
+import { saveCurrentAccountAddress } from 'messaging/index';
+import { findAccountByAddress } from 'utils/index';
+import { CurrentAccountInfo } from '@subwallet/extension-base/background/KoniTypes';
+import { Button } from 'components/design-system-ui';
+import { FlatListScreen } from 'components/FlatListScreen';
+import { EmptyList } from 'components/EmptyList';
 
 interface Props {
   createAccountRef: React.MutableRefObject<ModalRef | undefined>;
@@ -148,12 +161,12 @@ export const AccountCreationArea = ({
 
   const createAccountAction = useMemo(() => {
     return [
-      {
-        key: 'createAcc',
-        backgroundColor: '#51BC5E',
-        icon: PlusCircle,
-        label: i18n.createAccount.createWithNewSeedPhrase,
-      },
+      // {
+      //   key: 'createAcc',
+      //   backgroundColor: 'transparent',
+      //   icon: PlusCircle,
+      //   label: i18n.createAccount.createWithNewSeedPhrase,
+      // },
       // {
       //   key: 'derive',
       //   backgroundColor: '#E6478E',
@@ -163,6 +176,12 @@ export const AccountCreationArea = ({
       // },
     ];
   }, [canDerivedAccounts.length]);
+
+  const handlerCreateAccount = () => {
+    createAccountRef?.current?.onCloseModal();
+    navigation.navigate('CreateAccount1',  {});
+
+  };
 
   const createAccountFunc = (item: ActionItemType) => {
     if (item.key === 'createAcc') {
@@ -246,7 +265,68 @@ export const AccountCreationArea = ({
   const currentAccount = useSelector((state: RootState) => state.accountState.currentAccount);
   const isAll = useMemo((): boolean => !!currentAccount && isAccountAll(currentAccount.address), [currentAccount]);
   // TODO: reformat address when have new network info
+  const fullAccounts = useSelector((state: RootState) => state.accountState.accounts);
+  const currentAccountAddress = useSelector((state: RootState) => state.accountState.currentAccount?.address);
+  const accounts2 = useMemo(() => {
+    if (fullAccounts.length > 2) {
+      return fullAccounts;
+    }
 
+    return fullAccounts.filter(a => !isAccountAll(a.address));
+  }, [fullAccounts]);
+
+  const selectAccount = useCallback(
+    (accAddress: string) => {
+      if (currentAccountAddress !== accAddress) {
+        const accountByAddress = findAccountByAddress(accounts, accAddress);
+
+        if (accountByAddress) {
+          const accountInfo = {
+            address: accAddress,
+          } as CurrentAccountInfo;
+
+          saveCurrentAccountAddress(accountInfo).catch(e => {
+            console.error('There is a problem when set Current Account', e);
+          });
+        }
+      }
+
+      createAccountRef?.current?.onCloseModal();
+    },
+    [currentAccountAddress, accounts, navigation],
+  );
+
+  const renderItem = useCallback(
+    ({ item }: ListRenderItemInfo<AccountJson>) => {
+      const isAllAccount = isAccountAll(item.address);
+
+      return (
+        <SelectAccountItemV2
+          key={item.address}
+          address={item.address}
+          accountName={item.name}
+          isSelected={currentAccountAddress === item.address}
+          isAllAccount={isAllAccount}
+          onSelectAccount={selectAccount}
+          // onPressDetailBtn={() => {
+          //   navigation.navigate('EditAccount', { address: item.address, name: item.name || '' });
+          // }}
+        />
+      );
+    },
+    [currentAccountAddress, navigation],
+  );
+
+  const renderListEmptyComponent = () => {
+    return (
+      <EmptyList
+        icon={MagnifyingGlass}
+        title={i18n.emptyScreen.selectorEmptyTitle}
+        message={i18n.emptyScreen.selectorEmptyMessage}
+      />
+    );
+  };
+  
   return (
     <>
 
@@ -258,28 +338,18 @@ export const AccountCreationArea = ({
         onSelectItem={createAccountFunc}>
         <DeriveAccountModal deriveAccModalRef={deriveAccModalRef} goHome={goHome} navigation={navigation} />
        
-          <View style={{height:40,marginBottom:10,backgroundColor:'black',flexDirection:'row',alignItems:'center'}}>
-            <View style={{marginLeft:10}}>
-              <Avatar
-                  value={currentAccount?.address || ''}
-                  size={28}
-                  identPrefix={42}
-                  theme={currentAccount?.type === 'ethereum' ? 'ethereum' : 'polkadot'}
-                />
-            </View>
-          
-            <View style={{ justifyContent: 'center', width: 280, alignItems: 'flex-start' }}>
-              <Text style={{ textAlign: 'left',fontSize:20,marginLeft:10,color:'white' }}>
-                {currentAccount?.name}
-              </Text>
-            </View>
+          <FlatList
+            data={accounts2}
+            renderItem={renderItem} // 使用 renderItem 函数来渲染每个列表项
+            keyExtractor={(item) => item.address} // 设置每个列表项的唯一标识符
+          />
 
-            <Image
-              source={require('./acuntAvatarSelect.png')}
-              style={{width:18,height:18,marginLeft:10}}
-            />
+          <TouchableOpacity onPress={handlerCreateAccount} style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image source={require('assets/icon_add.png')} style={{ width: 34, height: 34, marginRight: theme.paddingSM, marginLeft: 0 }} />
+            <Text style={{ fontSize: theme.fontSizeLG, color: theme.colorWhite }}>{i18n.createAccount.createWithNewSeedPhrase}</Text>
+          </TouchableOpacity>
 
-          </View>
+
       </AccountActionSelectModal>
 
       <SelectAccountTypeModal selectTypeRef={selectTypeRef} onConfirm={onSelectAccountTypes} />

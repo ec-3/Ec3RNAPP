@@ -115,7 +115,7 @@ export const Header = ({ rightComponent, disabled }: HeaderProps) => {
       <AccountSelectField
         disabled={disabled}
         onPress={() =>{
-          // navigation.navigate('AccountsScreen', { pathName: nearestPathName })
+          // navigation.navigate('AccountsScreen', { pathName: nearestPathName }) //Aaron 打开原始的钱包账户选择页面
           createAccountRef?.current?.onOpenModal()
 
         } }

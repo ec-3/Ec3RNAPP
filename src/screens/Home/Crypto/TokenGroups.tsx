@@ -251,7 +251,7 @@ export const TokenGroups = () => {
           stickyBackground={isTotalBalanceDecrease ? GradientBackgroundColorSet[1] : GradientBackgroundColorSet[0]}
           listActions={actionsNode}
           renderItem={renderItem}
-          layoutFooter={listFooterNode}
+          // layoutFooter={listFooterNode}
         />
 
         <SelectAccAndTokenModal
