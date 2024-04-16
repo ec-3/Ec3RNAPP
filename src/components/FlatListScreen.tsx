@@ -159,7 +159,7 @@ export function FlatListScreen<T>({
             renderSectionHeader={grouping.renderSectionHeader}
             getItemLayout={getItemLayout}
           />
-        ) : (
+        ) : ( //钱包列表
           <LazyFlatList
             items={items}
             searchString={searchString}
