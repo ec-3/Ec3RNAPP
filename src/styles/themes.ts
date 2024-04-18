@@ -6,6 +6,7 @@ export interface SWTheme extends Theme {
   colors: {
     primary: string;
     secondary: string;
+    secondary1: string;
     background: string;
     card: string;
     text: string;
@@ -32,6 +33,7 @@ export const THEME_PRESET: Record<string, SWTheme> = {
     colors: {
       primary: '#42C59A',
       secondary: '#004BFF',
+      secondary1: '#5AEB46',
       background: '#161616',
       card: 'rgb(18, 18, 18)',
       text: 'rgb(229, 229, 231)',
@@ -56,6 +58,7 @@ export const THEME_PRESET: Record<string, SWTheme> = {
     colors: {
       primary: '#42C59A',
       secondary: '#004BFF',
+      secondary1: '#5AEB46',
       background: '#FFF',
       card: 'rgb(255, 255, 255)',
       text: 'rgb(28, 28, 30)',

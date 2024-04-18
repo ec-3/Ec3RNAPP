@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { Linking, Share, StyleProp, View } from 'react-native';
+import { Dimensions, Linking, Share, StyleProp, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ColorMap } from 'styles/color';
 import { FontMedium, FontSemiBold, STATUS_BAR_HEIGHT } from 'styles/sharedStyles';
 import reformatAddress, { getNetworkLogo, getScanExplorerAddressInfoUrl, toShort } from 'utils/index';
@@ -17,6 +17,7 @@ import useFetchChainInfo from 'hooks/screen/useFetchChainInfo';
 import { Button, Icon, QRCode, SwModal, Typography } from 'components/design-system-ui';
 import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
 import { SWModalRefProps } from 'components/design-system-ui/modal/ModalBaseV2';
+import { Header } from 'react-native-elements';
 
 interface Props {
   modalVisible: boolean;
@@ -24,10 +25,16 @@ interface Props {
   selectedNetwork?: string;
   setModalVisible: (arg: boolean) => void;
 }
+const screenHeight = Dimensions.get('window').height;
 
 const receiveModalContentWrapper: StyleProp<any> = {
   alignItems: 'center',
   width: '100%',
+  // height:screenHeight,
+  // justifyContent: 'center',
+  // flex: 1,
+
+
 };
 
 const OFFSET_BOTTOM = deviceHeight - STATUS_BAR_HEIGHT - 140;
@@ -103,15 +110,18 @@ export const ReceiveModal = ({ address, selectedNetwork, modalVisible, setModalV
       modalVisible={modalVisible}
       onBackButtonPress={onCancel}>
       <View style={receiveModalContentWrapper}>
+        
+        {/* <Header /> */}
+
         <Typography.Text
           size={'lg'}
           style={{
             color: theme.colorWhite,
             ...FontSemiBold,
           }}>
-          {i18n.header.yourAddress}
+          {/* {i18n.header.yourAddress} */}
         </Typography.Text>
-        <View style={{ paddingTop: 38 }}>
+        <View style={{ paddingTop: 68 }}>
           {formattedAddress && <QRCode qrRef={(ref?) => (svg = ref)} value={formattedAddress} errorLevel={'Q'} />}
         </View>
 
@@ -125,7 +135,7 @@ export const ReceiveModal = ({ address, selectedNetwork, modalVisible, setModalV
             alignItems: 'center',
             gap: theme.paddingXS,
             borderRadius: theme.borderRadiusLG,
-            marginVertical: theme.margin,
+            marginVertical: 44,
           }}>
           {getNetworkLogo(chainInfo?.slug || '', 24)}
 
@@ -153,29 +163,44 @@ export const ReceiveModal = ({ address, selectedNetwork, modalVisible, setModalV
             flexDirection: 'row',
             paddingTop: theme.size,
             borderTopColor: theme.colorBgSecondary,
-            borderTopWidth: 2,
-            borderStyle: 'solid',
+            // borderTopWidth: 2,
+            // borderStyle: 'solid',
+            // borderWidth:500,
+            // marginTop:40,
           }}>
-          <Button
+          {/* <Button
             style={{ flex: 1 }}
             disabled={!scanExplorerAddressUrl}
-            icon={(iconColor: string) => (
-              <Icon phosphorIcon={GlobeHemisphereWest} weight={'fill'} size={'lg'} iconColor={iconColor} />
-            )}
+            // icon={(iconColor: string) => (
+            //   <Icon phosphorIcon={GlobeHemisphereWest} weight={'fill'} size={'lg'} iconColor={iconColor} />
+            // )}
             type={'secondary'}
             onPress={() => {
-              !!scanExplorerAddressUrl && Linking.openURL(scanExplorerAddressUrl);
+              // !!scanExplorerAddressUrl && Linking.openURL(scanExplorerAddressUrl);
+              setModalVisible(false)
             }}>
-            {i18n.common.explorer}
-          </Button>
+            {"Cancle"}
+          </Button> */}
+            <TouchableOpacity style={[styles.button]} onPress={()=>{
+              setModalVisible(false)
+              }}>
+                <Text style={styles.buttonText}>{"Cancle"}</Text>
+            </TouchableOpacity>
 
-          <Button
+            <TouchableOpacity style={[styles.button1]} onPress={()=>{
+              onShareImg
+              }}>
+                <Text style={styles.buttonText}>{i18n.common.share}</Text>
+            </TouchableOpacity>
+
+          {/* <Button
             style={{ flex: 1 }}
             disabled={!chainInfo?.slug}
-            icon={<Icon phosphorIcon={ShareIcon} weight={'fill'} size={'lg'} />}
+            // icon={<Icon phosphorIcon={ShareIcon} weight={'fill'} size={'lg'} />}
             onPress={onShareImg}>
             {i18n.common.share}
-          </Button>
+            
+          </Button> */}
         </View>
         {
           <Toast
@@ -190,3 +215,32 @@ export const ReceiveModal = ({ address, selectedNetwork, modalVisible, setModalV
     </SwModal>
   );
 };
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#74747B', // 默认背景颜色
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // marginTop:30,
+    // marginTop:40,
+    width:150,
+    height:60,
+  },
+  button1: {
+    backgroundColor: '#5AEB46', // 默认背景颜色
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width:150,
+    height:60,
+    // marginTop:40,
+    // marginTop:30,
+  },
+
+  buttonText: {
+    color: '#ffffff', // 默认文字颜色
+    fontSize: 20,
+  },
+});

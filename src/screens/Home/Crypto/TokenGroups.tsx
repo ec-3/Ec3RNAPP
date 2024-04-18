@@ -243,7 +243,7 @@ export const TokenGroups = () => {
     <ScreenContainer
       gradientBackground={isTotalBalanceDecrease ? GradientBackgroundColorSet[1] : GradientBackgroundColorSet[0]}>
       <>
-        <Header />
+        {/* <Header /> */}
 
         <TokensLayout
           items={tokenGroupBalanceItems}
