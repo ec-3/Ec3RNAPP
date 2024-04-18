@@ -9,6 +9,7 @@ import { ListRenderItemInfo, View ,Dimensions,  Alert,
   TouchableOpacity,
   ScrollView,
   ImageBackground,
+  ActivityIndicator,
 } from 'react-native';
 import { CrowdloanItem } from 'screens/Home/Crowdloans/CrowdloanItem';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -71,16 +72,22 @@ enum FilterValue {
   FAIL = 'failed',
 }
 
-const SERVICE_UUID = '55E405D2-AF9F-A98F-E54A-7DFE43535355';
-const WRITE_CHARACTERISTIC_UUID = '16962447-C623-61BA-D94B-4D1E43535349';
-const NOTIFY_CHARACTERISTIC_UUID = 'B39B7234-BEEC-D4A8-F443-418843535349';
+//ai-think的UUID
+// const SERVICE_UUID = '55E405D2-AF9F-A98F-E54A-7DFE43535355';
+// const WRITE_CHARACTERISTIC_UUID = '16962447-C623-61BA-D94B-4D1E43535349';
+// const NOTIFY_CHARACTERISTIC_UUID = 'B39B7234-BEEC-D4A8-F443-418843535349';
+//test service的UUID
+const SERVICE_UUID = 'A07498CA-AD5B-474E-940D-16F1FBE7E8CD'
+const WRITE_CHARACTERISTIC_UUID = '51FF12BB-3ED8-46E5-B4F9-D64E2FEC021B'
+const NOTIFY_CHARACTERISTIC_UUID = '51FF12BB-3ED8-46E5-B4F9-D64E2FEC021B'
 
 export const DeviceAddScreen = () => {
   const theme = useSubWalletTheme().swThemes;
+  const [isInitializing, setIsInitializing] = useState(false); // 控制是否显示初始化提示框
 
   const items: CrowdloanItemType[] = useGetCrowdloanList();
   // const [isRefresh, refresh] = useRefresh();
-  const isFocused = useIsFocused();
+  const isFocused = useIsFocused(); // 检测屏幕是否处于焦点状态
   const defaultFilterOpts = [
     { label: i18n.filterOptions.polkadotParachain, value: FilterValue.POLKADOT_PARACHAIN },
     { label: i18n.filterOptions.kusamaParachain, value: FilterValue.KUSAMA_PARACHAIN },
@@ -320,8 +327,10 @@ export const DeviceAddScreen = () => {
         macAddress = bleProtocol.getMacFromAdvertising(data);
         id = data.id;
       }
-      deviceMap.current.set(data.id, data);
-      setData([...deviceMap.current.values()]);
+      if (data.name) {  //过滤无名称设备
+        deviceMap.current.set(data.id, data);
+        setData([...deviceMap.current.values()]);
+      }
     }
 
   /** 扫描结束监听 */
@@ -481,6 +490,7 @@ export const DeviceAddScreen = () => {
     };
   }
 
+  let timerId = null; // 定时器 ID
   function writeEc3Data() {
     console.log("write--------------inputText-", inputText)
     console.log("write--------------inputText.length-", inputText.length)
@@ -501,10 +511,37 @@ export const DeviceAddScreen = () => {
         setWriteData(data);
         setInputText('');
         setInputTextPassWord('');
-        alert("Sent successfully")
+        // alert("Sent successfully")
+
+
+        setIsInitializing(true);
+        timerId = setInterval(() => {
+          readEc3Data();
+        }, 1000); // 每隔 1 秒调用一次 readEc3Data
+        console.log("write setInterval ===", timerId)
+
       })
       .catch(err => {
         alert('发送失败');
+      });
+  }
+
+  function readEc3Data() {
+    bleModule['readEc3Data'](SERVICE_UUID, WRITE_CHARACTERISTIC_UUID)
+      .then((result: String) => {
+        
+        if (result === 'error' || result === 'finish') {
+          // 如果返回的结果为错误或者完成，则隐藏初始化提示框并停止定时循环调用
+          setIsInitializing(false);
+          clearInterval(timerId); // 清除定时器
+          console.log("read clearInterval ===", timerId)
+        }
+        
+        // alert("read successfully")
+        console.log("read successfully ===", result)
+      })
+      .catch(err => {
+        // alert('read失败');
       });
   }
 
@@ -702,6 +739,23 @@ export const DeviceAddScreen = () => {
               </Text>     
           </TouchableOpacity>
 
+          {/* <TouchableOpacity style={{
+                height:50,
+                marginTop:20,
+                width:180,
+                backgroundColor: '#62F3A5',
+                alignSelf:"center",
+                borderRadius:25,
+              }}
+                activeOpacity={1.0}
+                onPress={() => {  
+                  {readEc3Data()}
+                }}>
+              <Text style={{marginTop:13,fontSize:20, color: 'black',textAlign:'center'}}>
+                read
+              </Text>     
+          </TouchableOpacity> */}
+
 
 
 
@@ -765,6 +819,20 @@ export const DeviceAddScreen = () => {
       )}
 
       {renderFooter()}
+
+
+      {/* 初始化提示框 */}
+      {isInitializing && (
+        <View style={styles.initContainer}>
+          <Text style={[styles.text, {textAlign: 'center'}]}>
+            Please wait{"\n"}initializing device...
+          </Text>
+          <View style={styles.indicatorContainer}>
+            <ActivityIndicator size="large" color="#ffffff" />
+          </View>
+        </View>
+      )}
+
     </SafeAreaView>
   );
 };
@@ -785,5 +853,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingLeft: 10,
     paddingVertical: 8,
+  },
+  initContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  text: {
+    fontSize: 22, // 设置文本的字体大小
+    marginBottom: 20, // 文本与旋转动画之间的间隔
+  },
+  indicatorContainer: {
+    marginBottom: 10, // 文本与旋转动画之间的间隔
   },
 });

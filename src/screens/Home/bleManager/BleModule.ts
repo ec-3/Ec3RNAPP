@@ -2,6 +2,9 @@ import { PermissionsAndroid,Platform, NativeModules, NativeEventEmitter} from 'r
 import BleManager, {Peripheral, PeripheralInfo} from 'react-native-ble-manager';
 import {BleEventType, BleState} from './type';
 import {byteToString} from './utils';
+import { mmkvStore } from 'utils/storage';
+import { BLE_DEVICE_DID_ADDR_KEY, BLE_DEVICE_INIT_TIME_KEY, DEVICE_COUNT, generateDeviceDidPrefixOfIndex } from 'constants/index';
+
 
 const bleManagerEmitter = new NativeEventEmitter(NativeModules.BleManager);
 
@@ -277,6 +280,14 @@ export default class BleModule {
           console.log('Start notification fail', error);
           reject(error);
         });
+
+        BleManager.requestMTU(this.peripheralId, 64)
+        .then(() => {
+          console.log('requestMTU success');
+        })
+        .catch(error => {
+          console.log('requestMTU fail', error);
+        });
     });
   }
 
@@ -376,6 +387,68 @@ export default class BleModule {
     }
     return result;
   }
+  
+  readEc3Data(serviceUUID: any, writeCharacteristicUUID: any): Promise<String> {
+    return new Promise((resolve, reject) => {
+      console.log(' readEc3Data peripheralId', this.peripheralId);
+      console.log(' readEc3Data writeWithoutResponseServiceUUID', serviceUUID);
+      console.log(' readEc3Data writeWithoutResponseCharacteristicUUID', writeCharacteristicUUID);
+
+      BleManager.read(
+        this.peripheralId, serviceUUID, writeCharacteristicUUID,
+      )
+        .then(data => {
+          const str = byteToString(data);
+          console.log('Read **** ', data, str);
+
+        if (str.includes("$START,Connect Wifi ERROR!,END")) {
+          // 如果resultPin包括 "$START,Connect Wifi ERROR!,END" 就提示连接错误
+          console.log('Connection error: Connect Wifi ERROR!');
+          // return "error"
+          resolve("error")
+        } else if (str.includes("$START,Connect Wifi Successfully!,END")) {
+          let data = "$START,peaqID,END";
+
+          this.writeEc3DataWithoutResponse(data, serviceUUID, writeCharacteristicUUID);
+
+          // 如果resultPin包括 "$START,Connect Wifi ERROR!,END" 就提示连接错误
+          console.log('Connection Successfully: Connect Wifi Successfully!');
+          // return "success"
+          resolve("success")
+        } else if (str.includes("$START,")) {
+
+          var did = str.substring(7); // 去掉前缀 "$START,peaqID"
+          did = did.replace(/,END$/, ''); // 替换掉最后的",END"
+          console.log('BluetoothUpdateValue *****resultPin222:', did); 
+          mmkvStore.set(BLE_DEVICE_DID_ADDR_KEY, did);
+
+          var deviceCount = mmkvStore.getNumber(DEVICE_COUNT) ?? 0;
+          mmkvStore.set(DEVICE_COUNT, deviceCount+1);
+          mmkvStore.set(generateDeviceDidPrefixOfIndex(deviceCount+1), did);
+
+          const currentDate = new Date();
+          const year = currentDate.getFullYear();
+          const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // 月份从0开始，所以需要加1，并且保证两位数的格式
+          const day = String(currentDate.getDate()).padStart(2, '0'); // 保证两位数的格式
+          const formattedDate = `${day}/${month}/${year}`;
+          mmkvStore.set(BLE_DEVICE_INIT_TIME_KEY, formattedDate);
+          
+          resolve("finish")
+        }
+        // return "finish"
+        resolve("waiting")
+
+        })
+        .catch(error => {
+          console.log('Read fail', error);
+          // return "error"
+          reject(error);
+        });
+
+    });
+  }
+  
+
   // LOG  Write writeWithoutResponse peripheralId 7C:B9:4C:D6:49:E4
   // LOG  Write writeWithoutResponse writeWithoutResponseServiceUUID 55E405D2-AF9F-A98F-E54A-7DFE43535355
   // LOG  Write writeWithoutResponse writeWithoutResponseCharacteristicUUID 16962447-C623-61BA-D94B-4D1E43535349
@@ -387,8 +460,9 @@ export default class BleModule {
       console.log('Write writeWithoutResponse writeWithoutResponseServiceUUID', serviceUUID);
       console.log('Write writeWithoutResponse writeWithoutResponseCharacteristicUUID', writeCharacteristicUUID);
 
-      const data2 = [0x01, 0x02, 0x03, 0x04, 0x05];
+      // const data2 = [0x01, 0x02, 0x03, 0x04, 0x05];
       BleManager.writeWithoutResponse(
+      // BleManager.write(
         this.peripheralId, serviceUUID, writeCharacteristicUUID,
         // data,
         this.stringToAsciiByteArray(data),
@@ -399,6 +473,7 @@ export default class BleModule {
         })
         .catch(error => {
           console.log('Write failed', data);
+          console.log('Write failed error', error);
           reject(error);
         });
     });
