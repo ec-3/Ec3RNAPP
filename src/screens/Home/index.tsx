@@ -43,21 +43,37 @@ interface tabbarIconColor {
   color: string;
 }
 const tokenTabbarIcon = ({ color }: tabbarIconColor) => {
-  return <Wallet size={24} color={color} weight={'fill'} />;
+  // return <Wallet size={24} color={color} weight={'fill'} />;
+  
+  console.log('---*********** color:', color)
+  const icon = color === '#fff' ? require('assets/tab_wallet_select.png') : require('assets/tab_wallet.png');
+  return <Image source={icon} style={{ width: 24, height: 24, resizeMode: 'contain'  }} />;
+
+
 //   return  <Image 
 //   source={ require('./assets/CurrencyDollarSimple.png')}
 //   style={{height:60,width:60,resizeMode:'center'}} >
 // </Image>;
 };
 const nftTabbarIcon = ({ color }: tabbarIconColor) => {
-  return <Aperture size={24} color={color} weight={'fill'} />;
+  // return <Aperture size={24} color={color} weight={'fill'} />;
+
+  console.log('---*********** color:', color)
+  const icon = color === '#fff' ? require('assets/tab_device_data_select.png') : require('assets/tab_device_data.png');
+  return <Image source={icon} style={{ width: 20, height: 20, resizeMode: 'contain'  }} />;
+
   // return  <Image 
   //   source={ require('./assets/secondTabImg.png')}
   //   style={{height:60,width:60,resizeMode:'center'}} >
   // </Image>;
 };
 const crowdloanTabbarIcon = ({ color }: tabbarIconColor) => {
-  return <Rocket size={24} color={color} weight={'fill'} />;
+  // return <Rocket size={24} color={color} weight={'fill'} />;
+
+  console.log('---*********** color:', color)
+  const icon = color === '#fff' ? require('assets/tab_device_reward_select.png') : require('assets/tab_device_reward.png');
+  return <Image source={icon} style={{ width: 24, height: 24, resizeMode: 'contain'  }} />;
+
   // return  <Image 
   //   source={ require('./assets/mdi_access-point-network.png')}
   //   style={{height:60,width:60,resizeMode:'center'}} >
