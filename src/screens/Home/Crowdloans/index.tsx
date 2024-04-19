@@ -372,7 +372,7 @@ export const CrowdloansScreen = () => {
     } else {
       Alert.alert('', 'pleace open bluetooth', [
         {
-          text: 'Cancle',
+          text: 'Cancel',
           onPress: () => {},
         },
         {
