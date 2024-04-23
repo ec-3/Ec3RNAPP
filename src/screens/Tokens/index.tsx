@@ -62,11 +62,11 @@ export const CustomTokenSetting = () => {
                 return true;
               }
               break;
-            case FilterValue.ENABLED:
-              if (assetSettingMap[item.slug] && assetSettingMap[item.slug].visible) {
-                return true;
-              }
-              break;
+            // case FilterValue.ENABLED:
+            //   if (assetSettingMap[item.slug] && assetSettingMap[item.slug].visible) {
+            //     return true;
+            //   }
+            //   break;
             case FilterValue.DISABLED:
               if (!assetSettingMap[item.slug] || !assetSettingMap[item.slug]?.visible) {
                 return true;
