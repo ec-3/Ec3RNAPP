@@ -10,7 +10,7 @@ import withPageWrapper from 'components/pageWrapper';
 import i18n from 'utils/i18n/i18n';
 import { downloadData, showReward, getReward, mining, downloadDataWith } from 'messaging/index';
 import { Text, View } from 'react-native-animatable';
-import { ActivityIndicator, Image, Button, TouchableOpacity,Dimensions,  Alert, Animated, Easing } from 'react-native';
+import { ActivityIndicator, Image, Button, TouchableOpacity,Dimensions,  Alert, Animated, Easing, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ToggleItem } from 'components/ToggleItem';
 import { SubScreenContainer } from 'components/SubScreenContainer';
@@ -19,7 +19,7 @@ import { dev } from '@polkadot/types/interfaces/definitions';
 import { mmkvStore } from 'utils/storage';
 import { BLE_DEVICE_DID_ADDR_KEY, BLE_DEVICE_INIT_TIME_KEY, generateDeviceDataPrefix, generateDeviceDataConsumptionPrefix, calculateRound,
   generateDeviceRewardValuePrefix, generateDeviceRewardStatusPrefix, generateDeviceMiningLastRoundPrefix, generateDeviceGetRewardLastRoundPrefix, 
-  calculateTimestampByRound, generateDeviceDataConsumptionBAKPrefix, formatTimestampToDateTimeString } from 'constants/index';
+  calculateTimestampByRound, generateDeviceDataConsumptionBAKPrefix, formatTimestampToDateTimeString, DEVICE_COUNT } from 'constants/index';
 
 import { useSelector } from 'react-redux';
 import { RootState } from 'stores/index';
@@ -49,6 +49,7 @@ function alert(text: string) {
 
 export const  DeviceActionScreen = () => {
   const [activeTab, setActiveTab] = useState('battery');
+
 
   const spinValue = useRef(new Animated.Value(0)).current;
 
@@ -122,6 +123,41 @@ export const  DeviceActionScreen = () => {
   const [cumulativeData, setCumulativeData] = useState(String());
   const [reward, setReward] = useState(String());
 
+  const [deviceCount, setDeviceCount] = useState(0);
+  const [names, setNames] = useState<string[]>([]);
+  const [devIDs, setDevIDs] = useState<string[]>([]);
+  const [initTimes, setInitTimes] = useState<string[]>([]);
+  const [todayDatas, setTodayDatas] = useState<string[]>([]);
+  const [weeklyDatas, setWeeklyDatas] = useState<string[]>([]);
+  const [cumulativeDatas, setCumulativeDatas] = useState<string[]>([]);
+  const [rewards, setRewards] = useState<string[]>([]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // 假设这是从 mmkvStore 中获取的设备数量
+      setDeviceCount(mmkvStore.getNumber(DEVICE_COUNT) ?? 1)
+
+      return () => {
+        
+      };
+    }, [])
+  );
+
+  // 当 deviceCount 变化时更新状态数组的长度
+  useEffect(() => {
+
+    setNames(Array(deviceCount).fill(''));
+    setDevIDs(Array(deviceCount).fill(''));
+    setInitTimes(Array(deviceCount).fill(''));
+    setTodayDatas(Array(deviceCount).fill(''));
+    setWeeklyDatas(Array(deviceCount).fill(''));
+    setCumulativeDatas(Array(deviceCount).fill(''));
+    setRewards(Array(deviceCount).fill(''));
+  }, [deviceCount]);
+
+// 其他 useEffect 钩子用于从存储中获取设备数据，并将其更新到相应的状态数组中
+
+
 
   // 获取当前时间前面一个5秒的倍数时间戳的秒值
   // const getNearestMultipleOf5Seconds = () => {
@@ -176,7 +212,7 @@ export const  DeviceActionScreen = () => {
     return certainTimeConsumption;
   }
   
-
+/*
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -316,8 +352,151 @@ export const  DeviceActionScreen = () => {
 
     return () => clearInterval(intervalId); // 组件卸载时清除定时器
   }, []); // 依赖项为空数组，确保仅在组件挂载时执行一次
+*/
 
 
+  useEffect(() => {
+    const fetchDataForDevice = async (deviceIndex:number) => {
+      console.log("************************************************fetchDataForDevice:", deviceIndex);
+      try {
+        const intervalPromises = [];
+        // 在这里根据 deviceIndex 获取对应的参数数组
+        const timestamp = Date.now(); // 当前时间戳
+        const round = calculateRound(timestamp);   //要领奖励的话应该是上一轮 round-1
+        console.log("当前时间戳对应的轮次值是：", round);
+        const nearestMultiple = getNearestMultipleOf5Seconds();
+        console.log("获取当前时间前面一个5秒-[变成100秒]-的倍数时间戳的秒值 nearestMultiple:", nearestMultiple);
+        var formattedDateTimeString = formatTimestampToDateTimeString(nearestMultiple);
+        console.log("***以上对应通用显示形式:", formattedDateTimeString);
+        // const currConsumption = await getCertainTimeConsumption(nearestMultiple);
+        const currConsumption = intervalPromises.push(getCertainTimeConsumption(nearestMultiple));
+        console.log("***** get currConsumption:", currConsumption);
+        const lastMiningRound = mmkvStore.getNumber(generateDeviceMiningLastRoundPrefix()) ?? 1;
+        console.log("*** lastMiningRound:", lastMiningRound);
+        const today0Time = calculateTimestampByRound(round - 1);  //TODO: for test
+        console.log("当天的零点时间戳的秒值:", today0Time);
+        formattedDateTimeString = formatTimestampToDateTimeString(today0Time);
+        console.log("***以上对应通用显示形式:", formattedDateTimeString);
+        if (nearestMultiple == today0Time) {
+          mmkvStore.set(generateDeviceDataConsumptionPrefix(nearestMultiple), currConsumption);
+        }
+        const nextDay0Time = today0Time + 24*60*60;
+        mmkvStore.set(generateDeviceDataConsumptionBAKPrefix(nextDay0Time), currConsumption); //备份为后一天的零点的数据
+        console.log("*** set bak data for nextDay0Time:", nextDay0Time, currConsumption);
+        const checkdata = mmkvStore.getNumber(generateDeviceDataConsumptionBAKPrefix(nextDay0Time)) ?? "-1";
+        console.log("*** get bak data for nextDay0Time:", nextDay0Time, checkdata);
+        if (mmkvStore.getNumber(generateDeviceDataConsumptionPrefix(0)) ?? -1 < 0) {  //存储设备添加后的第一条数据记录
+          mmkvStore.set(generateDeviceDataConsumptionPrefix(0), currConsumption);
+        }
+
+        // const today0TimeConsumption = await getCertainTimeConsumption(today0Time);
+        const today0TimeConsumption = intervalPromises.push(getCertainTimeConsumption(today0Time));
+        console.log("***** get today0TimeConsumption:", today0TimeConsumption);
+        const weekly0Time = getFirstDayOfWeekStartTimestampInSeconds();
+        console.log("本周第一天的零点时间戳的秒值:", weekly0Time);
+        formattedDateTimeString = formatTimestampToDateTimeString(weekly0Time);
+        console.log("***以上对应通用显示形式:", formattedDateTimeString);
+        // const weekly0TimeConsumption = await getCertainTimeConsumption(weekly0Time);
+        const weekly0TimeConsumption = intervalPromises.push(getCertainTimeConsumption(weekly0Time));
+        console.log("***** get weekly0TimeConsumption:", weekly0TimeConsumption);
+        const resultStore = mmkvStore.getString(BLE_DEVICE_DID_ADDR_KEY) ?? "5GBpnoZbJ5NWi95wxAeET1UUD1ouvpayFwSTTiisshtVnk1u";
+        const newDevID = [...devIDs]; // 保留之前的状态值
+        newDevID[deviceIndex] = resultStore;
+        setDevIDs(newDevID);
+        const initTime = mmkvStore.getString(BLE_DEVICE_INIT_TIME_KEY) ?? "06/03/2024";
+        const newInitTime = [...initTimes]; // 保留之前的状态值
+        newInitTime[deviceIndex] = initTime;
+        setInitTimes(newInitTime);
+  
+
+        const newTodayDatas = [...todayDatas]; // 保留之前的状态值
+        newTodayDatas[deviceIndex] = (currConsumption - today0TimeConsumption).toFixed(2)+" kwh";
+        setTodayDatas(newTodayDatas);
+
+        const newWeeklyDatas = [...weeklyDatas]; // 保留之前的状态值
+        newWeeklyDatas[deviceIndex] = (currConsumption - weekly0TimeConsumption).toFixed(2)+" kwh";
+        setWeeklyDatas(newWeeklyDatas);
+
+        const newCumulativeDatas = [...cumulativeDatas]; // 保留之前的状态值
+        newCumulativeDatas[deviceIndex] = currConsumption+" kwh";
+        setCumulativeDatas(newCumulativeDatas);
+        
+
+
+        //以下的计算等测试完整后需要移到下面的if之内
+        const lastMiningRoundNext0Time = calculateTimestampByRound(lastMiningRound);
+        console.log("***最后一次mining的轮次后面一天的零点时间戳[也就是下次mining的数据起点]是:", lastMiningRoundNext0Time);
+        formattedDateTimeString = formatTimestampToDateTimeString(lastMiningRoundNext0Time);
+        console.log("***以上对应通用显示形式:", formattedDateTimeString);
+        // const startTimeData = mmkvStore.getNumber(generateDeviceDataConsumptionPrefix(lastMiningRoundNext0Time)) ?? 0;
+        // const startTimeData = await getCertainTimeConsumption(lastMiningRoundNext0Time);
+        const startTimeData = intervalPromises.push(getCertainTimeConsumption(lastMiningRoundNext0Time));
+        const data = 1;//Number((today0TimeConsumption - startTimeData).toFixed(2)) * 1000;
+        console.log("***mining startTimeData:", startTimeData);
+        console.log("***mining today0TimeConsumption:", today0TimeConsumption);
+        console.log("***mining data:", data);
+
+        if (round > lastMiningRound) {
+          if (data > 0) {
+            mining(data, round-1).then(() => {
+              showReward(round-1).then(reward => {
+                const newRewards = [...rewards]; // 保留之前的状态值
+                newRewards[deviceIndex] = reward;
+                setRewards(newRewards);
+                setLoading(false); // 隐藏等待框
+                console.log("**************** end getdata:", Date.now());
+              });
+            });
+          } else {  //0值可以不处理, 下一轮有新值时依然可以从此轮开始算起
+            const newRewards = [...rewards]; // 保留之前的状态值
+            newRewards[deviceIndex] = "0";
+            setRewards(newRewards);
+            setLoading(false); // 隐藏等待框
+
+            mmkvStore.set(generateDeviceMiningLastRoundPrefix(), round-1); //此轮无数据mining, 也刷新下最新一次的mining轮数
+            mmkvStore.set(generateDeviceRewardValuePrefix(round-1), 0);     //无数据, 对应记录奖励为0, 不用去链上获取了, 因为0奖励没有链上的记录
+            mmkvStore.set(generateDeviceRewardStatusPrefix(round-1), true); //奖励为0的轮次保存为已经领取的状态
+          }
+        } else {
+          showReward(round-1).then(reward => {
+            const newRewards = [...rewards]; // 保留之前的状态值
+            newRewards[deviceIndex] = reward;
+            setRewards(newRewards);
+            setLoading(false); // 隐藏等待框
+            console.log("**************** end getdata:", Date.now());
+          });
+        }
+
+        await Promise.all(intervalPromises); // 等待所有异步操作完成
+  
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    const fetchData = async () => {
+      // 在这里执行异步逻辑
+      const promises = [];
+      for (let i = 0; i < deviceCount; i++) {
+        promises.push(fetchDataForDevice(i));
+      }
+      await Promise.all(promises);
+  
+      const intervalId = setInterval(() => {
+        const intervalPromises = [];
+        for (let i = 0; i < deviceCount; i++) {
+          intervalPromises.push(fetchDataForDevice(i));
+        }
+        Promise.all(intervalPromises);
+      }, 100 * 1000);
+  
+      return () => clearInterval(intervalId);
+    };
+  
+    fetchData();
+  
+  }, [deviceCount]);
+  
 
   
   const fullAccounts = useSelector((state: RootState) => state.accountState.accounts);
@@ -394,9 +573,9 @@ export const  DeviceActionScreen = () => {
 
       {/* Content based on Active Tab */}
       {activeTab === 'battery' && (
-        <View style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}>
           {/* Battery Content */}
-          <View style={{ backgroundColor: theme.colorBgSecondary, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', paddingTop: 20 }}>
+          {/* <View style={{ backgroundColor: theme.colorBgSecondary, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', paddingTop: 20 }}>
             <View style={{ marginLeft: '6%', marginRight:'6%', width: '88%'  }}>
               <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>ID: {devID}</Text>
               <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Initial Connection Time: {initTime}</Text>
@@ -409,24 +588,45 @@ export const  DeviceActionScreen = () => {
               <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Cumulative: {cumulativeData}</Text>
               <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Reward: {reward ? reward + ' ECT' : null}</Text>
             </View>
-          </View>
+          </View> */}
+
+          {/* 设备列表 */}
+          {Array.from(Array(deviceCount).keys()).map((index) => (
+            <View key={index} style={{ backgroundColor: theme.colorBgSecondary, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', paddingTop: 20 }}>
+              <View style={{ marginLeft: '6%', marginRight: '6%', width: '88%' }}>
+                <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white', width: 350 }}>ID: {devIDs[index]}</Text>
+                <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Initial Connection Time: {initTimes[index]}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ flex: 1, textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Discharge Capacity</Text>
+                  <Image source={require('assets/BatteryCharging.png')} style={{ width: 32, height: 32 }} />
+                </View>
+                <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Today: {todayDatas[index]}</Text>
+                <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Weekly: {weeklyDatas[index]}</Text>
+                <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Cumulative: {cumulativeDatas[index]}</Text>
+                <Text style={{ textAlign: 'left', fontSize: 14, paddingTop: 6, color: 'white' }}>Reward: {rewards[index] ? rewards[index] + ' ECT' : null}</Text>
+                <View style={{  height: 1, backgroundColor: '#232323', marginTop: 60, }} />
+              </View>
+            </View>
+          ))}
 
           {/* Get Rewards Button */}
-          {parseFloat(reward) > 0 && (
-            <View style={{ backgroundColor: theme.colorBgSecondary, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 20 }}>
+          {parseFloat(rewards[0]) > 0 && (
+            <View style={{ backgroundColor: theme.colorBgSecondary, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 20, marginBottom: 100 }}>
               <TouchableOpacity onPress={handleButtonClick} style={{ backgroundColor: '#454545', borderRadius: 5, paddingHorizontal: 10, paddingVertical: 5 }}>
                 <Text style={{ color: 'white', fontSize: 20 }}>Get Rewards</Text>
               </TouchableOpacity>
             </View>
           )}
-
+          
+          <View style={{  height: 0, backgroundColor: '#232323', marginTop: 60, }} />
+          
           {/* Loading Indicator */}
           {loading && (
             <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
               <ActivityIndicator size="large" color="white" />
             </View>
           )}
-        </View>
+        </ScrollView>
       )}
 
 
