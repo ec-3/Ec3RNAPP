@@ -1,4 +1,4 @@
-// Copyright 2019-2022 @subwallet/extension-base authors & contributors
+// Copyright 2019-2022 @ec3/extension-base authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 export const ProjectLogos: Record<string, string> = {
@@ -477,7 +477,7 @@ export const ProjectLogos: Record<string, string> = {
   subspace: require('./images/projects/subspace.png'),
   subsquare: require('./images/projects/subsquare.png'),
   subsquid: require('./images/projects/subsquid.png'),
-  subwallet: require('./images/projects/subwallet.png'),
+  ec3: require('./images/projects/ec3.png'),
   supercolony: require('./images/projects/supercolony.png'),
   sushi: require('./images/projects/sushi.png'),
   'sushi-top-marketing': require('./images/projects/sushi-top-marketing.png'),
@@ -792,7 +792,7 @@ export const ChainLogoMap: Record<string, string> = {
   alephSmartNet: ProjectLogos['aleph-zero'],
   kulupu: ProjectLogos['kulupu-network'],
   joystream: ProjectLogos.joystream,
-  subwallet: ProjectLogos.subwallet,
+  ec3: ProjectLogos.ec3,
   parity: ProjectLogos.parity,
   keystone: ProjectLogos.keystone,
   ledger: ProjectLogos.ledger,
@@ -931,7 +931,7 @@ export const TokenLogoMap: Record<string, string> = {
   'bsc-usd': ProjectLogos.busdt,
   ada: ProjectLogos.cardano,
   tfa: ProjectLogos.tfa,
-  subwallet: ProjectLogos.subwallet,
+  ec3: ProjectLogos.ec3,
   parity: ProjectLogos.parity,
   keystone: ProjectLogos.keystone,
   ledger: ProjectLogos.ledger,

@@ -42,13 +42,13 @@
           <action android:name="android.intent.action.VIEW" />
           <category android:name="android.intent.category.DEFAULT" />
           <category android:name="android.intent.category.BROWSABLE" />
-          <data android:scheme="subwallet" />
+          <data android:scheme="ec3" />
         </intent-filter>
         <intent-filter>
           <action android:name="android.intent.action.VIEW" />
           <category android:name="android.intent.category.DEFAULT" />
           <category android:name="android.intent.category.BROWSABLE" />
-          <data android:scheme="https" android:host="mobile.subwallet.app" />
+          <data android:scheme="https" android:host="mobile.ec3.app" />
         </intent-filter>
       </activity>
     </application>

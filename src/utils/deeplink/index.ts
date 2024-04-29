@@ -20,7 +20,7 @@ export function handleDeeplinkOnFirstOpen(
       }
 
       prevDeeplinkUrl = url;
-      if (getProtocol(url) === 'subwallet') {
+      if (getProtocol(url) === 'ec3') {
         const urlParsed = new urlParse(url);
         if (urlParsed.hostname === 'wc') {
           if (urlParsed.query.startsWith('?requestId')) {
@@ -34,7 +34,7 @@ export function handleDeeplinkOnFirstOpen(
       } else if (getProtocol(url) === 'https') {
         const urlParsed = new urlParse(url);
         if (urlParsed.pathname.split('/')[1] === 'browser') {
-          // Format like: https://subwallet-link.vercel.app/browser?url=https://hackadot.subwallet.app/
+          // Format like: https://ec3-link.vercel.app/browser?url=https://hackadot.ec3.app/
           const finalUrl = queryString.parse(urlParsed.query)['?url'] || '';
           navigation.navigate('BrowserTabsManager', {
             url: Array.isArray(finalUrl) ? finalUrl[0] : finalUrl,

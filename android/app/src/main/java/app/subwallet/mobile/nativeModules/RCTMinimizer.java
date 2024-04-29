@@ -1,4 +1,4 @@
-package app.subwallet.mobile.nativeModules;
+package app.ec3.mobile.nativeModules;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;

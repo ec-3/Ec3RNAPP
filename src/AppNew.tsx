@@ -1,4 +1,4 @@
-// Copyright 2019-2022 @subwallet/extension authors & contributors
+// Copyright 2019-2022 @ec3/extension authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 import { ExternalRequestContextProvider } from 'providers/ExternalRequestContext';
 import { QrSignerContextProvider } from 'providers/QrSignerContext';

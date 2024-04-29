@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Copyright 2017-2022 SubWallet
+// Copyright 2017-2022 ec3
 // SPDX-License-Identifier: Apache-2.0
 import {
   commitMessage,
@@ -23,11 +23,11 @@ async function runCleanIOS() {
 }
 
 async function runBuildIOS() {
-  return execSync('xcodebuild -workspace ./EC3APP.xcworkspace -scheme EC3APP -sdk iphoneos -configuration Release -quiet -archivePath $PWD/dist/SubWallet.xcarchive clean archive', 'Build Archive');
+  return execSync('xcodebuild -workspace ./EC3APP.xcworkspace -scheme EC3APP -sdk iphoneos -configuration Release -quiet -archivePath $PWD/dist/ec3.xcarchive clean archive', 'Build Archive');
 }
 
 async function runExportIOS() {
-  return execSync('xcodebuild -exportArchive -archivePath $PWD/dist/SubWallet.xcarchive -exportOptionsPlist exportAdhocOptions.plist -exportPath $PWD/dist', 'Export ipa');
+  return execSync('xcodebuild -exportArchive -archivePath $PWD/dist/ec3.xcarchive -exportOptionsPlist exportAdhocOptions.plist -exportPath $PWD/dist', 'Export ipa');
 }
 
 async function runUploadIOS() {
