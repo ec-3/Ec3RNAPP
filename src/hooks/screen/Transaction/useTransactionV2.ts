@@ -102,8 +102,11 @@ export const useTransaction = <T extends TransactionFormValues = TransactionForm
     [getValues, homePath, navigation],
   );
 
+  //common.enableChain
   const showPopupEnableChain = useCallback(
     (chain: string) => {
+      console.log("*******turnOnChain=:", chain);
+      console.log("*******chainInfoMap[chain]=:", chainInfoMap[chain]);
       if (!chainInfoMap[chain]) {
         return;
       }
@@ -118,6 +121,7 @@ export const useTransaction = <T extends TransactionFormValues = TransactionForm
               appModalContext.hideConfirmModal();
             },
             onCompleteModal: () => {
+              console.log("*******turnOnChain=:", chain);
               turnOnChain(chain);
               setTimeout(() => appModalContext.hideConfirmModal(), 300);
             },

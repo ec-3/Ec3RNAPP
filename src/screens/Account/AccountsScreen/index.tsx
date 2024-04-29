@@ -37,6 +37,7 @@ const searchFunction = (items: AccountJson[], searchString: string) => {
   );
 };
 
+//aaron 钱包地址选择页面
 export const AccountsScreen = ({
   route: {
     params: { pathName },

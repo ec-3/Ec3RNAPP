@@ -19,7 +19,7 @@ if linkage != nil
  use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'SubWalletMobile' do
+target 'EC3APP' do
   config = use_native_modules!
   # Flags change depending on the env values.
   flags = get_default_flags()
@@ -43,7 +43,7 @@ target 'SubWalletMobile' do
 
 
 
-  target 'SubWalletMobileTests' do
+  target 'EC3APPTests' do
     inherit! :complete
     # Pods for testing
   end
