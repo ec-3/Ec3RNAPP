@@ -144,7 +144,6 @@ const BrowserHome = () => {
   return (
     <View style={stylesheet.container}>
       <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-        <FastImage style={stylesheet.banner} resizeMode="cover" source={Images.browserBanner} />
         {historyItems && historyItems.length > 0 && (
           <>
             <SectionHeader

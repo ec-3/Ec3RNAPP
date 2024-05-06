@@ -1,7 +1,7 @@
 // Copyright 2019-2022 @polkadot/extension-koni-ui authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { SVGImages } from 'assets/index';
+import { SVGImages, Images } from 'assets/index';
 import Icon from '../../design-system-ui/icon';
 import CreateStyle from './styles';
 import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
@@ -20,7 +20,7 @@ interface Props {
 const defaultLinkIcon = <Icon customSize={24} phosphorIcon={ArrowsLeftRight} />;
 const defaultLogo = (
   <Suspense>
-    <SVGImages.Logo width={56} height={56} />
+    {/* <Images.Logo width={56} height={56} /> */}
   </Suspense>
 );
 

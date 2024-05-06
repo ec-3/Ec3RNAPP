@@ -65,9 +65,6 @@ import { WrapperParamList } from 'routes/wrapper';
 import { ManageAddressBook } from 'screens/Settings/AddressBook';
 import { BuyToken } from 'screens/Home/Crypto/BuyToken';
 import useCheckEmptyAccounts from 'hooks/useCheckEmptyAccounts';
-import { ConnectionList } from 'screens/Settings/WalletConnect/ConnectionList';
-import { ConnectWalletConnect } from 'screens/Settings/WalletConnect/ConnectWalletConnect';
-import { ConnectionDetail } from 'screens/Settings/WalletConnect/ConnectionDetail';
 import useAppLock from 'hooks/useAppLock';
 import { LockScreen } from 'screens/LockScreen';
 import { STATUS_BAR_LIGHT_CONTENT } from 'styles/sharedStyles';
@@ -133,9 +130,6 @@ const HistoryScreen = (props: JSX.IntrinsicAttributes) => {
   return withPageWrapper(History as ComponentType, ['transactionHistory'])(props);
 };
 
-const ConnectionListScreen = (props: JSX.IntrinsicAttributes) => {
-  return withPageWrapper(ConnectionList as ComponentType, ['walletConnect'])(props);
-};
 
 const AppNavigator = ({ isAppReady }: Props) => {
   const isDarkMode = true;
@@ -257,9 +251,6 @@ const AppNavigator = ({ isAppReady }: Props) => {
               <Stack.Group screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
                 <Stack.Screen name="History" component={HistoryScreen} />
                 <Stack.Screen name="NetworksSetting" component={NetworksSetting} />
-                <Stack.Screen name="ConnectList" component={ConnectionListScreen} />
-                <Stack.Screen name="ConnectDetail" component={ConnectionDetail} />
-                <Stack.Screen name="ConnectWalletConnect" component={ConnectWalletConnect} />
                 <Stack.Screen
                   name="CreatePassword"
                   component={CreateMasterPassword}

@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "postinstall": "patch-package && rm -rf node_modules/react-native-qrcode-scanner/node_modules/react-native-permissions && npx react-native setup-ios-permissions",
-    "android": "react-native run-android",
+    "android": "react-native run-android", 
     "ios": "react-native run-ios",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "start": "react-native start",

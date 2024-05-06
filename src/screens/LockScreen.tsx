@@ -124,13 +124,11 @@ export const LockScreen = () => {
         position: 'absolute',
         backgroundColor: ColorMap.dark1,
       }}>
-      <ImageBackground source={Images.backgroundImg} resizeMode={'cover'} style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: 'black' }}>
         <SafeAreaView style={{ flex: 1 }}>
           <View
             style={{ ...sharedStyles.layoutContainer, flex: 1, width: '100%', alignItems: 'center', paddingTop: 68 }}>
-            <Suspense>
-              <SVGImages.LogoGradient width={80} height={120} />
-            </Suspense>
+
 
             <Text
               style={{
@@ -180,7 +178,7 @@ export const LockScreen = () => {
             />
           </View>
         </SafeAreaView>
-      </ImageBackground>
+      </View> 
     </View>
   );
 };

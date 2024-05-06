@@ -139,7 +139,7 @@ export const FirstScreen = () => {
   return (
     <View style={{ width: '100%', flex: 1 }}>
       <StatusBar barStyle={STATUS_BAR_LIGHT_CONTENT} translucent={true} backgroundColor={'transparent'} />
-      <ImageBackground source={Images.backgroundImg} resizeMode={'cover'} style={imageBackgroundStyle}>
+      <View style={{ flex: 1, backgroundColor: 'black' }}>
         <SafeAreaView />
         <View style={logoStyle}>
           <View
@@ -150,9 +150,6 @@ export const FirstScreen = () => {
               paddingTop: 20,
               alignItems: 'center',
             }}>
-            <Suspense>
-              <SVGImages.LogoGradient width={220} height={220} />
-            </Suspense>
               {/* <Text style={logoTextStyle}>Ec³</Text> */}
               <Text style={logoSubTextStyle}>{i18n.title.slogan}</Text>
           </View>
@@ -183,7 +180,7 @@ export const FirstScreen = () => {
           allowToShowSelectType={true}
         />
         <SafeAreaView />
-      </ImageBackground>
+      </View>
     </View>
   );
 };

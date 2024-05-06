@@ -41,7 +41,7 @@ import VersionNumber from 'react-native-version-number';
 import useAppLock from 'hooks/useAppLock';
 import { BackgroundIcon, Button, Icon, SelectItem } from 'components/design-system-ui';
 import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
-import { SVGImages } from 'assets/index';
+import { SVGImages, Images } from 'assets/index';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 
 const settingTitleStyle: StyleProp<any> = {
@@ -206,7 +206,7 @@ export const Settings = ({ navigation: drawerNavigation }: DrawerContentComponen
     <SubScreenContainer
       title={i18n.header.settings}
       navigation={navigation}
-      icon={<SVGImages.Logo width={24} height={24} />}
+      // icon={<Images.Logo width={24} height={24} />}
       rightIcon={X}
       onPressLeftBtn={() => (drawerNavigation ? drawerNavigation.closeDrawer() : navigation.goBack())}
       onPressRightIcon={() => (drawerNavigation ? drawerNavigation.closeDrawer() : navigation.goBack())}>
