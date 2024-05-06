@@ -18,7 +18,7 @@ import {
   SortAscending,
   SortDescending,
 } from 'phosphor-react-native';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { ValidatorSelectorField } from 'components/Field/ValidatorSelector';
 import { ValidatorSelectorDetailModal } from 'components/Modal/common/ValidatorSelectorDetailModal';
 import Toast from 'react-native-toast-notifications';
@@ -87,7 +87,7 @@ export const ValidatorSelector = ({
   selectedValidator,
   disabled,
 }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const toastRef = useRef<ToastContainer>(null);
   const items = useGetValidatorList(chain, StakingType.NOMINATED) as ValidatorDataType[];
   const [detailItem, setDetailItem] = useState<ValidatorDataType | undefined>(undefined);

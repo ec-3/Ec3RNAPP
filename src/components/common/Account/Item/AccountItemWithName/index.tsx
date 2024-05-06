@@ -1,6 +1,6 @@
 import { isAccountAll } from '@subwallet/extension-base/utils';
 import createStyle from './styles';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import React, { useMemo } from 'react';
 import { Text, View } from 'react-native';
 // TODO: check lib
@@ -28,7 +28,7 @@ const AccountItemWithName: React.FC<Props> = (props: Props) => {
   } = props;
   const isAll = isAccountAll(address);
 
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const styles = useMemo(() => createStyle(theme), [theme]);
 
   return (

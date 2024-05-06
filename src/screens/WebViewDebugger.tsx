@@ -6,7 +6,7 @@ import { RootNavigationProps } from 'routes/index';
 import i18n from 'utils/i18n/i18n';
 import { sharedStyles } from 'styles/sharedStyles';
 import { WebRunnerContext } from 'providers/contexts';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { Input } from 'react-native-elements';
 import { mmkvStore } from 'utils/storage';
 import { AddressScanner } from 'components/Scanner/AddressScanner';
@@ -17,7 +17,7 @@ export const WebViewDebugger = () => {
   const { webState, reload } = useContext(WebRunnerContext);
   const [input, setInput] = useState('');
   const [notification, setNotification] = useState('');
-  const themeColors = useSubWalletTheme().colors;
+  const themeColors = useEC3Theme().colors;
 
   const [showQr, setShowQr] = useState(false);
   const containerStyle = { marginBottom: 30 };

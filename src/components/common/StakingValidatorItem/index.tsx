@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { Avatar, Button, Icon, Number } from 'components/design-system-ui';
 import { FontMedium } from 'styles/sharedStyles';
 import { CheckCircle, DotsThree, Medal } from 'phosphor-react-native';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import StakingValidatorItemStyle from './style';
 import { ValidatorDataType } from 'hooks/screen/Staking/useGetValidatorList';
 import { isEthereumAddress } from '@polkadot/util-crypto';
@@ -28,7 +28,7 @@ export const StakingValidatorItem = ({
   isSelected,
   showUnSelectedIcon = true,
 }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const _style = StakingValidatorItemStyle(theme);
   const { address, identity, commission, expectedReturn } = validatorInfo;
   const onPressItem = useCallback(() => {

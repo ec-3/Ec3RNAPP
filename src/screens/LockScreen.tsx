@@ -12,7 +12,7 @@ import TouchID from 'react-native-touch-id';
 import { useSelector } from 'react-redux';
 import { RootState } from 'stores/index';
 import { Images, SVGImages } from 'assets/index';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { Button, WarningText } from 'components/design-system-ui';
 import { resetWallet } from 'messaging/index';
 import { useToast } from 'react-native-toast-notifications';
@@ -33,7 +33,7 @@ const optionalConfigObject = {
 };
 
 export const LockScreen = () => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const { unlock, resetPinCode } = useAppLock();
   const faceIdEnabled = useSelector((state: RootState) => state.mobileSettings.faceIdEnabled);
   const [value, setValue] = useState<string>('');

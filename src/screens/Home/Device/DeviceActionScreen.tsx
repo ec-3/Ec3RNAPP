@@ -11,7 +11,7 @@ import { ActivityIndicator, Image, Button, TouchableOpacity,Dimensions,  Alert, 
 import { useNavigation } from '@react-navigation/native';
 import { ToggleItem } from 'components/ToggleItem';
 import { SubScreenContainer } from 'components/SubScreenContainer';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { dev } from '@polkadot/types/interfaces/definitions';
 import { mmkvStore } from 'utils/storage';
 import { BLE_DEVICE_DID_ADDR_KEY, BLE_DEVICE_INIT_TIME_KEY, generateDeviceDataPrefix, generateDeviceDataConsumptionPrefix, calculateRound,
@@ -92,7 +92,7 @@ export const  DeviceActionScreen = () => {
 
 
 
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   
   // const [myData,setMyData] = useState();
 

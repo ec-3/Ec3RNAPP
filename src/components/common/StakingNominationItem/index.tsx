@@ -7,7 +7,7 @@ import { toShort } from 'utils/index';
 import { NominationInfo } from '@subwallet/extension-base/background/KoniTypes';
 import useGetNativeTokenBasicInfo from 'hooks/useGetNativeTokenBasicInfo';
 import { CheckCircle } from 'phosphor-react-native';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import StakingNominationItemStyle from './style';
 import i18n from 'utils/i18n/i18n';
 
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export const StakingNominationItem = ({ nominationInfo, isSelected, onSelectItem }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const _style = StakingNominationItemStyle(theme);
   const { activeStake, chain, validatorAddress, validatorIdentity } = nominationInfo;
   const { decimals, symbol } = useGetNativeTokenBasicInfo(chain);

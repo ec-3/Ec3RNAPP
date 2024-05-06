@@ -6,7 +6,7 @@ import { useLazyList } from 'hooks/common/useLazyList';
 import { defaultSortFunc } from 'utils/function';
 import { SortFunctionInterface } from 'types/ui-types';
 import { ActivityIndicator } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 
 interface Props<T> {
   items: T[];
@@ -52,7 +52,7 @@ export function LazyFlatList<T>({
   isShowListWrapper,
   getItemLayout,
 }: Props<T>) {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const flatListRef = useRef<FlatList>(null);
   const filteredItems = useMemo(() => {
     let searchItem = searchFunction ? searchFunction(items, searchString) : items;

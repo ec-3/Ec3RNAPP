@@ -6,7 +6,7 @@ import { ColorMap } from 'styles/color';
 import { FontMedium, FontSemiBold } from 'styles/sharedStyles';
 import { CheckCircle } from 'phosphor-react-native';
 import { Icon } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 
 interface Props extends TouchableOpacityProps {
   symbol: string;
@@ -62,7 +62,7 @@ export const TokenSelectItem = ({
   defaultItemKey,
   iconSize = 40,
 }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
 
   return (
     <TouchableOpacity onPress={onSelectNetwork}>

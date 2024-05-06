@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { TouchableOpacity, View, Image } from 'react-native';
 import { Avatar, Button, Icon, Typography } from 'components/design-system-ui';
 import { isEthereumAddress } from '@polkadot/util-crypto';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { FontMedium, FontSemiBold } from 'styles/sharedStyles';
 import { CheckCircle, Eye, IconProps, PencilSimpleLine, QrCode, Swatches } from 'phosphor-react-native';
 import useGetAccountSignModeByAddress from 'hooks/screen/useGetAccountSignModeByAddress';
@@ -30,7 +30,7 @@ export const SelectAccountItemV2 = ({
   onSelectAccount,
   isShowEditBtn = true,
 }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const signMode = useGetAccountSignModeByAddress(address);
   const accountSignModeIcon = useMemo((): React.ElementType<IconProps> | undefined => {
     switch (signMode) {

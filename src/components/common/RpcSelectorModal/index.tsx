@@ -4,7 +4,7 @@ import { ContainerHorizontalPadding, MarginBottomForSubmitButton } from 'styles/
 import { ListRenderItemInfo, View } from 'react-native';
 import i18n from 'utils/i18n/i18n';
 import { PlusCircle, ShareNetwork } from 'phosphor-react-native';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { useNavigation } from '@react-navigation/native';
 import { RootNavigationProps } from 'routes/index';
 import useFetchChainInfo from 'hooks/screen/useFetchChainInfo';
@@ -38,7 +38,7 @@ export const RpcSelectorModal = ({
   renderSelectModalBtn,
   rpcSelectorRef,
 }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const navigation = useNavigation<RootNavigationProps>();
   const chainInfo = useFetchChainInfo(chainSlug);
 

@@ -54,7 +54,7 @@ import { AddProvider } from 'screens/AddProvider';
 import TransactionScreen from 'screens/Transaction/TransactionScreen';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import { Keyboard, Platform, StatusBar } from 'react-native';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { Home } from 'screens/Home';
 import { deviceWidth } from 'constants/index';
 import { createDrawerNavigator, DrawerContentComponentProps } from '@react-navigation/drawer';
@@ -132,7 +132,7 @@ const HistoryScreen = (props: JSX.IntrinsicAttributes) => {
 const AppNavigator = ({ isAppReady }: Props) => {
   const isDarkMode = true;
   const theme = isDarkMode ? THEME_PRESET.dark : THEME_PRESET.light;
-  const appTheme = useSubWalletTheme().swThemes;
+  const appTheme = useEC3Theme().swThemes;
   const navigationRef = useNavigationContainerRef<RootStackParamList>();
   const Stack = createNativeStackNavigator<RootStackParamList>();
   const [currentRoute, setCurrentRoute] = useState<RootRouteProps | undefined>(undefined);

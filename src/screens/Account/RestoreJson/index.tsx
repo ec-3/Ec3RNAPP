@@ -1,6 +1,6 @@
 import AvatarGroup from 'components/common/AvatarGroup';
 import useUnlockModal from 'hooks/modal/useUnlockModal';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { DotsThree, FileArrowDown, X } from 'phosphor-react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, ListRenderItemInfo, Platform, ScrollView, View } from 'react-native';
@@ -77,7 +77,7 @@ export const RestoreJson = () => {
   };
   const navigation = useNavigation<RootNavigationProps>();
   const goHome = useGoHome();
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
 
   const styles = useMemo(() => createStyles(theme), [theme]);
 

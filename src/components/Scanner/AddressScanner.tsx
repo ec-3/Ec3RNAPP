@@ -16,7 +16,7 @@ import { Warning } from 'components/Warning';
 import { launchImageLibrary } from 'react-native-image-picker';
 import RNQRGenerator from 'rn-qr-generator';
 import { Icon } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 
 export interface AddressScannerProps {
   onPressCancel: () => void;
@@ -60,7 +60,7 @@ export const AddressScanner = ({
   error,
   isShowError = false,
 }: AddressScannerProps) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const onSuccess = (e: BarCodeReadEvent) => {
     try {
       onChangeAddress(e.data);

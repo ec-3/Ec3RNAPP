@@ -1,7 +1,7 @@
 import { AccountItem, Icon } from 'components/design-system-ui';
 import createStyle from './styles';
 import useAccountAvatarInfo from 'hooks/account/useAccountAvatarInfo';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import React, { useMemo } from 'react';
 import { CheckCircle } from 'phosphor-react-native';
 
@@ -21,7 +21,7 @@ const AccountItemBase: React.FC<AccountItemBaseProps> = (props: AccountItemBaseP
     props;
   const { address: avatarAddress } = useAccountAvatarInfo(address ?? '', preventPrefix, genesisHash);
 
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
 
   const { container: containerStyle, middle: middleStyle, right: rightStyle, ...restStyle } = customStyle || {};
   const styles = useMemo(() => createStyle(theme), [theme]);

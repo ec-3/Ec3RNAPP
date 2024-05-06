@@ -9,7 +9,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { Animated, Dimensions, View } from 'react-native';
 import { useNavigationState } from '@react-navigation/native';
 import { FakeSearchInput } from 'screens/Home/Browser/Shared/FakeSearchInput';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import createStylesheet from './styles';
 import { FontSemiBold } from 'styles/sharedStyles';
 import { Typography } from 'components/design-system-ui';
@@ -63,7 +63,7 @@ const tabbarIcon = (focused: boolean, item: RoutesType, theme: ThemeTypes) => {
   );
 };
 export const BrowserScreen = ({ navigation }: NativeStackScreenProps<{}>) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const stylesheet = createStylesheet(theme);
   const [dApps] = useState<PredefinedDApps>(predefinedDApps);
   const [searchString] = useState<string>('');

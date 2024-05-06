@@ -14,7 +14,7 @@ import { Header } from 'components/Header';
 import { GradientBackgroundColorSet, ScreenContainer } from 'components/ScreenContainer';
 import { Button, Icon, Typography } from 'components/design-system-ui';
 import { FontSemiBold } from 'styles/sharedStyles';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { ReceiveModal } from 'screens/Home/Crypto/ReceiveModal';
 import useReceiveQR from 'hooks/screen/Home/Crypto/useReceiveQR';
 import { useSelector } from 'react-redux';
@@ -47,7 +47,7 @@ export interface TokenSearchRef {
 }
 
 export const TokenGroups = () => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const navigation = useNavigation<CryptoNavigationProps>();
   const tokenSearchRef = useRef<TokenSearchRef>();
   const chainsByAccountType = useGetChainSlugs();

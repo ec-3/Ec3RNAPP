@@ -1,6 +1,6 @@
 import { InfoItemBase } from '../types';
 import React, { useMemo } from 'react';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import MetaInfoStyles from 'components/MetaInfo/style';
 import useGeneralStyles from 'components/MetaInfo/hooks/useGeneralStyles';
 import { getSchemaColor, renderColContent } from 'components/MetaInfo/shared';
@@ -27,7 +27,7 @@ const AccountItem: React.FC<AccountInfoItem> = ({
   name: accountName,
   networkPrefix: addressPrefix,
 }: AccountInfoItem) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const _style = MetaInfoStyles(theme);
   const { labelGeneralStyle, valueGeneralStyle } = useGeneralStyles(theme);
 

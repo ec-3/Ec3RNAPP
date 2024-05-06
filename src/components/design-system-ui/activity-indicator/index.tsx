@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import Animated, {
@@ -21,7 +21,7 @@ interface ActivityIndicatorProps {
 
 const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ size = 16, indicatorColor = '#fff' }) => {
   const rotation = useSharedValue(0);
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const _style = ActivityIndicatorStyles(theme);
 
   const animatedStyles = useAnimatedStyle(() => {

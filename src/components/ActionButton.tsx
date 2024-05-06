@@ -4,7 +4,7 @@ import Text from '../components/Text';
 import { FontMedium } from 'styles/sharedStyles';
 import { Button, Icon } from 'components/design-system-ui';
 import { ThemeTypes } from 'styles/themes';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { ButtonPropsType } from 'components/design-system-ui/button/PropsType';
 
 interface Props extends TouchableOpacityProps {
@@ -24,7 +24,7 @@ function getButtonTextStyle(disabled: boolean, theme: ThemeTypes) {
 }
 
 const ActionButton = (actionButtonProps: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const { label, icon, disabled, onPress, buttonWrapperStyle } = actionButtonProps;
  
   return (

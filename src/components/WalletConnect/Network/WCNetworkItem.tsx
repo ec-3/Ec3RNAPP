@@ -7,7 +7,7 @@ import { Icon } from 'components/design-system-ui';
 import { WarningCircle } from 'phosphor-react-native';
 import { ColorMap } from 'styles/color';
 import { FontSemiBold } from 'styles/sharedStyles';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 
 interface Props {
   item: WalletConnectChainInfo;
@@ -44,7 +44,7 @@ const logoWrapperStyle: StyleProp<any> = {
 };
 
 export const WCNetworkItem = ({ item, selectedValueMap }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const isSupported = useMemo(() => {
     return selectedValueMap[item.slug];
   }, [item.slug, selectedValueMap]);

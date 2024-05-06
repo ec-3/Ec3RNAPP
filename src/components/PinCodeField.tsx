@@ -6,7 +6,7 @@ import { ColorMap } from 'styles/color';
 import { FontBold } from 'styles/sharedStyles';
 import { CELL_COUNT } from 'constants/index';
 import { Squircle } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 
 const codeFiledRoot: StyleProp<any> = {
   marginTop: 20,
@@ -38,7 +38,7 @@ interface Props {
 }
 
 export const PinCodeField = ({ value, setError, setValue, isPinCodeValid, pinCodeRef }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,

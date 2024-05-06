@@ -5,7 +5,7 @@ import { DAppInfo } from 'types/browser';
 import { useSelector } from 'react-redux';
 import { RootState } from 'stores/index';
 import createStylesheet from './styles/IconItem';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { StoredSiteInfo } from 'stores/types';
 import { getHostName } from 'utils/browser';
 
@@ -19,7 +19,7 @@ interface IconItemProps {
 
 const IconItem: React.FC<IconItemProps> = ({ data, url, defaultData, isWithText, onPress }) => {
   const [image, setImage] = useState(data?.icon || `https://${getHostName(url)}/favicon.ico`);
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const stylesheet = createStylesheet(theme);
   const assetLogoMap = useSelector((state: RootState) => state.logoMaps.assetLogoMap);
   const onLoadImageError = useCallback(() => {

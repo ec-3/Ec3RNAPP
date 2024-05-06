@@ -14,7 +14,7 @@ import {
 import { InfoItemGeneralProps } from 'components/MetaInfo/types';
 import { StyleProp, View } from 'react-native';
 import { MetaInfoContext } from 'components/MetaInfo/context';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import MetaInfoStyles from './style';
 import { ThemeTypes } from 'styles/themes';
 
@@ -46,7 +46,7 @@ const _MetaInfo: React.FC<Props> = ({
   spaceSize = 'ms',
   valueColorScheme = 'gray',
 }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const _style = MetaInfoStyles(theme);
   const containerStyle = useMemo(() => {
     return [

@@ -1,4 +1,4 @@
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import createStylesheet from './styles/FakeSearchInput';
 import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Icon, Typography } from 'components/design-system-ui';
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const FakeSearchInput = ({ style, onPress }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const stylesheet = createStylesheet(theme);
   return (
     <TouchableOpacity style={[stylesheet.container, style]} onPress={onPress}>

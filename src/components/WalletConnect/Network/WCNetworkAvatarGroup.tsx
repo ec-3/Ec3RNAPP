@@ -3,7 +3,7 @@ import { WalletConnectChainInfo } from 'types/walletConnect';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Logo, Typography } from 'components/design-system-ui';
 import { ThemeTypes } from 'styles/themes';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { FontBold } from 'styles/sharedStyles';
 
 interface Props {
@@ -16,7 +16,7 @@ const sizeLogo = {
 };
 
 export const WCNetworkAvatarGroup = ({ networks }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const showCount: number = useMemo((): number => {
     return networks.length > 2 ? 3 : 2;
   }, [networks]);

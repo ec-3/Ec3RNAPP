@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { ContainerWithSubHeader } from 'components/ContainerWithSubHeader';
 import { Button, Icon, PageIcon, Typography } from 'components/design-system-ui';
 import { ShoppingCartSimple } from 'phosphor-react-native';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { AccountSelector } from 'components/Modal/common/AccountSelectorNew';
 import { TokenSelector } from 'components/Modal/common/TokenSelectorNew';
 import useBuyToken from 'hooks/screen/Home/Crypto/useBuyToken';
@@ -27,7 +27,7 @@ export const BuyToken = ({
   },
 }: BuyTokenProps) => {
   const navigation = useNavigation<RootNavigationProps>();
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const styles = useMemo(() => createStyle(theme), [theme]);
   const { isAllAccount } = useSelector((state: RootState) => state.accountState);
   const {

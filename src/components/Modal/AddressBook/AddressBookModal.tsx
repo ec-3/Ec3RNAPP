@@ -5,7 +5,7 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import { EmptyList } from 'components/EmptyList';
 import { SectionItem } from 'components/LazySectionList';
 import { AbstractAddressJson, AccountJson } from '@subwallet/extension-base/background/types';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { SectionListData } from 'react-native/Libraries/Lists/SectionList';
 import { ListRenderItemInfo, View } from 'react-native';
 import Typography from '../../design-system-ui/typography';
@@ -123,7 +123,7 @@ export const AddressBookModal = ({
 }: Props) => {
   const { accounts, contacts, recent } = useSelector((state: RootState) => state.accountState);
   const formatAddress = useFormatAddress(addressPrefix);
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const stylesheet = createStylesheet(theme);
   const modalBaseV2Ref = useRef<SWModalRefProps>(null);
 

@@ -15,7 +15,7 @@ import {
 } from '@subwallet/extension-base/services/chain-service/utils';
 import useFetchChainInfo from 'hooks/screen/useFetchChainInfo';
 import { Button, Icon, QRCode, SwModal, Typography } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { SWModalRefProps } from 'components/design-system-ui/modal/ModalBaseV2';
 import { Header } from 'react-native-elements';
 
@@ -39,7 +39,7 @@ const receiveModalContentWrapper: StyleProp<any> = {
 
 const OFFSET_BOTTOM = deviceHeight - STATUS_BAR_HEIGHT - 140;
 export const ReceiveModal = ({ address, selectedNetwork, modalVisible, setModalVisible }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const toastRef = useRef<ToastContainer>(null);
   let svg: { toDataURL: (arg0: (data: any) => void) => void };
   const chainInfo = useFetchChainInfo(selectedNetwork || '');

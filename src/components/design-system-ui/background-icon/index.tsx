@@ -5,7 +5,7 @@ import React from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 import { Icon, Squircle } from '..';
 import BackgroundIconStyles from './style';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { ImageShape } from '@subwallet/react-ui/es/image';
 
 interface BackgroundIconProps {
@@ -33,7 +33,7 @@ const BackgroundIcon: React.FC<BackgroundIconProps> = ({
   backgroundColor,
   customIcon,
 }) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const _style = BackgroundIconStyles(theme);
   function getBackgroundIconSize() {
     if (size === 'xs') {

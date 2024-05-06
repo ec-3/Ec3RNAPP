@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { InfoItemBase } from 'components/MetaInfo/types';
 import { ChainInfo } from 'types/index';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import MetaInfoStyles from 'components/MetaInfo/style';
 import useGeneralStyles from 'components/MetaInfo/hooks/useGeneralStyles';
 import { getSchemaColor, renderColContent } from 'components/MetaInfo/shared';
@@ -34,7 +34,7 @@ const TransferItem: React.FC<TransferInfoItem> = ({
   senderName,
   valueColorSchema,
 }: TransferInfoItem) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const _style = MetaInfoStyles(theme);
   const { labelGeneralStyle, valueGeneralStyle } = useGeneralStyles(theme);
 

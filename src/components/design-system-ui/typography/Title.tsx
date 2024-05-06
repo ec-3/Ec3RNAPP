@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, Text as RNText, TextStyle } from 'react-native';
 import { LevelProps, SuperLevelProps } from './PropsType';
 import TypographyStyles from './style';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 
 export interface TitleProps {
   level?: LevelProps;
@@ -12,7 +12,7 @@ export interface TitleProps {
 }
 
 const Title: React.FC<TitleProps> = ({ level, superLevel, style, children, ...restProps }) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const _style = TypographyStyles(theme);
   const allStyle = [
     _style.title,

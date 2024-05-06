@@ -6,7 +6,7 @@ export interface BrowserStyle {
 }
 
 export default () => {
-  // const theme = useSubWalletTheme().swThemes;
+  // const theme = useEC3Theme().swThemes;
   return StyleSheet.create<BrowserStyle>({
     container: { flex: 1 },
     listItem: { marginBottom: 16 },

@@ -2,7 +2,7 @@ import { Button, Icon } from 'components/design-system-ui';
 import { SeedWord } from 'components/SeedWord';
 import Text from 'components/Text';
 import useCopyClipboard from 'hooks/common/useCopyClipboard';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { CopySimple } from 'phosphor-react-native';
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
@@ -37,7 +37,7 @@ const convertToWords = (seedPhrase: string): Array<Array<SeedWordDataType>> => {
 const WordPhrase: React.FC<Props> = (props: Props) => {
   const { seedPhrase } = props;
 
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
 
   const styles = useMemo(() => createStyles(theme), [theme]);
 

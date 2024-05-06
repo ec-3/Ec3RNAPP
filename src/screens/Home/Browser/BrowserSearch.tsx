@@ -8,7 +8,7 @@ import { StoredSiteInfo } from 'stores/types';
 import { getHostName, getValidURL, searchDomain } from 'utils/browser';
 import { clearHistory, createNewTab } from 'stores/updater';
 import { BrowserItem } from 'components/Browser/BrowserItem';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import createStylesheet from './styles/BrowserSearch';
 import { SectionListData } from 'react-native/Libraries/Lists/SectionList';
 import Typography from '../../../components/design-system-ui/typography';
@@ -68,7 +68,7 @@ const TOTAL_ITEM_HEIGHT = ITEM_HEIGHT + ITEM_SEPARATOR;
 
 export const BrowserSearch = ({ route: { params } }: BrowserSearchProps) => {
   const historyItems = useSelector((state: RootState) => state.browser.history);
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const stylesheet = createStylesheet(theme);
   const navigation = useNavigation<RootNavigationProps>();
   const [searchString, setSearchString] = useState<string>('');

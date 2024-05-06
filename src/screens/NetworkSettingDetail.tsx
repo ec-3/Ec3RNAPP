@@ -33,7 +33,7 @@ import useFormControl, { FormControlConfig } from 'hooks/screen/useFormControl';
 import { isUrl } from 'utils/index';
 import { useNavigation } from '@react-navigation/native';
 import DeleteModal from 'components/common/Modal/DeleteModal';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import i18n from 'utils/i18n/i18n';
 import { ModalRef } from 'types/modalRef';
 
@@ -64,7 +64,7 @@ export const NetworkSettingDetail = ({
 }: NetworkSettingDetailProps) => {
   const navigation = useNavigation<RootNavigationProps>();
   const toast = useToast();
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const rpcSelectorRef = useRef<ModalRef>();
 
   const _chainInfo = useFetchChainInfo(chainSlug);

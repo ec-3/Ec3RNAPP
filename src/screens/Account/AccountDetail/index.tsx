@@ -11,7 +11,7 @@ import useGetAccountByAddress from 'hooks/screen/useGetAccountByAddress';
 import useGetAccountSignModeByAddress from 'hooks/screen/useGetAccountSignModeByAddress';
 import useGetAvatarSubIcon from 'hooks/screen/useGetAvatarSubIcon';
 import useGoHome from 'hooks/screen/useGoHome';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { CopySimple, Export, FloppyDiskBack, ShareNetwork, TrashSimple, User, X } from 'phosphor-react-native';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -32,7 +32,7 @@ export const AccountDetail = ({
   const navigation = useNavigation<RootNavigationProps>();
   const goHome = useGoHome();
   const toast = useToast();
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const account = useGetAccountByAddress(currentAddress);
   const SubIcon = useGetAvatarSubIcon(account, 32);
   const signMode = useGetAccountSignModeByAddress(currentAddress);

@@ -6,7 +6,7 @@ import { ColorMap } from 'styles/color';
 import { FontSemiBold } from 'styles/sharedStyles';
 import { CheckCircle } from 'phosphor-react-native';
 import { Icon } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 
 interface Props {
   itemName: string;
@@ -62,7 +62,7 @@ export const NetworkSelectItemContent = ({
   showSeparator = true,
   iconSize = 28,
 }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   return (
     <View>
       <View style={itemArea}>

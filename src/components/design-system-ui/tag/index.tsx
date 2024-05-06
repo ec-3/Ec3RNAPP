@@ -5,7 +5,7 @@ import { TagPropsType } from './PropsType';
 import { X } from 'phosphor-react-native';
 import { PresetBrandColorTypes, PresetColorTypes, PresetStatusColorTypes } from '@subwallet/react-ui/es/_util/colors';
 import capitalize from '@subwallet/react-ui/es/_util/capitalize';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import TagStyles from './style';
 const PresetColorRegex = new RegExp(`^(${PresetColorTypes.join('|')})(-inverse)?$`);
 const PresetStatusColorRegex = new RegExp(`^(${PresetStatusColorTypes.join('|')})$`);
@@ -28,7 +28,7 @@ const Tag: React.FC<TagNativeProps> = props => {
     shape = 'default',
     icon,
   } = props;
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const _styles = TagStyles(theme);
   const [closed, setClosed] = useState<boolean>(false);
   const isPresetColor = (): boolean => {

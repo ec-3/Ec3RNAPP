@@ -4,7 +4,7 @@ import { SizeType } from '@subwallet/react-ui/es/config-provider/SizeContext';
 import { IconProps } from 'phosphor-react-native';
 import { IconWeight } from 'phosphor-react-native/lib/typescript';
 import React from 'react';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 
 export interface SWIconProps {
   customSize?: number;
@@ -25,7 +25,7 @@ const Icon: React.FC<SWIconProps> = ({
   type = 'phosphor',
   weight,
 }) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
 
   function getIconSize() {
     if (!size) {

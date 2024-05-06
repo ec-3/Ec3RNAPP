@@ -3,7 +3,7 @@ import { Dimensions, StyleProp, TouchableOpacity, View, ViewStyle } from 'react-
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import ModalStyles from './styleV2';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import useConfirmationsInfo from 'hooks/screen/Confirmation/useConfirmationsInfo';
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -44,7 +44,7 @@ const ModalBaseV2 = React.forwardRef<SWModalRefProps, SWModalProps>(
   ) => {
     const translateY = useSharedValue(0);
     const active = useSharedValue(false);
-    const theme = useSubWalletTheme().swThemes;
+    const theme = useEC3Theme().swThemes;
     const _styles = ModalStyles(theme, level);
     const { numberOfConfirmations } = useConfirmationsInfo();
     const [isForcedHidden, setForcedHidden] = useState<boolean>(false);

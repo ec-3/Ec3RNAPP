@@ -34,7 +34,7 @@ import { SWTransactionResponse } from '@subwallet/extension-base/services/transa
 import { Warning } from 'components/Warning';
 import { ContainerHorizontalPadding, MarginBottomForSubmitButton } from 'styles/sharedStyles';
 import { RootStackParamList } from 'routes/index';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenContainer } from 'components/ScreenContainer';
@@ -225,7 +225,7 @@ export const SendFund = ({
     params: { slug: tokenGroupSlug, recipient: scanRecipient },
   },
 }: SendFundProps) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const { show, hideAll } = useToast();
   const chainInfoMap = useSelector((root: RootState) => root.chainStore.chainInfoMap);
   const chainStateMap = useSelector((root: RootState) => root.chainStore.chainStateMap);

@@ -14,7 +14,7 @@ import useUnlockModal from 'hooks/modal/useUnlockModal';
 import useModalScanner from 'hooks/qr/useModalScanner';
 import useGoHome from 'hooks/screen/useGoHome';
 import useGetDefaultAccountName from 'hooks/useGetDefaultAccountName';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { checkPublicAndPrivateKey, createAccountWithSecret } from 'messaging/index';
 import { QrCode, Scan } from 'phosphor-react-native';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -54,7 +54,7 @@ const ImportQrCode: React.FC<Props> = (props: Props) => {
   const {} = props;
   const goHome = useGoHome();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const toast = useToast();
 
   const accountName = useGetDefaultAccountName();

@@ -6,7 +6,7 @@ import { AccountJson } from '@subwallet/extension-base/background/types';
 import { isSameAddress } from '@subwallet/extension-base/utils';
 import { DotsThree } from 'phosphor-react-native';
 import i18n from 'utils/i18n/i18n';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { FontMedium } from 'styles/sharedStyles';
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const WCAccountInput = ({ accounts, selected }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const selectedAccounts = useMemo(
     () => accounts.filter(account => selected.some(address => isSameAddress(address, account.address))),
     [accounts, selected],

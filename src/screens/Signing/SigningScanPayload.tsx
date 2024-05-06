@@ -19,7 +19,7 @@ import { FontMedium, FontSize0, sharedStyles, STATUS_BAR_LIGHT_CONTENT } from 's
 import { convertHexColorToRGBA } from 'utils/color';
 import i18n from 'utils/i18n/i18n';
 import { Button } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 
 const WrapperStyle: StyleProp<ViewStyle> = {
   flex: 1,
@@ -69,7 +69,7 @@ const ProgressButtonStyle: StyleProp<ViewStyle> = {
 };
 
 const SigningScanPayload = () => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const navigation = useNavigation<RootNavigationProps>();
   const {
     state: { totalFrameCount, completedFramesCount, step },

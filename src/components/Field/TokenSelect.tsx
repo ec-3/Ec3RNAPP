@@ -6,7 +6,7 @@ import { FontMedium } from 'styles/sharedStyles';
 import { CaretDown } from 'phosphor-react-native';
 import { ThemeTypes } from 'styles/themes';
 import { Typography } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import i18n from 'utils/i18n/i18n';
 
 interface Props extends FieldBaseProps {
@@ -28,7 +28,7 @@ export const TokenSelectField = ({
   label,
   ...fieldBase
 }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const styles = useMemo(() => createStyle(theme, disabled), [disabled, theme]);
 
   return (

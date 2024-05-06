@@ -10,13 +10,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'stores/index';
 import { updateAutoLockTime, updateFaceIdEnable } from 'stores/MobileSettings';
 import i18n from 'utils/i18n/i18n';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { Icon, SelectItem, SwModal } from 'components/design-system-ui';
 import { useToast } from 'react-native-toast-notifications';
 import { SWModalRefProps } from 'components/design-system-ui/modal/ModalBaseV2';
 
 export const Security = () => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const toast = useToast();
   const { pinCode, pinCodeEnabled, autoLockTime, faceIdEnabled } = useSelector(
     (state: RootState) => state.mobileSettings,

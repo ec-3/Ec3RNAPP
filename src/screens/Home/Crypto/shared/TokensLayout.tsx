@@ -24,7 +24,7 @@ import Animated, {
   AnimateStyle,
 } from 'react-native-reanimated';
 import { TokenBalanceItemType } from 'types/balance';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import LinearGradient from 'react-native-linear-gradient';
 import { STATUS_BAR_HEIGHT } from 'styles/sharedStyles';
 import i18n from 'utils/i18n/i18n';
@@ -73,7 +73,7 @@ export const TokensLayout = ({
   style,
 }: Props) => {
   const currentAccountAddress = useSelector((state: RootState) => state.accountState.currentAccount?.address);
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const yOffset = useSharedValue(0);
   const isAnimating = useSharedValue(0);
   const [pageNumber, setPageNumber] = useState(1);

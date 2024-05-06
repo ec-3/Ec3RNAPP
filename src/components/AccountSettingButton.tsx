@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'stores/index';
 import { CaretDown } from 'phosphor-react-native';
 import { Avatar, Icon } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import AvatarGroup from 'components/common/AvatarGroup';
 import { isEthereumAddress } from '@polkadot/util-crypto';
 import createStylesheet from './styles/AccountSettingButton';
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const AccountSettingButton = ({ navigation, style }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const stylesheet = createStylesheet(theme);
   const { currentAccount, isReady, isAllAccount } = useSelector((state: RootState) => state.accountState);
   const currentAccountAddress = currentAccount?.address || '';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Icon, SwModal, Typography } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import ModalStyle from './style';
 import { View } from 'react-native';
 import { ShieldPlus } from 'phosphor-react-native';
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const RequestCreateMasterPasswordModal = ({ visible }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const navigation = useNavigation<RootNavigationProps>();
   const _style = ModalStyle(theme);
   const [modalVisible, setModalVisible] = useState<boolean>(visible);

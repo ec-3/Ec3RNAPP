@@ -4,7 +4,7 @@ import ConfirmationFooter from 'components/common/Confirmation/ConfirmationFoote
 import { Button, Icon } from 'components/design-system-ui';
 import { FieldBase } from 'components/Field/Base';
 import { TextField } from 'components/Field/Text';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { CheckCircle, CopySimple, XCircle } from 'phosphor-react-native';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
@@ -34,7 +34,7 @@ const AddTokenConfirmation: React.FC<Props> = (props: Props) => {
     payload: { contractAddress, decimals, originChain, slug, symbol, type },
   } = request;
 
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const { chainInfoMap } = useSelector((state: RootState) => state.chainStore);
 
   const styles = useMemo(() => createStyle(theme), [theme]);

@@ -29,7 +29,7 @@ import { BN_ZERO } from 'utils/chainBalances';
 import MetaInfo from 'components/MetaInfo';
 import { Button, Icon } from 'components/design-system-ui';
 import { ArrowCircleRight, XCircle } from 'phosphor-react-native';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import InputCheckBox from 'components/Input/InputCheckBox';
 import { TransactionLayout } from 'screens/Transaction/parts/TransactionLayout';
 import { ClaimRewardProps } from 'routes/transaction/transactionAction';
@@ -96,7 +96,7 @@ const ClaimReward = ({
   const accountSelectorRef = useRef<ModalRef>();
   const stakingType = _stakingType as StakingType;
   const navigation = useNavigation<StakingScreenNavigationProps>();
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const { isAllAccount, accounts } = useSelector((state: RootState) => state.accountState);
   const { stakingRewardMap } = useSelector((state: RootState) => state.staking);
   const { chainInfoMap } = useSelector((state: RootState) => state.chainStore);

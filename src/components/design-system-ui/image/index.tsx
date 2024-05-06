@@ -3,7 +3,7 @@ import { ImageRequireSource, StyleProp, View, ViewStyle } from 'react-native';
 import FastImage, { FastImageProps, Source } from 'react-native-fast-image';
 import { ActivityIndicator, Squircle } from '..';
 import ImageStyles from './style';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { SvgUri } from 'react-native-svg';
 
 type ImageShape = 'default' | 'square' | 'circle' | 'squircle';
@@ -31,7 +31,7 @@ const Image: React.FC<SWImageProps> = ({
     setLoading(false);
   };
 
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const _style = ImageStyles(theme);
   const customStyle = [_style.container, containerStyle];
   const customImageStyle = [

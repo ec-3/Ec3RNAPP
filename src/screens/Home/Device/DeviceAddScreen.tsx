@@ -32,7 +32,7 @@ import { RocketLaunch, TextAlignCenter } from 'phosphor-react-native';
 import useGetCrowdloanList from 'hooks/screen/Home/Crowdloans/useGetCrowdloanList';
 import { FlatListScreen } from 'components/FlatListScreen';
 import { EmptyList } from 'components/EmptyList';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { setAdjustPan } from 'rn-android-keyboard-adjust';
 import { useIsFocused } from '@react-navigation/native';
 import { CrowdloanItemType } from 'types/index';
@@ -82,7 +82,7 @@ const WRITE_CHARACTERISTIC_UUID = '51FF12BB-3ED8-46E5-B4F9-D64E2FEC021B'
 const NOTIFY_CHARACTERISTIC_UUID = '51FF12BB-3ED8-46E5-B4F9-D64E2FEC021B'
 
 export const DeviceAddScreen = () => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const [isInitializing, setIsInitializing] = useState(false); // 控制是否显示初始化提示框
 
   const items: CrowdloanItemType[] = useGetCrowdloanList();

@@ -3,7 +3,7 @@ import React from 'react';
 import { View } from 'react-native';
 import LogoStyles from './style';
 import Image from '../image';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { RootState } from 'stores/index';
 import { useSelector } from 'react-redux';
 import { ImageLogosMap } from 'assets/logo';
@@ -37,7 +37,7 @@ const Logo: React.FC<SWLogoProps> = ({
   subToken,
   token,
 }) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const { chainLogoMap, assetLogoMap } = useSelector((state: RootState) => state.logoMaps);
   const _style = LogoStyles(theme);
   const subLogoSize = size / 2.5;

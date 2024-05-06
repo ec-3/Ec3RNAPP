@@ -29,7 +29,7 @@ import { View } from 'react-native-animatable';
 // import { Avatar, Icon } from 'react-native-elements';
 import { Image, Text, TouchableOpacity } from 'react-native';
 import AccountSelectField from '../AccountSelectField';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { Avatar, Icon, Typography } from 'components/design-system-ui';
 // import { Text } from 'react-native-svg';
 import { LazyFlatList } from 'components/LazyFlatList';
@@ -260,7 +260,7 @@ export const AccountCreationArea = ({
     }, 300);
   };
   
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   // const _style = AccountSelectField(theme);
   const currentAccount = useSelector((state: RootState) => state.accountState.currentAccount);
   const isAll = useMemo((): boolean => !!currentAccount && isAccountAll(currentAccount.address), [currentAccount]);

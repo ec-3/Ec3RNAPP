@@ -1,7 +1,7 @@
 import { ConfirmationsQueueItem, EvmSignatureRequest } from '@subwallet/extension-base/background/KoniTypes';
 import AccountItemWithName from 'components/common/Account/Item/AccountItemWithName';
 import { ConfirmationContent, ConfirmationGeneralInfo } from 'components/common/Confirmation';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import React, { useMemo } from 'react';
 import { Text } from 'react-native';
 import { BaseDetailModal, EvmMessageDetail, EvmSignArea } from 'screens/Confirmations/parts';
@@ -18,7 +18,7 @@ const EvmSignatureConfirmation: React.FC<Props> = (props: Props) => {
   const { request, type } = props;
   const { id, payload } = request;
   const { account } = payload;
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
 
   const styles = useMemo(() => createStyle(theme), [theme]);
 

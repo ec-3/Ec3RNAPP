@@ -22,7 +22,7 @@ import RequestCreateMasterPasswordModal from 'screens/MasterPassword/RequestCrea
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'stores/index';
 import { ActivityIndicator } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import useAppLock from 'hooks/useAppLock';
 import { createDrawerNavigator, DrawerContentComponentProps } from '@react-navigation/drawer';
 import { WrapperParamList } from 'routes/wrapper';
@@ -90,7 +90,7 @@ const getSettingsContent = (props: DrawerContentComponentProps) => {
 const MainScreen = () => {
   const Tab = createBottomTabNavigator<HomeStackParamList>();
   const insets = useSafeAreaInsets();
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const tabbarButtonStyle = (props: BottomTabBarButtonProps) => {
     let customStyle = {
       flexDirection: 'column',

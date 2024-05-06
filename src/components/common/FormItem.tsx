@@ -4,7 +4,7 @@ import { Control, UseControllerReturn } from 'react-hook-form/dist/types';
 import React from 'react';
 import { Warning } from 'components/Warning';
 import { UseControllerProps } from 'react-hook-form/dist/types/controller';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { ThemeTypes } from 'styles/themes';
 
 type Props<P extends FieldValues> = {
@@ -25,7 +25,7 @@ export const FormItem = <P extends FieldValues = FieldValues>({
   showError = true,
 }: Props<P>) => {
   const controllerReturn = useController({ name, control, rules });
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const styleSheet = createStyleSheet(theme);
 
   const renderErrorMessage = (_controllerReturn: UseControllerReturn<P>) => {

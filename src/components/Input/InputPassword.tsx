@@ -2,7 +2,7 @@ import React, { ForwardedRef, forwardRef, useMemo, useState } from 'react';
 import { TextInput } from 'react-native';
 import { InputProps } from 'components/design-system-ui/input';
 import { Button, Icon, Input } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { Eye, EyeSlash } from 'phosphor-react-native';
 import createStylesheet from 'components/Input/style/InputPassword';
 
@@ -11,7 +11,7 @@ interface Props extends InputProps {
 }
 
 const Component = ({ showEyeButton = true, ...inputProps }: Props, ref: ForwardedRef<TextInput>) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const [isShowPassword, setShowPassword] = useState<boolean>(false);
   const stylesheet = createStylesheet(theme, showEyeButton);
 

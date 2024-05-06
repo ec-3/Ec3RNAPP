@@ -3,7 +3,7 @@ import { StyleProp, Text, View, ViewStyle } from 'react-native';
 import { toShort } from 'utils/index';
 import { ColorMap } from 'styles/color';
 import { FontMedium, sharedStyles } from 'styles/sharedStyles';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import AccountInfoFieldStyle from './style';
 import { Avatar } from 'components/design-system-ui';
 
@@ -21,7 +21,7 @@ const textStyle: StyleProp<any> = {
 };
 
 const AccountInfoField = ({ address, name, rightIcon, style }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const _style = AccountInfoFieldStyle(theme);
 
   return (

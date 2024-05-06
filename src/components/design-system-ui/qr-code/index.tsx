@@ -2,7 +2,7 @@ import React, { Ref } from 'react';
 import { ImageSourcePropType, View } from 'react-native';
 import { ActivityIndicator, Typography } from '..';
 import QRCodeStyles from './style';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import QRCodeStyled, { GradientProps, QRCodeMessage } from 'react-native-qrcode-styled';
 import Svg from 'react-native-svg';
 
@@ -43,7 +43,7 @@ const QRCode: React.FC<SWQRCodeProps> = ({
   innerEyesRadius = 9,
   qrRef,
 }) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const _style = QRCodeStyles(theme);
   const outerEyesOptions = {
     topLeft: {

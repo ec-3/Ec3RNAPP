@@ -1,7 +1,7 @@
 import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { Icon, Squircle, Typography } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import createStylesheet from './styles/BrowserSearchItem';
 import { GlobeHemisphereWest } from 'phosphor-react-native';
 
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const BrowserSearchItem = ({ title, style, onPress, subtitle }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const stylesheet = createStylesheet(theme);
 
   return (

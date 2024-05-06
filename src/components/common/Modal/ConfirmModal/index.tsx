@@ -1,5 +1,5 @@
 import { Button, Icon, Logo, PageIcon, SwModal } from 'components/design-system-ui';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { CheckCircle, PlugsConnected } from 'phosphor-react-native';
 import React, { useMemo } from 'react';
 import { Text, View } from 'react-native';
@@ -25,7 +25,7 @@ const ConfirmModal: React.FC<Props> = ({
   message,
   messageIcon,
 }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const styles = useMemo(() => createStyle(theme), [theme]);
 
   return (

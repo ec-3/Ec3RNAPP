@@ -25,7 +25,7 @@ import { isAccountAll } from 'utils/accountAll';
 import useGetNativeTokenBasicInfo from 'hooks/useGetNativeTokenBasicInfo';
 import { Button, Icon } from 'components/design-system-ui';
 import { ArrowCircleRight, XCircle } from 'phosphor-react-native';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import usePreCheckReadOnly from 'hooks/account/usePreCheckReadOnly';
 import useHandleSubmitTransaction from 'hooks/transaction/useHandleSubmitTransaction';
 import { isActionFromValidator } from '@subwallet/extension-base/koni/api/staking/bonding/utils';
@@ -61,7 +61,7 @@ export const Withdraw = ({
     params: { chain: stakingChain, type: _stakingType },
   },
 }: WithdrawProps) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const navigation = useNavigation<StakingScreenNavigationProps>();
   const stakingType = _stakingType as StakingType;
   const { isAllAccount, accounts } = useSelector((state: RootState) => state.accountState);

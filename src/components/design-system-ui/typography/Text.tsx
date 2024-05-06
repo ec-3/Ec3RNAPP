@@ -1,4 +1,4 @@
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import React from 'react';
 import { StyleProp, Text as RNText, TextStyle } from 'react-native';
 import { TextSizeProps } from './PropsType';
@@ -14,7 +14,7 @@ export interface TextProps {
 }
 
 const Text: React.FC<TextProps> = ({ ellipsis, monospace, size = 'default', style, children, ...restProps }) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const _style = TypographyStyles(theme);
   const allStyle = [FontMedium, monospace && _style?.monospace, size && _style[`${size}Text`], style];
   return (

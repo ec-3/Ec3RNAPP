@@ -1,4 +1,4 @@
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import createStyle from './styles';
@@ -11,7 +11,7 @@ type Props = {
 
 const ConfirmationContent: React.FC<Props> = (props: Props) => {
   const { children, gap } = props;
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const styles = useMemo(() => createStyle(theme, gap), [theme, gap]);
 
   return (

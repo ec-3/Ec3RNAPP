@@ -6,7 +6,7 @@ import { Number } from 'components/design-system-ui';
 import { SwNumberProps } from 'components/design-system-ui/number';
 import { useSelector } from 'react-redux';
 import { RootState } from 'stores/index';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 
 type Props = {
   value: SwNumberProps['value'];
@@ -21,7 +21,7 @@ const wrapperStyle: StyleProp<any> = {
 
 export const BalancesVisibility = ({ value, symbol, startWithSymbol = true, subFloatNumber = false }: Props) => {
   const isShowBalance = useSelector((state: RootState) => state.settings.isShowBalance);
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
 
   return (
     <View style={wrapperStyle}>

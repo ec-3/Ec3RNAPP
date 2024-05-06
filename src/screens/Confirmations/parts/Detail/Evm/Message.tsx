@@ -3,7 +3,7 @@
 
 import { EvmSignatureRequest } from '@subwallet/extension-base/background/KoniTypes';
 import MetaInfo from 'components/MetaInfo';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import React, { useCallback, useMemo } from 'react';
 
 import { isArray, isAscii, u8aToString, u8aUnwrapBytes } from '@polkadot/util';
@@ -33,7 +33,7 @@ const EvmMessageDetail: React.FC<Props> = (props: Props) => {
   const {
     payload: { payload, type },
   } = props;
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
 
   const styles = useMemo(() => createStyle(theme), [theme]);
 

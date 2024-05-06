@@ -5,7 +5,7 @@ import { Typography } from 'components/design-system-ui';
 import { FontSemiBold } from 'styles/sharedStyles';
 import { WalletConnectChainInfo } from 'types/walletConnect';
 import { ModalRef } from 'types/modalRef';
-import { useSubWalletTheme } from 'hooks/useSubWalletTheme';
+import { useEC3Theme } from 'hooks/useEC3Theme';
 import { WCNetworkItem } from 'components/WalletConnect/Network/WCNetworkItem';
 import i18n from 'utils/i18n/i18n';
 
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const WCNetworkSupported = ({ networks }: Props) => {
-  const theme = useSubWalletTheme().swThemes;
+  const theme = useEC3Theme().swThemes;
   const modalRef = useRef<ModalRef>();
   const supportedNetworksMap = useMemo(() => {
     return networks.reduce((o, key) => Object.assign(o, { [key.slug]: key.supported }), {});
