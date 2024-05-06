@@ -7,7 +7,6 @@ import { ContainerHorizontalPadding, MarginBottomForSubmitButton } from 'styles/
 import i18n from 'utils/i18n/i18n';
 import { FormState } from 'hooks/screen/useFormControl';
 import { NetworkField } from 'components/Field/Network';
-import useGetContractSupportedChains from 'hooks/screen/ImportNft/useGetContractSupportedChains';
 import { TextField } from 'components/Field/Text';
 import { isAddress, isEthereumAddress } from '@polkadot/util-crypto';
 import { completeConfirmation, upsertCustomToken, validateCustomToken } from 'messaging/index';
@@ -80,7 +79,7 @@ function getTokenType(chain: string, chainInfoMap: Record<string, _ChainInfo>): 
 
 export const ImportToken = ({ route: { params: routeParams } }: ImportTokenProps) => {
   const navigation = useNavigation<RootNavigationProps>();
-  const chainInfoMap = useGetContractSupportedChains();
+  const chainInfoMap = [];
   const { currentAccount } = useSelector((state: RootState) => state.accountState);
   const [isBusy, setBusy] = useState<boolean>(false);
   const [isShowQrModalVisible, setShowQrModalVisible] = useState<boolean>(false);

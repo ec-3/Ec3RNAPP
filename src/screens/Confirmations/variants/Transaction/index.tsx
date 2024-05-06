@@ -12,7 +12,7 @@ import { RootState } from 'stores/index';
 import { SigningRequest } from '@subwallet/extension-base/background/types';
 import useParseSubstrateRequestPayload from 'hooks/transaction/confirmation/useParseSubstrateRequestPayload';
 import { SWTransactionResult } from '@subwallet/extension-base/services/transaction-service/types';
-import { JoinPoolTransactionConfirmation, SendNftTransactionConfirmation } from './variants';
+import { JoinPoolTransactionConfirmation } from './variants';
 import { SubstrateSignArea } from 'screens/Confirmations/parts/Sign/Substrate';
 import { EvmSignArea } from 'screens/Confirmations/parts/Sign/Evm';
 import LeavePoolTransactionConfirmation from 'screens/Confirmations/variants/Transaction/variants/LeavePool';
@@ -28,8 +28,6 @@ const getTransactionComponent = (extrinsicType: ExtrinsicType): typeof BaseTrans
     case ExtrinsicType.TRANSFER_TOKEN:
     case ExtrinsicType.TRANSFER_XCM:
       return TransferBlock;
-    case ExtrinsicType.SEND_NFT:
-      return SendNftTransactionConfirmation;
     case ExtrinsicType.STAKING_JOIN_POOL:
       return JoinPoolTransactionConfirmation;
     case ExtrinsicType.STAKING_LEAVE_POOL:

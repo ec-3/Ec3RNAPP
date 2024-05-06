@@ -1,8 +1,5 @@
 import React, { useEffect, useMemo, useState, useRef, } from 'react';
 import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
-import NftCollectionList from 'screens/Home/NFT/Collection/NftCollectionList';
-import NftItemList from 'screens/Home/NFT/Item/NftItemList';
-import NftDetail from 'screens/Home/NFT/Detail/NftDetail';
 import { RootNavigationProps, RootStackParamList } from 'routes/index';
 import { EmptyList } from 'components/EmptyList';
 // import { Image } from 'phosphor-react-native';
@@ -28,20 +25,8 @@ import SpinnerGap from 'assets/SpinnerGap.png'; // 替换为SpinnerGap图片的�
 
 import { useFocusEffect } from '@react-navigation/native';
 
-export type NFTStackParamList = {
-  CollectionList: undefined;
-  Collection: { collectionId: string };
-  NftDetail: { collectionId: string; nftId: string };
-};
-export type NavigationProps = NativeStackScreenProps<NFTStackParamList & RootStackParamList>;
-export type NFTNavigationProps = NavigationProps['navigation'];
-export type NFTCollectionProps = NativeStackScreenProps<NFTStackParamList, 'Collection'>;
-export type NFTDetailProps = NativeStackScreenProps<NFTStackParamList, 'NftDetail'>;
 const {width, height, scale} = Dimensions.get('window');
 
-export const renderEmptyNFT = () => {
-  return <EmptyList title={i18n.emptyScreen.nftEmptyTitle} icon={Image} message={i18n.emptyScreen.nftEmptyMessage} />;
-};
 
 function alert(text: string) {
   Alert.alert('', text, [{text: 'Confirm', onPress: () => {}}]);
@@ -106,8 +91,6 @@ export const  DeviceActionScreen = () => {
   });
 
 
-  const NFTStack = createNativeStackNavigator<NFTStackParamList>();
-  const navigation = useNavigation<RootNavigationProps>();
 
   const theme = useSubWalletTheme().swThemes;
   

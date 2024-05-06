@@ -116,9 +116,7 @@ export const zh = {
     confirm: '确认',
     viewTransaction: '查看交易',
     address: '地址',
-    toImportNFT: '以导入NFT',
     toImportToken: '以导入通证',
-    toSendNFT: '以发送NFT',
     approveRequestMessage: '仅当你信任此APP才批准此请求',
     approveTransactionMessage: '你正在批准发送交易的请求',
     reject: '拒绝',
@@ -203,9 +201,6 @@ export const zh = {
     qrScanner: '二维码扫描仪',
     selectUnit: '选择单元',
     filters: '筛选',
-    importNft: '导入NFT',
-    nftList: 'NFT清单',
-    nftDetail: 'NFT详细信息',
     authorizeTransaction: '授权交易',
     metadataTitlePart1: '批准此更新将同步元数据',
     metadataTitlePart2: '链来自',
@@ -232,7 +227,6 @@ export const zh = {
   },
   tabName: {
     tokens: '通证',
-    nfts: 'NFTs',
     crowdloans: '众贷',
     staking: '质押',
     browser: '浏览器',
@@ -661,9 +655,6 @@ export const zh = {
     transferConfirmation: '转移确认',
     yourCollections: '你的合集',
     description: '描述',
-    importNft: '导入NFT',
-    transferNft: '转移NFT',
-    nftTransferConfirmation: '确认转移NFT',
     crowdloans: '众贷',
     filter: '筛选',
     staking: '质押',
@@ -805,7 +796,6 @@ export const zh = {
       transaction: '交易',
       sendTransaction: '发送交易',
       receiveTransaction: '接收交易',
-      nftTransaction: 'NFT交易',
       crowdloanTransaction: '众贷交易',
       stakeTransaction: '质押交易',
       unstakeTransaction: '解除质押交易',
@@ -816,10 +806,6 @@ export const zh = {
       cancelUnstakeTransaction: '取消解除质押交易',
       evmTransaction: 'EVM交易',
     },
-  },
-  importEvmNft: {
-    nftType: 'NFT类型',
-    importNft: '导入NFT',
   },
   importToken: {
     contractAddress: '合约地址',
@@ -839,9 +825,6 @@ export const zh = {
     chainType: '链类型',
     blockExplorer: '区块浏览器',
     crowdloanUrl: '众贷URL',
-  },
-  transferNft: {
-    send: '发送',
   },
   stakingScreen: {
     balanceList: {

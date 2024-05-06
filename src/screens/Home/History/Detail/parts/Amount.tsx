@@ -15,7 +15,6 @@ const HistoryDetailAmount: React.FC<Props> = (props: Props) => {
 
   const isStaking = isTypeStaking(data.type);
   const isCrowdloan = data.type === ExtrinsicType.CROWDLOAN;
-  const isNft = data.type === ExtrinsicType.SEND_NFT;
 
   const amountLabel = useMemo((): string => {
     switch (transactionType) {
@@ -45,11 +44,6 @@ const HistoryDetailAmount: React.FC<Props> = (props: Props) => {
           suffix={amount?.symbol || undefined}
           value={amount?.value || '0'}
         />
-      )}
-      {data.additionalInfo && isNft && (
-        <MetaInfo.Default label={i18n.historyScreen.label.collectionName}>
-          {(data.additionalInfo as TransactionAdditionalInfo<ExtrinsicType.SEND_NFT>).collectionName}
-        </MetaInfo.Default>
       )}
     </>
   );

@@ -30,7 +30,7 @@ export const TransactionDone = ({
   }, [chain, id, navigation]);
 
   const goHome = useCallback(() => {
-    console.log("焦祁隆")
+    console.log("*** goHome")
     if (path === 'Staking') {
       return navigation.reset({
         index: 0,
@@ -38,12 +38,6 @@ export const TransactionDone = ({
       });
     }
 
-    if (path === 'NFT') {
-      return navigation.reset({
-        index: 0,
-        routes: [{ name: 'Home', params: { screen: 'NFTs', params: { screen: 'CollectionList' } } }],
-      });
-    }
     navigation.reset({
       index: 0,
       routes: [{ name: 'Home', params: { screen: 'Tokens', params: { screen: 'TokenGroups' } } }],
