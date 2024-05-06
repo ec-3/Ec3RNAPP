@@ -10,8 +10,6 @@ import {
   CrowdloanItem,
   KeyringState,
   LanguageType,
-  NftCollection,
-  NftItem,
   NominationPoolInfo,
   NominatorMetadata,
   PriceJson,
@@ -182,11 +180,6 @@ export type PriceStore = PriceJson;
 
 export interface CrowdloanStore extends BaseReduxStore {
   crowdloanMap: Record<string, CrowdloanItem>;
-}
-
-export interface NftStore extends BaseReduxStore {
-  nftItems: NftItem[];
-  nftCollections: NftCollection[];
 }
 
 export interface StakingStore extends BaseReduxStore {

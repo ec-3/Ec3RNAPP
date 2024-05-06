@@ -66,8 +66,6 @@ export type RootStackParamList = {
   DAppAccess: undefined;
   DAppAccessDetail: { origin: string; accountAuthType: string };
   WebViewDebugger: undefined;
-  ImportNft: { payload: ConfirmationsQueue['addTokenRequest'][0] } | undefined;
-  TransferNft: NavigatorScreenParams<NftTransferActionStackParamList>;
   CustomTokenSetting: undefined;
   ConfigureToken: { tokenDetail: string };
   ImportToken: { payload: ConfirmationsQueue['addTokenRequest'][0] } | undefined;
@@ -84,12 +82,6 @@ export type RootStackParamList = {
   AttachReadOnly: undefined;
   ImportQrCode: undefined;
   TransactionAction: NavigatorScreenParams<TransactionActionStackParamList>;
-  SendNFT: {
-    chain: string;
-    collectionId: string;
-    itemId: string;
-    owner: string;
-  };
   ManageAddressBook: undefined;
 };
 
@@ -108,7 +100,6 @@ export type ExportPrivateKeyProps = NativeStackScreenProps<RootStackParamList, '
 export type AccountExportProps = NativeStackScreenProps<RootStackParamList, 'AccountExport'>;
 export type ExportJsonProps = NativeStackScreenProps<RootStackParamList, 'ExportJson'>;
 export type RemoveAccountProps = NativeStackScreenProps<RootStackParamList, 'RemoveAccount'>;
-export type TransferNftProps = NativeStackScreenProps<RootStackParamList, 'TransferNft'>;
 export type DAppAccessDetailProps = NativeStackScreenProps<RootStackParamList, 'DAppAccessDetail'>;
 export type BrowserTabsManagerProps = NativeStackScreenProps<RootStackParamList, 'BrowserTabsManager'>;
 export type BrowserListByTabviewProps = NativeStackScreenProps<RootStackParamList, 'BrowserListByTabview'>;
@@ -117,7 +108,6 @@ export type BrowserSearchProps = NativeStackScreenProps<RootStackParamList, 'Bro
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 export type ConfigureTokenProps = NativeStackScreenProps<RootStackParamList, 'ConfigureToken'>;
 export type ImportTokenProps = NativeStackScreenProps<RootStackParamList, 'ImportToken'>;
-export type ImportNftProps = NativeStackScreenProps<RootStackParamList, 'ImportNft'>;
 export type ConnectListProps = NativeStackScreenProps<RootStackParamList, 'ConnectList'>;
 export type ConnectDetailProps = NativeStackScreenProps<RootStackParamList, 'ConnectDetail'>;
 export type NetworkConfigDetailProps = NativeStackScreenProps<RootStackParamList, 'NetworkConfigDetail'>;

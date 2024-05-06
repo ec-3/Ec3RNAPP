@@ -4,8 +4,6 @@ import { TokenBalanceItemType } from 'types/ui-types';
 import {
   ChainStakingMetadata,
   CrowdloanParaState,
-  NftCollection,
-  NftItem,
   NominatorMetadata,
   StakingItem,
   StakingRewardItem,
@@ -24,13 +22,6 @@ export type CrowdloanContributeValueType = {
   contribute: BalanceValueType;
 };
 
-export interface NftCollectionType {
-  nftCollections: NftCollection[];
-}
-
-export interface NftItemType {
-  nftItems: NftItem[];
-}
 export type ConfirmationType = keyof ConfirmationSlice['details'];
 
 export type ConfirmationItem = {

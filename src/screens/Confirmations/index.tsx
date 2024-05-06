@@ -106,8 +106,6 @@ export const Confirmations = () => {
         case ExtrinsicType.TRANSFER_TOKEN:
         case ExtrinsicType.TRANSFER_XCM:
           return i18n.header.transferConfirmation;
-        case ExtrinsicType.SEND_NFT:
-          return i18n.header.nftTransferConfirmation;
         case ExtrinsicType.STAKING_JOIN_POOL:
         case ExtrinsicType.STAKING_BOND:
           return i18n.header.addToBondConfirm;

@@ -15,7 +15,6 @@ import { FirstScreen } from 'screens/Home/FirstScreen';
 import { CrowdloansScreen } from 'screens/Home/Crowdloans/CrowdloansScreen';
 import { BrowserScreen } from 'screens/Home/Browser';
 import { HomeStackParamList } from 'routes/home';
-import NFTStackScreen from 'screens/Home/NFT/NFTStackScreen';
 import DeviceActionScreen from 'screens/Home/Device/DeviceActionScreen';
 import DeviceRewardScreen from 'screens/Home/Device/DeviceRewardScreen';
 import withPageWrapper from 'components/pageWrapper';
@@ -55,7 +54,7 @@ const tokenTabbarIcon = ({ color }: tabbarIconColor) => {
 //   style={{height:60,width:60,resizeMode:'center'}} >
 // </Image>;
 };
-const nftTabbarIcon = ({ color }: tabbarIconColor) => {
+const deviceDataTabbarIcon = ({ color }: tabbarIconColor) => {
   // return <Aperture size={24} color={color} weight={'fill'} />;
 
   console.log('---*********** color:', color)
@@ -67,7 +66,7 @@ const nftTabbarIcon = ({ color }: tabbarIconColor) => {
   //   style={{height:60,width:60,resizeMode:'center'}} >
   // </Image>;
 };
-const crowdloanTabbarIcon = ({ color }: tabbarIconColor) => {
+const deviceRewardTabbarIcon = ({ color }: tabbarIconColor) => {
   // return <Rocket size={24} color={color} weight={'fill'} />;
 
   console.log('---*********** color:', color)
@@ -157,14 +156,12 @@ const MainScreen = () => {
       />
       
        <Tab.Screen
-        name={'NFTs'}
-        // component={NFTStackScreen}
+        name={'deviceData'}
         component={DeviceActionScreen}
         options={{
-          // tabBarLabel: i18n.tabName.nfts,
           tabBarLabel: "Device Info",
           tabBarHideOnKeyboard: Platform.OS === 'android',
-          tabBarIcon: nftTabbarIcon,
+          tabBarIcon: deviceDataTabbarIcon,
         }}
       />
       <Tab.Screen
@@ -175,7 +172,7 @@ const MainScreen = () => {
         options={{
           tabBarLabel: "Bluetooth",
           tabBarHideOnKeyboard: Platform.OS === 'android',
-          tabBarIcon: crowdloanTabbarIcon,
+          tabBarIcon: deviceRewardTabbarIcon,
         }}
       />
       {/* <Tab.Screen

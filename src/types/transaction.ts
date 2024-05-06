@@ -19,7 +19,6 @@ export interface TransactionContextProps extends TransactionFormBaseProps {
 }
 
 export const enum ExtraExtrinsicType {
-  IMPORT_NFT = 'nft.import',
   IMPORT_TOKEN = 'token.import',
 }
 export type ExtrinsicTypeMobile = ExtraExtrinsicType | ExtrinsicType;

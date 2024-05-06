@@ -50,7 +50,6 @@ IconMap = {
   claim_reward: ClockCounterClockwise,
   staking: Database,
   crowdloan: Rocket,
-  nft: Aperture,
   processing: Spinner,
   default: ClockCounterClockwise,
 };
@@ -66,10 +65,6 @@ function quickFormatAddressToCompare(address?: string) {
 function getIcon(item: TransactionHistoryItem): React.ElementType<IconProps> {
   if (item.status === ExtrinsicStatus.PROCESSING || item.status === ExtrinsicStatus.SUBMITTING) {
     return IconMap.processing;
-  }
-
-  if (item.type === ExtrinsicType.SEND_NFT) {
-    return IconMap.nft;
   }
 
   if (item.type === ExtrinsicType.CROWDLOAN) {
@@ -152,7 +147,6 @@ function getHistoryItemKey(
 enum FilterValue {
   SEND = 'send',
   RECEIVED = 'received',
-  NFT = 'nft',
   STAKE = 'stake',
   CLAIM = 'claim',
   CROWDLOAN = 'crowdloan',
@@ -177,11 +171,6 @@ const filterFunction = (items: TransactionHistoryDisplayItem[], filters: string[
           break;
         case FilterValue.RECEIVED:
           if (isTypeTransfer(item.type) && item.direction === TransactionDirection.RECEIVED) {
-            filteredChainList.push(item);
-          }
-          break;
-        case FilterValue.NFT:
-          if (item.type === ExtrinsicType.SEND_NFT) {
             filteredChainList.push(item);
           }
           break;
@@ -241,7 +230,6 @@ function History({
   const FILTER_OPTIONS = [
     { label: i18n.filterOptions.sendToken, value: FilterValue.SEND },
     { label: i18n.filterOptions.receiveToken, value: FilterValue.RECEIVED },
-    { label: i18n.filterOptions.nftTransaction, value: FilterValue.NFT },
     { label: i18n.filterOptions.stakeTransaction, value: FilterValue.STAKE },
     { label: i18n.filterOptions.claimStakingReward, value: FilterValue.CLAIM },
     // { labe t('Crowdloan transaction', value: FilterValue.CROWDLOAN }, // support crowdloan later
@@ -253,7 +241,6 @@ function History({
       default: i18n.historyScreen.title.transaction,
       send: i18n.historyScreen.title.sendTransaction,
       receive: i18n.historyScreen.title.receiveTransaction,
-      [ExtrinsicType.SEND_NFT]: i18n.historyScreen.title.nftTransaction,
       [ExtrinsicType.CROWDLOAN]: i18n.historyScreen.title.crowdloanTransaction,
       [ExtrinsicType.STAKING_JOIN_POOL]: i18n.historyScreen.title.stakeTransaction,
       [ExtrinsicType.STAKING_LEAVE_POOL]: i18n.historyScreen.title.unstakeTransaction,

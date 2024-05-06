@@ -45,9 +45,6 @@ import {
   CrowdloanJson,
   CurrentAccountInfo,
   KeyringState,
-  NftCollection,
-  NftJson,
-  NftTransactionRequest,
   NominationPoolInfo,
   NominatorMetadata,
   OptionInputAddress,
@@ -93,7 +90,6 @@ import {
   RequestSubscribeBalance,
   RequestSubscribeBalancesVisibility,
   RequestSubscribeCrowdloan,
-  RequestSubscribeNft,
   RequestSubscribePrice,
   RequestSubscribeStaking,
   RequestSubscribeStakingReward,
@@ -2313,22 +2309,6 @@ export async function subscribeHistory(
   return sendMessage('pri(transaction.history.getSubscription)', null, callback);
 }
 
-export async function getNft(account: string): Promise<NftJson> {
-  // @ts-ignore
-  return sendMessage('pri(nft.getNft)', account);
-}
-
-export async function subscribeNft(
-  request: RequestSubscribeNft,
-  callback: (nftData: NftJson) => void,
-): Promise<NftJson> {
-  return sendMessage('pri(nft.getSubscription)', request, callback);
-}
-
-export async function subscribeNftCollection(callback: (data: NftCollection[]) => void): Promise<NftCollection[]> {
-  return sendMessage('pri(nftCollection.getSubscription)', null, callback);
-}
-
 export async function getStaking(account: string): Promise<StakingJson> {
   // @ts-ignore
   return sendMessage('pri(staking.getStaking)', account);
@@ -2360,9 +2340,6 @@ export async function makeCrossChainTransfer(request: RequestCrossChainTransfer)
   return sendMessage('pri(accounts.crossChainTransfer)', request);
 }
 
-export async function evmNftSubmitTransaction(request: NftTransactionRequest): Promise<SWTransactionResponse> {
-  return sendMessage('pri(evmNft.submitTransaction)', request);
-}
 
 // ChainService -------------------------------------------------------------------------------------
 
@@ -2479,10 +2456,6 @@ export async function subscribeFreeBalance(
   callback: (balance: AmountData) => void,
 ): Promise<AmountData> {
   return sendMessage('pri(freeBalance.subscribe)', request, callback);
-}
-
-export async function substrateNftSubmitTransaction(request: NftTransactionRequest): Promise<SWTransactionResponse> {
-  return sendMessage('pri(substrateNft.submitTransaction)', request);
 }
 
 export async function recoverDotSamaApi(request: string): Promise<boolean> {

@@ -72,8 +72,6 @@ function getTokenType(chain: string, chainInfoMap: Record<string, _ChainInfo>): 
     return tokenTypes[0].value;
   }
 
-  // todo: may handle case nftTypes.length > 1 in near future
-
   return '';
 }
 

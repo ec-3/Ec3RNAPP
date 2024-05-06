@@ -98,8 +98,6 @@ function ConfirmationTrigger() {
       const addTokenPayload = addTokenRequest.payload as ConfirmationsQueue['addTokenRequest'][0];
       if (addTokenRequest.payload) {
         navigation.navigate('ImportToken', { payload: addTokenPayload });
-      } else if (addTokenPayload.payload.type === _AssetType.ERC721) {
-        navigation.navigate('ImportNft', { payload: addTokenPayload });
       }
 
       return;

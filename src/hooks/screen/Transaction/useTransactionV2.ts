@@ -46,12 +46,8 @@ export const useTransaction = <T extends TransactionFormValues = TransactionForm
         return ExtrinsicType.STAKING_WITHDRAW;
       case 'compound':
         return ExtrinsicType.STAKING_COMPOUNDING;
-      case 'import-nft':
-        return ExtraExtrinsicType.IMPORT_NFT;
       case 'import-token':
         return ExtraExtrinsicType.IMPORT_TOKEN;
-      case 'send-nft':
-        return ExtrinsicType.SEND_NFT;
       case 'send-fund':
       default:
         return ExtrinsicType.TRANSFER_BALANCE;
@@ -66,8 +62,6 @@ export const useTransaction = <T extends TransactionFormValues = TransactionForm
       case 'claim-reward':
       case 'compound':
         return 'Staking';
-      case 'send-nft':
-        return 'NFT';
       case 'send-fund':
       default:
         return 'Token';

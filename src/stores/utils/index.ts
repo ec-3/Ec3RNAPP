@@ -13,8 +13,6 @@ import {
   ConfirmationsQueue,
   CrowdloanJson,
   KeyringState,
-  NftCollection,
-  NftJson,
   NominatorMetadata,
   PriceJson,
   StakingJson,
@@ -344,23 +342,6 @@ export const subscribeCrowdloan = lazySubscribeMessage(
   null,
   updateCrowdloan,
   updateCrowdloan,
-);
-
-export const updateNftItems = (data: NftJson) => {
-  store.dispatch({ type: 'nft/updateNftItems', payload: data.nftList });
-};
-
-export const subscribeNftItems = lazySubscribeMessage('pri(nft.getSubscription)', null, updateNftItems, updateNftItems);
-
-export const updateNftCollections = (data: NftCollection[]) => {
-  store.dispatch({ type: 'nft/updateNftCollections', payload: data });
-};
-
-export const subscribeNftCollections = lazySubscribeMessage(
-  'pri(nftCollection.getSubscription)',
-  null,
-  updateNftCollections,
-  updateNftCollections,
 );
 
 export const updateStaking = (data: StakingJson) => {

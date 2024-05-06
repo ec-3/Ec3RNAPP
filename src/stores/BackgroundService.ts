@@ -6,7 +6,6 @@ const initialState: BackgroundServiceSlice = {
   activeState: {
     cron: {
       price: false,
-      nft: false,
       staking: false,
       history: false,
       recoverApi: false,
