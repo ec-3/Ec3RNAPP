@@ -10,13 +10,13 @@ type DeviceInfo = {
   height: number;
 };
 
-export const WIKI_URL = 'https://docs.subwallet.app/';
-export const PRIVACY_AND_POLICY_URL = 'https://docs.subwallet.app/privacy-and-security/privacy-policy';
-export const TERMS_OF_SERVICE_URL = 'https://docs.subwallet.app/privacy-and-security/terms-of-service';
-export const WEBSITE_URL = 'https://subwallet.app/';
-export const TELEGRAM_URL = 'https://t.me/subwallet';
-export const TWITTER_URL = 'https://twitter.com/subwalletapp';
-export const DISCORD_URL = 'https://discord.com/invite/vPCN4vdB8v';
+export const WIKI_URL = 'https://**/';  //TODO: 替换为ec3的信息
+export const PRIVACY_AND_POLICY_URL = 'https://**/privacy-and-security/privacy-policy';
+export const TERMS_OF_SERVICE_URL = 'https://**/privacy-and-security/terms-of-service';
+export const WEBSITE_URL = '';
+export const TELEGRAM_URL = '';
+export const TWITTER_URL = '';
+export const DISCORD_URL = '';
 export const BUTTON_ACTIVE_OPACITY = 0.5;
 export const ALLOW_FONT_SCALING = false;
 export const HIDE_MODAL_DURATION = 1000;

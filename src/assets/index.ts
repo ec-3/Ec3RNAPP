@@ -5,11 +5,13 @@ const CheckBoxIcon = React.lazy(() => import('./checkbox.svg'));
 const SignalIcon = React.lazy(() => import('./signal.svg'));
 const SignalSplashIcon = React.lazy(() => import('./signal-splash.svg'));
 const CheckBoxFilledIcon = React.lazy(() => import('./checkbox-filled.svg'));
+const LogoGradient = React.lazy(() => import('./ec3_product.svg'));
 const MenuBarLogo = React.lazy(() => import('./menu-bar.svg'));
 const IcHalfSquare = React.lazy(() => import('./ic-half-square.svg'));
 const WalletConnect = React.lazy(() => import('./wallet-connect.svg'));
 
 export const SVGImages = {
+  LogoGradient,
   CheckBoxIcon,
   CheckBoxFilledIcon,
   SignalIcon,

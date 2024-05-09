@@ -96,12 +96,12 @@ export const FirstScreen = () => {
     };
   }, []);
 
-  const onPressTermsCondition = () => {
-    Linking.openURL('https://docs.subwallet.app/main/privacy-and-security/terms-of-service');
+  const onPressTermsCondition = () => { //TODO: 替换为ec3的协议
+    Linking.openURL('https://**/main/privacy-and-security/terms-of-service');
   };
 
   const onPressPolicy = () => {
-    Linking.openURL('https://docs.subwallet.app/main/privacy-and-security/privacy-policy');
+    Linking.openURL('https://**/main/privacy-and-security/privacy-policy');
   };
 
   const onCreate = useCallback(() => {
@@ -150,6 +150,9 @@ export const FirstScreen = () => {
               paddingTop: 20,
               alignItems: 'center',
             }}>
+            <Suspense>
+              <SVGImages.LogoGradient width={220} height={220} />
+            </Suspense>
               {/* <Text style={logoTextStyle}>Ec³</Text> */}
               <Text style={logoSubTextStyle}>{i18n.title.slogan}</Text>
           </View>
